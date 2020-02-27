@@ -1,10 +1,9 @@
-﻿using MvvmCross.Commands;
-using MvvmCross.Navigation;
+﻿using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 
 namespace SolPM.Core.ViewModels
 {
-    class HomeViewModel : MvxViewModel
+    public class HomeViewModel : MvxViewModel
     {
         private readonly IMvxNavigationService _navigationService;
 
@@ -14,13 +13,5 @@ namespace SolPM.Core.ViewModels
 
             // Commands
         }
-
-        #region Commands
-
-        #endregion
-
-        #region Command Functions
-
-        #endregion
     }
 }

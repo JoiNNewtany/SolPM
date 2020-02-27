@@ -1,5 +1,5 @@
-﻿using MvvmCross.ViewModels;
-using MvvmCross.IoC;
+﻿using MvvmCross.IoC;
+using MvvmCross.ViewModels;
 using SolPM.Core.ViewModels;
 
 namespace SolPM.Core
