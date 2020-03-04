@@ -5,12 +5,12 @@ using SolPM.Core.ViewModels;
 namespace SolPM.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for VaultView.xaml
     /// </summary>
-    [MvxViewFor(typeof(HomeViewModel))]
-    public partial class HomeView : MvxWpfView
+    [MvxViewFor(typeof(VaultViewModel))]
+    public partial class VaultView : MvxWpfView
     {
-        public HomeView()
+        public VaultView()
         {
             InitializeComponent();
         }

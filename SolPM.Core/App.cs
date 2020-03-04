@@ -13,7 +13,7 @@ namespace SolPM.Core
                 .AsInterfaces()
                 .RegisterAsLazySingleton();
 
-            RegisterAppStart<HomeViewModel>();
+            RegisterAppStart<VaultViewModel>();
         }
     }
 }

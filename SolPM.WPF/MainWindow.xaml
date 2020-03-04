@@ -1,15 +1,23 @@
 ﻿<views:MvxWindow
     x:Class="SolPM.WPF.MainWindow"
     xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+    xmlns:properties="clr-namespace:SolPM.WPF.Properties"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    Background="{DynamicResource MaterialDesignPaper}"
+    TextElement.FontWeight="Medium"
+    TextElement.FontSize="14"
+    FontFamily="{materialDesign:MaterialDesignFont}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:SolPM.WPF"
     mc:Ignorable="d"
-    Title="MainWindow"
-    Height="450"
-    Width="800">
+    Title="SolPM"
+    Closed="MainWindow_Closed"
+    Height="{Binding Source={x:Static properties:Settings.Default}, Path=WindowHeight}"
+    Width="{Binding Source={x:Static properties:Settings.Default}, Path=WindowWidth}">
     <Grid>
     </Grid>
 </views:MvxWindow>

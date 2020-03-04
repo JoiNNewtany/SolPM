@@ -1,4 +1,5 @@
 ﻿using MvvmCross.Platforms.Wpf.Views;
+using SolPM.WPF.Properties;
 
 namespace SolPM.WPF
 {
@@ -10,6 +11,19 @@ namespace SolPM.WPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MainWindow_Closed(object sender, System.EventArgs e)
+        {
+            // Save window size
+
+            if (Settings.Default.WindowHeight != this.Height ||
+                Settings.Default.WindowWidth != this.Width)
+            {
+                Settings.Default.WindowHeight = this.Height;
+                Settings.Default.WindowWidth = this.Width;
+                Settings.Default.Save();
+            }
         }
     }
 }
