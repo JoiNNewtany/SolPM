@@ -10,29 +10,43 @@
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
+
+    <!-- TODO: Add key bindings -->
+    <views:MvxWpfView.InputBindings>
+        <KeyBinding
+            Command="{Binding NavigateDatabaseView}"
+            Gesture="CTRL+N" />
+    </views:MvxWpfView.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*" />
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="*" />
         </Grid.RowDefinitions>
-        
+
         <Grid
             Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition
+                    Height="auto" />
             </Grid.RowDefinitions>
 
             <!-- Main Menu -->
             <Menu
                 IsMainMenu="True"
                 Background="{DynamicResource PrimaryHueDarkBrush}"
+                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                 Grid.Row="0">
                 <MenuItem
-                    Header="_File"
+                    Header="_Database"
                     Height="40">
                     <MenuItem
                         Header="New..."
+                        Command="{Binding NavigateDatabaseView}"
                         InputGestureText="Ctrl+N">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon
@@ -156,6 +170,47 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem
+                    Header="_Folder"
+                    Height="40">
+                    <MenuItem
+                        Header="Add Folder...">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon
+                                Kind="FolderPlusOutline"
+                                Width="24"
+                                Height="24"
+                                Margin="-10"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Header="Edit Folder...">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon
+                                Kind="FolderEditOutline"
+                                Width="24"
+                                Height="24"
+                                Margin="-10"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Header="Remove Folder"
+                        InputGestureText="Del">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon
+                                Kind="FolderRemoveOutline"
+                                Width="24"
+                                Height="24"
+                                Margin="-10"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem
                     Header="_Entry"
                     Height="40">
                     <MenuItem
@@ -227,10 +282,24 @@
                     </MenuItem>
                     <MenuItem
                         Header="Edit Entry..."
-                        InputGestureText="Enter">
+                        InputGestureText="Enter"
+                        Command="{Binding NavigateEntryView}">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon
                                 Kind="EditOutline"
+                                Width="24"
+                                Height="24"
+                                Margin="-10"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Header="Remove Entry"
+                        InputGestureText="Del">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon
+                                Kind="PencilMinusOutline"
                                 Width="24"
                                 Height="24"
                                 Margin="-10"
@@ -341,6 +410,7 @@
                         Kind="ClipboardAccount" />
                 </Button>
                 <Separator />
+                <!-- Search bar -->
                 <materialDesign:ColorZone
                     Mode="Standard"
                     VerticalAlignment="Center"
@@ -379,95 +449,93 @@
         <Grid
             Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition
+                    Width="200" />
+                <ColumnDefinition
+                    Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <!-- TODO: Bind item templates
                  and item sources -->
-            
+
             <!-- Folder List -->
-            <ScrollViewer
+            <ListBox
+                ItemsSource="{Binding TestFolders}"
+                Margin="0 10 0 0"
                 Grid.Column="0"
-                VerticalScrollBarVisibility="Auto"
-                HorizontalScrollBarVisibility="Disabled">
-                <ListBox
-                    Margin="0 10 0 0"
-                    Grid.Column="0">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel
-                                Orientation="Horizontal">
-                                <Ellipse
-                                    Fill="DarkGray"
-                                    Width="32"
-                                    Height="32"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center" />
-                                <TextBlock
-                                    Text="Folder Name"
-                                    Margin="10 0 0 0"
-                                    VerticalAlignment="Center" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </ScrollViewer>
-            
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <Ellipse
+                                Fill="DarkGray"
+                                Width="32"
+                                Height="32"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                            <TextBlock
+                                Text="{Binding Name}"
+                                Margin="10 0 0 0"
+                                VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
             <!-- Card Grid -->
-            <ScrollViewer
+            <ListView
                 Grid.Column="1"
-                VerticalScrollBarVisibility="Auto"
-                HorizontalScrollBarVisibility="Disabled">
-                <ItemsControl
-                    Margin="20"
-                    HorizontalAlignment="Left">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <materialDesign:Card
-                                Width="150"
-                                Margin="14">
-                                <materialDesign:Card.Background>
-                                    <ImageBrush
-                                        ImageSource="E:\Downloads\ShareX-ScreenRecordings\rundll32_2020-03-02_00-46-17.png"
-                                        Stretch="UniformToFill" />
-                                </materialDesign:Card.Background>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition
-                                            Height="150" />
-                                        <RowDefinition
-                                            Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Rectangle
-                                        Grid.Row="1">
-                                        <Rectangle.Fill>
-                                            <SolidColorBrush
-                                                Color="Black"
-                                                Opacity="0.7" />
-                                        </Rectangle.Fill>
-                                    </Rectangle>
-                                    <TextBlock
-                                        Text="Google"
-                                        Margin="8 15 8 15"
-                                        Grid.Row="1"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Bottom"
-                                        TextWrapping="Wrap"
-                                        FontSize="18"
-                                        FontWeight="Normal" />
-                                </Grid>
-                            </materialDesign:Card>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            
+                Margin="20 10"
+                ItemsSource="{Binding TestCards}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card
+                            Width="150"
+                            Margin="14">
+                            <materialDesign:Card.Background>
+                                <ImageBrush
+                                    ImageSource="E:\Downloads\ShareX-ScreenRecordings\rundll32_2020-03-02_00-46-17.png"
+                                    Stretch="UniformToFill" />
+                            </materialDesign:Card.Background>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition
+                                        Height="150" />
+                                    <RowDefinition
+                                        Height="*" />
+                                </Grid.RowDefinitions>
+                                <Rectangle
+                                    Grid.Row="1"
+                                    Margin="0 0 0 -1"
+                                    Opacity="0.7"
+                                    Fill="{DynamicResource MaterialDesignBackground}">
+                                    <!--<Rectangle.Fill>
+                                        <SolidColorBrush
+                                            Color="Black"
+                                            Opacity="0.7" />
+                                    </Rectangle.Fill>-->
+                                </Rectangle>
+                                <TextBlock
+                                    Text="{Binding Name}"
+                                    Margin="8 15 8 15"
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    TextWrapping="Wrap"
+                                    FontSize="20"
+                                    FontWeight="Normal" />
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </views:MvxWpfView>

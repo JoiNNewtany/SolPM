@@ -11,8 +11,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:CustomColorTheme
                     BaseTheme="Dark"
-                    PrimaryColor="DarkViolet"
-                    SecondaryColor="MediumPurple" />
+                    PrimaryColor="#2196f3"
+                    SecondaryColor="#2979ff" />
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
