@@ -13,9 +13,19 @@
 
     <!-- TODO: Add key bindings -->
     <views:MvxWpfView.InputBindings>
+        <!-- Database Menu Bindings -->
+
+        <!-- New Database -->
         <KeyBinding
             Command="{Binding NavigateDatabaseView}"
             Gesture="CTRL+N" />
+
+        <!-- Entry Menu Bindings-->
+
+        <!-- New Entry -->
+        <KeyBinding
+            Command="{Binding NavigateEntryView}"
+            Gesture="CTRL+E" />
     </views:MvxWpfView.InputBindings>
 
     <Grid>
@@ -42,7 +52,7 @@
                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                 Grid.Row="0">
                 <MenuItem
-                    Header="_Database"
+                    Header="_Vault"
                     Height="40">
                     <MenuItem
                         Header="New..."
@@ -61,7 +71,7 @@
                     <MenuItem
                         Header="Open">
                         <MenuItem
-                            Header="Open File..."
+                            Header="Open..."
                             InputGestureText="Ctrl+O">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon

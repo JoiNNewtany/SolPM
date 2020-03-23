@@ -7,6 +7,14 @@
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
     <PackageReference Include="MvvmCross" Version="6.4.2" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="WindowsBase" Version="4.6.1055" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\PresentationCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

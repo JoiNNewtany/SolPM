@@ -1,6 +1,6 @@
-﻿using MvvmCross.ViewModels;
-using MvvmCross.Commands;
+﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 
 namespace SolPM.Core.ViewModels
 {
@@ -21,6 +21,6 @@ namespace SolPM.Core.ViewModels
 
         public IMvxAsyncCommand NavigateVaultView { get; private set; }
 
-        #endregion
+        #endregion Commands
     }
 }

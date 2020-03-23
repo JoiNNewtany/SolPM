@@ -1,31 +1,16 @@
-﻿using MvvmCross.ViewModels;
-using MvvmCross.Commands;
+﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
+using SolPM.Core.Helpers;
+using SolPM.Core.Models;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace SolPM.Core.ViewModels
 {
-    // TODO: Remove test classes
-
-    public class TestEntry
-    {
-        public TestEntry(string name)
-        {
-            Name = name;
-        }
-
-        public string Name { get; set; }
-    }
-
-    public class TestFolder
-    {
-        public TestFolder(string name)
-        {
-            Name = name;
-        }
-
-        public string Name { get; set; }
-    }
-
     public class VaultViewModel : MvxViewModel
     {
         private readonly IMvxNavigationService _navigationService;
@@ -34,26 +19,194 @@ namespace SolPM.Core.ViewModels
         {
             _navigationService = navigationService;
 
-            // Test set of entries
+            // TODO: Get rid of test actions
 
-            TestCards.Add(new TestEntry("Google"));
-            TestCards.Add(new TestEntry("Steam"));
-            TestCards.Add(new TestEntry("Microsoft"));
-            TestCards.Add(new TestEntry("Deviantart"));
-            TestCards.Add(new TestEntry("Twitter"));
-            TestCards.Add(new TestEntry("Mozilla"));
-            TestCards.Add(new TestEntry("Adobe"));
-            TestCards.Add(new TestEntry("Amazon"));
-            TestCards.Add(new TestEntry("GOG"));
-            TestCards.Add(new TestEntry("Humble Bundle"));
+            // Test Singleton Vault
 
-            // Test set of folders
+            Vault vault = Vault.GetInstance();
+            vault.Name = "My Test Vault";
 
-            TestFolders.Add(new TestFolder("Accounts"));
-            TestFolders.Add(new TestFolder("Temporary"));
-            TestFolders.Add(new TestFolder("Bank"));
-            TestFolders.Add(new TestFolder("Services"));
-            TestFolders.Add(new TestFolder("Bin"));
+            vault.FolderList = new MvxObservableCollection<Folder>()
+            {
+                new Folder()
+                {
+                    Name = "Folder 1",
+                    Color = new XmlColor(Color.FromArgb(255, 0, 255)),
+
+                    EntryList = new MvxObservableCollection<Entry>()
+                    {
+                        new Entry()
+                        {
+                            Name = "Google",
+                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
+                            Color = new XmlColor(Color.FromArgb(50, 50, 50)),
+                            LastModified = DateTime.Now,
+
+                            FieldList = new MvxObservableCollection<Field>()
+                            {
+                                new Field()
+                                {
+                                    Name = "Username",
+                                    Value = "Solar",
+                                },
+
+                                new Field()
+                                {
+                                    Name = "Password",
+                                    Value = "BatIsQt",
+                                },
+
+                                new Field()
+                                {
+                                    Name = "URL",
+                                    Value = "www.google.com",
+                                },
+                            }
+                        },
+
+                        new Entry()
+                        {
+                            Name = "Secret",
+                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
+                            Color = new XmlColor(Color.FromArgb(70, 50, 100)),
+                            LastModified = DateTime.Now,
+
+                            FieldList = new MvxObservableCollection<Field>()
+                            {
+                                new Field()
+                                {
+                                    Name = "Username",
+                                    Value = "Solar",
+                                },
+
+                                new Field()
+                                {
+                                    Name = "Password",
+                                    Value = new byte[] { 1, 0, 1, 1, 0 },
+                                },
+
+                                new Field()
+                                {
+                                    Name = "URL",
+                                    Value = "www.google.com",
+                                },
+                            }
+                        },
+                    }
+                },
+
+                new Folder()
+                {
+                    Name = "Super Folder 2",
+                    Color = new XmlColor(Color.FromArgb(0, 0, 255)),
+
+                    EntryList = new MvxObservableCollection<Entry>()
+                    {
+                        new Entry()
+                        {
+                            Name = "Mehcrossoft",
+                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
+                            Color = new XmlColor(Color.FromArgb(50, 50, 50)),
+                            LastModified = DateTime.Now,
+
+                            FieldList = new MvxObservableCollection<Field>()
+                            {
+                                new Field()
+                                {
+                                    Name = "Username",
+                                    Value = "Solar Flaer",
+                                },
+
+                                new Field()
+                                {
+                                    Name = "Password",
+                                    Value = new byte[] { 0, 0, 1, 0, 1 },
+                                },
+
+                                new Field()
+                                {
+                                    Name = "URL",
+                                    Value = "www.microsoft.com",
+                                },
+                            }
+                        },
+
+                        new Entry()
+                        {
+                            Name = "Ducc",
+                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
+                            Color = new XmlColor(Color.FromArgb(70, 50, 100)),
+                            LastModified = DateTime.Now,
+
+                            FieldList = new MvxObservableCollection<Field>()
+                            {
+                                new Field()
+                                {
+                                    Name = "Username",
+                                    Value = "Sauce Fire",
+                                },
+
+                                new Field()
+                                {
+                                    Name = "Password",
+                                    Value = new byte[] { 0, 0, 0, 1, 0 },
+                                },
+
+                                new Field()
+                                {
+                                    Name = "URL",
+                                    Value = "www.duckduckgo.com",
+                                },
+
+                                new Field()
+                                {
+                                    Name = "Note",
+                                    Value = "Ducc is cute\nDucc needs pat",
+                                },
+                            }
+                        },
+
+                        new Entry()
+                        {
+                            Name = "Duce Nuce",
+                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
+                            Color = new XmlColor(Color.FromArgb(70, 50, 100)),
+                            LastModified = DateTime.Now,
+
+                            FieldList = new MvxObservableCollection<Field>()
+                            {
+                                new Field()
+                                {
+                                    Name = "Username",
+                                    Value = "OWO UWU",
+                                },
+
+                                new Field()
+                                {
+                                    Name = "Password",
+                                    Value = new byte[] { 1, 1, 0, 1, 1 },
+                                },
+                            }
+                        },
+                    }
+                },
+            };
+
+            // Test export
+
+            XmlSerializer xsSubmit = new XmlSerializer(typeof(Vault));
+            var xml = "";
+
+            using (var sww = new StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(sww))
+                {
+                    xsSubmit.Serialize(writer, vault);
+                    xml = sww.ToString(); // Your XML
+                }
+            }
+
+            File.WriteAllText("E:\\Downloads\\DEBUG.txt", xml);
 
             // Commands
 
@@ -66,17 +219,6 @@ namespace SolPM.Core.ViewModels
         public IMvxAsyncCommand NavigateDatabaseView { get; private set; }
         public IMvxAsyncCommand NavigateEntryView { get; private set; }
 
-        #endregion
-
-        #region Properties
-
-        public MvxObservableCollection<TestEntry> TestCards { get; set; } = new MvxObservableCollection<TestEntry>();
-        public MvxObservableCollection<TestFolder> TestFolders { get; set; } = new MvxObservableCollection<TestFolder>();
-
-        #endregion
-
-        #region Functions
-
-        #endregion
+        #endregion Commands
     }
 }

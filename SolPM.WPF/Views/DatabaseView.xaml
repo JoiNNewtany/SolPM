@@ -12,6 +12,7 @@
     d:DesignWidth="800">
 
     <views:MvxWpfView.InputBindings>
+        <!-- Cancel -->
         <KeyBinding
             Command="{Binding NavigateVaultView}"
             Gesture="ESC" />
@@ -46,174 +47,172 @@
         </EventTrigger>
     </UserControl.Triggers>
 
-    <materialDesign:DialogHost>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="auto" />
-                <RowDefinition
-                    Height="*" />
-            </Grid.RowDefinitions>
-            <materialDesign:ColorZone
-                x:Name="ColorZone"
-                Mode="PrimaryDark"
-                Grid.Row="0"
-                Padding="16">
-                <Grid>
-                    <Button
-                        Style="{StaticResource MaterialDesignIconForegroundButton}"
-                        Command="{Binding NavigateVaultView}"
-                        HorizontalAlignment="Left"
-                        ToolTip="Back">
-                        <materialDesign:PackIcon
-                            Width="32"
-                            Height="32"
-                            Kind="ArrowBack" />
-                    </Button>
-                    <TextBlock 
-                        Text="New Database"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="24"
-                        FontWeight="Light"/>
-                    <Button
-                        Style="{StaticResource MaterialDesignIconForegroundButton}"
-                        Command="{Binding NavigateVaultView}"
-                        HorizontalAlignment="Right"
-                        ToolTip="Create">
-                        <materialDesign:PackIcon
-                            Width="32"
-                            Height="32"
-                            Kind="Add" />
-                    </Button>
-                </Grid>
-            </materialDesign:ColorZone>
-            <ScrollViewer
-                Grid.Row="1">
-                <Grid
-                    Margin="50 20">
-                    <StackPanel>
-                        <GroupBox
-                            Header="General Database Information"
-                            Style="{DynamicResource MaterialDesignGroupBox}"
-                            materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                            Margin="0 0 0 20"
-                            BorderThickness="0">
-                            <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone
+            x:Name="ColorZone"
+            Mode="PrimaryDark"
+            Grid.Row="0"
+            Padding="16">
+            <Grid>
+                <Button
+                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                    Command="{Binding NavigateVaultView}"
+                    HorizontalAlignment="Left"
+                    ToolTip="Back">
+                    <materialDesign:PackIcon
+                        Width="32"
+                        Height="32"
+                        Kind="ArrowBack" />
+                </Button>
+                <TextBlock
+                    Text="New Vault"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    FontWeight="Light" />
+                <Button
+                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                    Command="{Binding NavigateVaultView}"
+                    HorizontalAlignment="Right"
+                    ToolTip="Create">
+                    <materialDesign:PackIcon
+                        Width="32"
+                        Height="32"
+                        Kind="Add" />
+                </Button>
+            </Grid>
+        </materialDesign:ColorZone>
+        <ScrollViewer
+            Grid.Row="1">
+            <Grid
+                Margin="50 20">
+                <StackPanel>
+                    <GroupBox
+                        Header="General Vault Information"
+                        Style="{DynamicResource MaterialDesignGroupBox}"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                        Margin="0 0 0 20"
+                        BorderThickness="0">
+                        <StackPanel>
+                            <TextBlock
+                                TextWrapping="Wrap"
+                                Text="Please enter the display name as well as optional description of the new vault."
+                                Margin="0 10 0 20" />
+                            <TextBox
+                                x:Name="VaultNameTextBox"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                HorizontalAlignment="Left"
+                                Width="220"
+                                Margin="0 0 0 20"
+                                materialDesign:HintAssist.Hint="Vault Name">
+                            </TextBox>
+                            <TextBox
+                                x:Name="VaultDescriptionTextBox"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                MaxHeight="90"
+                                Width="407"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Left"
+                                AcceptsReturn="True"
+                                VerticalScrollBarVisibility="Auto"
+                                SpellCheck.IsEnabled="True"
+                                materialDesign:HintAssist.Hint="Vault Description (Optional)">
+                            </TextBox>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox
+                        Header="Security Settings"
+                        Style="{DynamicResource MaterialDesignGroupBox}"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                        BorderThickness="0">
+                        <StackPanel>
+                            <TextBlock
+                                TextWrapping="Wrap"
+                                Text="This section allows for adjustments of security settings of the vault. Here you will also set the master password that will protect this vault. These parameters may be changed later in the vault settings."
+                                Margin="0 10 0 20" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition
+                                        Width="auto" />
+                                    <ColumnDefinition
+                                        Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition
+                                        Height="50" />
+                                    <RowDefinition
+                                        Height="50" />
+                                    <RowDefinition
+                                        Height="auto" />
+                                    <RowDefinition
+                                        Height="auto" />
+                                </Grid.RowDefinitions>
+
                                 <TextBlock
-                                    TextWrapping="Wrap"
-                                    Text="Please enter the display name as well as optional description of the new database."
-                                    Margin="0 10 0 20" />
-                                <TextBox
-                                    x:Name="VaultNameTextBox"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    HorizontalAlignment="Left"
+                                    Text="Encryption Algorithm:"
+                                    VerticalAlignment="Center"
+                                    Margin="0 0 30 0"
+                                    Grid.Row="0"
+                                    Grid.Column="0" />
+                                <ComboBox
                                     Width="220"
-                                    Margin="0 0 0 20"
-                                    materialDesign:HintAssist.Hint="Database Name">
-                                </TextBox>
-                                <TextBox
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    MaxHeight="90"
-                                    Width="407"
-                                    TextWrapping="Wrap"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Left"
-                                    AcceptsReturn="True"
-                                    VerticalScrollBarVisibility="Auto"
-                                    SpellCheck.IsEnabled="True"
-                                    materialDesign:HintAssist.Hint="Database Description (Optional)">
+                                    Grid.Row="0"
+                                    Grid.Column="1">
+                                    <ComboBoxItem
+                                        IsSelected="True"
+                                        Content="AES: 256-bit" />
+                                    <ComboBoxItem
+                                        Content="Twofish: 256-bit" />
+                                    <ComboBoxItem
+                                        Content="ChaCha20: 256-bit" />
+                                </ComboBox>
 
-                                </TextBox>
-                            </StackPanel>
-                        </GroupBox>
-
-                        <GroupBox
-                            Header="Security Settings"
-                            Style="{DynamicResource MaterialDesignGroupBox}"
-                            materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                            BorderThickness="0">
-                            <StackPanel>
                                 <TextBlock
-                                    TextWrapping="Wrap"
-                                    Text="This section allows for adjustments of security settings of the database. Here you will also set the master password that will protect this database. These parameters may be changed later in the database settings."
-                                    Margin="0 10 0 20" />
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition
-                                            Width="auto" />
-                                        <ColumnDefinition
-                                            Width="auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition
-                                            Height="50" />
-                                        <RowDefinition
-                                            Height="50" />
-                                        <RowDefinition
-                                            Height="auto" />
-                                        <RowDefinition
-                                            Height="auto" />
-                                    </Grid.RowDefinitions>
+                                    Text="Key Deriviation Function:"
+                                    VerticalAlignment="Center"
+                                    Margin="0 0 30 0"
+                                    Grid.Row="1"
+                                    Grid.Column="0" />
+                                <ComboBox
+                                    Width="220"
+                                    Grid.Row="1"
+                                    Grid.Column="1">
+                                    <ComboBoxItem
+                                        IsSelected="True"
+                                        Content="Argon2 (Recommended)" />
+                                    <ComboBoxItem
+                                        Content="PBKDF2" />
+                                </ComboBox>
 
-                                    <TextBlock
-                                        Text="Encryption Algorithm:"
-                                        VerticalAlignment="Center"
-                                        Margin="0 0 30 0"
-                                        Grid.Row="0"
-                                        Grid.Column="0" />
-                                    <ComboBox
-                                        Width="220"
-                                        Grid.Row="0"
-                                        Grid.Column="1">
-                                        <ComboBoxItem
-                                            IsSelected="True"
-                                            Content="AES: 256-bit" />
-                                        <ComboBoxItem
-                                            Content="Twofish: 256-bit" />
-                                        <ComboBoxItem
-                                            Content="ChaCha20: 256-bit" />
-                                    </ComboBox>
-
-                                    <TextBlock
-                                        Text="Key Deriviation Function:"
-                                        VerticalAlignment="Center"
-                                        Margin="0 0 30 0"
-                                        Grid.Row="1"
-                                        Grid.Column="0" />
-                                    <ComboBox
-                                        Width="220"
-                                        Grid.Row="1"
-                                        Grid.Column="1">
-                                        <ComboBoxItem
-                                            IsSelected="True"
-                                            Content="Argon2 (Recommended)" />
-                                        <ComboBoxItem
-                                            Content="PBKDF2" />
-                                    </ComboBox>
-
-                                    <PasswordBox
-                                        Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
-                                        VerticalAlignment="Center"
-                                        Margin="0 20 0 0"
-                                        Grid.Row="2"
-                                        Grid.ColumnSpan="2"
-                                        materialDesign:TextFieldAssist.HasClearButton="True"
-                                        materialDesign:HintAssist.Hint="Enter Master Password" />
-                                    <PasswordBox
-                                        Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
-                                        VerticalAlignment="Center"
-                                        Margin="0 20 0 0"
-                                        Grid.Row="3"
-                                        Grid.ColumnSpan="2"
-                                        materialDesign:TextFieldAssist.HasClearButton="True"
-                                        materialDesign:HintAssist.Hint="Confirm Master Password" />
-                                </Grid>
-                            </StackPanel>
-                        </GroupBox>
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
-        </Grid>
-    </materialDesign:DialogHost>
+                                <PasswordBox
+                                    Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
+                                    VerticalAlignment="Center"
+                                    Margin="0 20 0 0"
+                                    Grid.Row="2"
+                                    Grid.ColumnSpan="2"
+                                    materialDesign:TextFieldAssist.HasClearButton="True"
+                                    materialDesign:HintAssist.Hint="Enter Master Password" />
+                                <PasswordBox
+                                    Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
+                                    VerticalAlignment="Center"
+                                    Margin="0 20 0 0"
+                                    Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    materialDesign:TextFieldAssist.HasClearButton="True"
+                                    materialDesign:HintAssist.Hint="Confirm Master Password" />
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
 </views:MvxWpfView>
