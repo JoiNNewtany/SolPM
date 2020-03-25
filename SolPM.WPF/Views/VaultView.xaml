@@ -1,7 +1,7 @@
 ﻿<views:MvxWpfView
     x:Class="SolPM.WPF.Views.VaultView"
     xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -470,7 +470,8 @@
 
             <!-- Folder List -->
             <ListBox
-                ItemsSource="{Binding TestFolders}"
+                ItemsSource="{Binding VaultFolders}"
+                SelectedItem="{Binding SelectedFolder}"
                 Margin="0 10 0 0"
                 Grid.Column="0"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -478,12 +479,11 @@
                     <DataTemplate>
                         <StackPanel
                             Orientation="Horizontal">
-                            <Ellipse
-                                Fill="DarkGray"
-                                Width="32"
-                                Height="32"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />
+                            <materialDesign:PackIcon
+                                Foreground="{Binding TestColor}"
+                                Width="28"
+                                Height="28"
+                                Kind="Folder" />
                             <TextBlock
                                 Text="{Binding Name}"
                                 Margin="10 0 0 0"
@@ -495,9 +495,11 @@
 
             <!-- Card Grid -->
             <ListView
-                Grid.Column="1"
+                ItemsSource="{Binding FolderEntries}"
+                SelectedItem="{Binding SelectedEntry}"
+                SelectionMode="Single"
                 Margin="20 10"
-                ItemsSource="{Binding TestCards}"
+                Grid.Column="1"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -506,14 +508,11 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
+                        <!-- TODO: Bind everything else!!! -->
                         <materialDesign:Card
                             Width="150"
-                            Margin="14">
-                            <materialDesign:Card.Background>
-                                <ImageBrush
-                                    ImageSource="E:\Downloads\ShareX-ScreenRecordings\rundll32_2020-03-02_00-46-17.png"
-                                    Stretch="UniformToFill" />
-                            </materialDesign:Card.Background>
+                            Margin="14"
+                            Background="#ff217cc8">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition
@@ -521,16 +520,22 @@
                                     <RowDefinition
                                         Height="*" />
                                 </Grid.RowDefinitions>
+                                <Grid.Background>
+                                    <ImageBrush
+                                        ImageSource="E:\Downloads\ShareX-ScreenRecordings\ramiras.png"
+                                        Stretch="UniformToFill"/>
+                                </Grid.Background>
+                                <Image
+                                    Source="E:\Downloads\minecraft-logo.png"
+                                    Grid.Row="0"
+                                    MaxWidth="140"
+                                    Height="64"
+                                    Stretch="Uniform"/>
                                 <Rectangle
                                     Grid.Row="1"
                                     Margin="0 0 0 -1"
                                     Opacity="0.7"
                                     Fill="{DynamicResource MaterialDesignBackground}">
-                                    <!--<Rectangle.Fill>
-                                        <SolidColorBrush
-                                            Color="Black"
-                                            Opacity="0.7" />
-                                    </Rectangle.Fill>-->
                                 </Rectangle>
                                 <TextBlock
                                     Text="{Binding Name}"

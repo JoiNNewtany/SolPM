@@ -9,6 +9,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
+using System.Windows.Media;
+
 namespace SolPM.Core.ViewModels
 {
     public class VaultViewModel : MvxViewModel
@@ -31,7 +33,7 @@ namespace SolPM.Core.ViewModels
                 new Folder()
                 {
                     Name = "Folder 1",
-                    Color = new XmlColor(Color.FromArgb(255, 0, 255)),
+                    // Color = new XmlColor(Color.FromArgb(255, 0, 255)),
 
                     EntryList = new MvxObservableCollection<Entry>()
                     {
@@ -39,7 +41,7 @@ namespace SolPM.Core.ViewModels
                         {
                             Name = "Google",
                             // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            Color = new XmlColor(Color.FromArgb(50, 50, 50)),
+                            // Color = new XmlColor(Color.FromArgb(50, 50, 50)),
                             LastModified = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
@@ -68,7 +70,7 @@ namespace SolPM.Core.ViewModels
                         {
                             Name = "Secret",
                             // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            Color = new XmlColor(Color.FromArgb(70, 50, 100)),
+                            // Color = new XmlColor(Color.FromArgb(70, 50, 100)),
                             LastModified = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
@@ -98,7 +100,7 @@ namespace SolPM.Core.ViewModels
                 new Folder()
                 {
                     Name = "Super Folder 2",
-                    Color = new XmlColor(Color.FromArgb(0, 0, 255)),
+                    // Color = new XmlColor(Color.FromArgb(0, 0, 255)),
 
                     EntryList = new MvxObservableCollection<Entry>()
                     {
@@ -106,7 +108,7 @@ namespace SolPM.Core.ViewModels
                         {
                             Name = "Mehcrossoft",
                             // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            Color = new XmlColor(Color.FromArgb(50, 50, 50)),
+                            // Color = new XmlColor(Color.FromArgb(50, 50, 50)),
                             LastModified = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
@@ -135,7 +137,7 @@ namespace SolPM.Core.ViewModels
                         {
                             Name = "Ducc",
                             // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            Color = new XmlColor(Color.FromArgb(70, 50, 100)),
+                            // Color = new XmlColor(Color.FromArgb(70, 50, 100)),
                             LastModified = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
@@ -170,7 +172,7 @@ namespace SolPM.Core.ViewModels
                         {
                             Name = "Duce Nuce",
                             // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            Color = new XmlColor(Color.FromArgb(70, 50, 100)),
+                            // Color = new XmlColor(Color.FromArgb(70, 50, 100)),
                             LastModified = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
@@ -206,7 +208,10 @@ namespace SolPM.Core.ViewModels
                 }
             }
 
-            File.WriteAllText("E:\\Downloads\\DEBUG.txt", xml);
+            //File.WriteAllText("E:\\Downloads\\DEBUG.txt", xml);
+
+            TestColor = System.Windows.Media.Brushes.BlueViolet;
+            RaisePropertyChanged(() => TestColor);
 
             // Commands
 
@@ -220,5 +225,80 @@ namespace SolPM.Core.ViewModels
         public IMvxAsyncCommand NavigateEntryView { get; private set; }
 
         #endregion Commands
+
+        #region Properties
+
+        public System.Windows.Media.Brush TestColor { get; set; }
+
+        public Entry SelectedEntry { get; set; }
+        //public Folder SelectedFolder { get; set; }
+
+        private Folder selectedFolder;
+        public Folder SelectedFolder
+        {
+            get 
+            { 
+                return selectedFolder; 
+            }
+            
+            set 
+            { 
+                selectedFolder = value;
+                RaisePropertyChanged(() => SelectedFolder);
+                // Causing FolderEntries to update on UI
+                RaisePropertyChanged(() => FolderEntries);
+            }
+        }
+
+
+        public MvxObservableCollection<Folder> VaultFolders
+        {
+            get 
+            {
+                if (Vault.Exists())
+                {
+                    return Vault.GetInstance().FolderList;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            set 
+            {
+                if (Vault.Exists())
+                {
+                    Vault.GetInstance().FolderList = value;
+                    RaisePropertyChanged(() => VaultFolders);
+                }
+            }
+        }
+
+        public MvxObservableCollection<Entry> FolderEntries
+        {
+            get 
+            {
+                if (SelectedFolder != null)
+                {
+                    return SelectedFolder.EntryList;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            
+            set 
+            {
+                if (SelectedFolder != null)
+                {
+                    SelectedFolder.EntryList = value;
+                    RaisePropertyChanged(() => FolderEntries);
+                }
+            }
+        }
+
+        #endregion Properties
     }
 }

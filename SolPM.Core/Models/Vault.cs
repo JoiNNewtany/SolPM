@@ -38,6 +38,11 @@ namespace SolPM.Core.Models
             return _instance;
         }
 
+        public static bool Exists()
+        {
+            return _instance != null;
+        }
+
         [XmlElement("Name")]
         public string Name { get; set; }
 
