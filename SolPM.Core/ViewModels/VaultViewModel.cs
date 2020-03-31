@@ -4,12 +4,11 @@ using MvvmCross.ViewModels;
 using SolPM.Core.Helpers;
 using SolPM.Core.Models;
 using System;
-using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Xml.Serialization;
-
-using System.Windows.Media;
 
 namespace SolPM.Core.ViewModels
 {
@@ -21,7 +20,16 @@ namespace SolPM.Core.ViewModels
         {
             _navigationService = navigationService;
 
-            // TODO: Get rid of test actions
+            // Commands
+
+            NavigateDatabaseView = new MvxAsyncCommand(() => _navigationService.Navigate<DatabaseViewModel>());
+            NavigateEntryView = new MvxAsyncCommand(() => _navigationService.Navigate<EntryViewModel>());
+            AddEntryCommand = new MvxAsyncCommand(() => AddEntry());
+        }
+
+        public override async Task Initialize()
+        {
+            // TODO: Get rid of test actions AND MAKE VAULT A PROPERTY!!!
 
             // Test Singleton Vault
 
@@ -33,16 +41,18 @@ namespace SolPM.Core.ViewModels
                 new Folder()
                 {
                     Name = "Folder 1",
-                    // Color = new XmlColor(Color.FromArgb(255, 0, 255)),
+                    Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 255, 0)),
 
                     EntryList = new MvxObservableCollection<Entry>()
                     {
                         new Entry()
                         {
                             Name = "Google",
-                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            // Color = new XmlColor(Color.FromArgb(50, 50, 50)),
-                            LastModified = DateTime.Now,
+                            Icon = new BitmapImage(new Uri("E:\\Downloads\\google-logo.png")),
+                            Color = new XmlColor(System.Windows.Media.Color.FromRgb(255, 255, 255)),
+                            Created = DateTime.Now,
+                            Modified = DateTime.Now,
+                            Accessed = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
                             {
@@ -55,7 +65,7 @@ namespace SolPM.Core.ViewModels
                                 new Field()
                                 {
                                     Name = "Password",
-                                    Value = "BatIsQt",
+                                    Value = new byte[] { 1, 1, 1, 0, 0 },
                                 },
 
                                 new Field()
@@ -69,9 +79,10 @@ namespace SolPM.Core.ViewModels
                         new Entry()
                         {
                             Name = "Secret",
-                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            // Color = new XmlColor(Color.FromArgb(70, 50, 100)),
-                            LastModified = DateTime.Now,
+                            Image = new BitmapImage(new Uri("E:\\Downloads\\ShareX-ScreenRecordings\\ramiras.png")),
+                            Created = DateTime.Now,
+                            Modified = DateTime.Now,
+                            Accessed = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
                             {
@@ -100,16 +111,18 @@ namespace SolPM.Core.ViewModels
                 new Folder()
                 {
                     Name = "Super Folder 2",
-                    // Color = new XmlColor(Color.FromArgb(0, 0, 255)),
+                    Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 0, 255)),
 
                     EntryList = new MvxObservableCollection<Entry>()
                     {
                         new Entry()
                         {
-                            Name = "Mehcrossoft",
-                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            // Color = new XmlColor(Color.FromArgb(50, 50, 50)),
-                            LastModified = DateTime.Now,
+                            Name = "Microsoft",
+                            Icon = new BitmapImage(new Uri("E:\\Downloads\\microsoft-logo.png")),
+                            Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 64, 131)),
+                            Created = DateTime.Now,
+                            Modified = DateTime.Now,
+                            Accessed = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
                             {
@@ -136,9 +149,10 @@ namespace SolPM.Core.ViewModels
                         new Entry()
                         {
                             Name = "Ducc",
-                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            // Color = new XmlColor(Color.FromArgb(70, 50, 100)),
-                            LastModified = DateTime.Now,
+                            Image = new BitmapImage(new Uri("E:\\Downloads\\duck-image.jpg")),
+                            Created = DateTime.Now,
+                            Modified = DateTime.Now,
+                            Accessed = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
                             {
@@ -171,16 +185,17 @@ namespace SolPM.Core.ViewModels
                         new Entry()
                         {
                             Name = "Duce Nuce",
-                            // Image = new BitmapImage(new Uri("E:\\Downloads\\PlaceholderLogo.png")),
-                            // Color = new XmlColor(Color.FromArgb(70, 50, 100)),
-                            LastModified = DateTime.Now,
+                            Icon = new BitmapImage(new Uri("E:\\Downloads\\minecraft-logo-big.png")),
+                            Created = DateTime.Now,
+                            Modified = DateTime.Now,
+                            Accessed = DateTime.Now,
 
                             FieldList = new MvxObservableCollection<Field>()
                             {
                                 new Field()
                                 {
                                     Name = "Username",
-                                    Value = "OWO UWU",
+                                    Value = "Sauce Fire",
                                 },
 
                                 new Field()
@@ -204,19 +219,11 @@ namespace SolPM.Core.ViewModels
                 using (XmlWriter writer = XmlWriter.Create(sww))
                 {
                     xsSubmit.Serialize(writer, vault);
-                    xml = sww.ToString(); // Your XML
+                    xml = sww.ToString();
                 }
             }
 
             //File.WriteAllText("E:\\Downloads\\DEBUG.txt", xml);
-
-            TestColor = System.Windows.Media.Brushes.BlueViolet;
-            RaisePropertyChanged(() => TestColor);
-
-            // Commands
-
-            NavigateDatabaseView = new MvxAsyncCommand(() => _navigationService.Navigate<DatabaseViewModel>());
-            NavigateEntryView = new MvxAsyncCommand(() => _navigationService.Navigate<EntryViewModel>());
         }
 
         #region Commands
@@ -224,25 +231,52 @@ namespace SolPM.Core.ViewModels
         public IMvxAsyncCommand NavigateDatabaseView { get; private set; }
         public IMvxAsyncCommand NavigateEntryView { get; private set; }
 
+        public IMvxAsyncCommand AddEntryCommand { get; private set; }
+
+        private async Task AddEntry()
+        {
+            var newEntry = await _navigationService.Navigate<EntryViewModel, Entry, Entry>(
+                new Entry()
+                {
+                    // Setting default color to special gray
+                    Color = System.Windows.Media.Color.FromRgb(102, 115, 121)
+                });
+            if (newEntry != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"VaultViewModel: Recieved {newEntry.Name}.");
+                FolderEntries.Add(newEntry);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"EntryViewModel: Recieved no entries.");
+            }
+        }
+
+        public IMvxAsyncCommand AddFolderCommand { get; private set; }
+
+        public IMvxAsyncCommand EditEntryCommand { get; private set; }
+        public IMvxAsyncCommand EditFolderCommand { get; private set; }
+
+        public IMvxAsyncCommand RemoveEntryCommand { get; private set; }
+        public IMvxAsyncCommand RemoveFolderCommand { get; private set; }
+
         #endregion Commands
 
         #region Properties
 
-        public System.Windows.Media.Brush TestColor { get; set; }
-
         public Entry SelectedEntry { get; set; }
-        //public Folder SelectedFolder { get; set; }
 
         private Folder selectedFolder;
+
         public Folder SelectedFolder
         {
-            get 
-            { 
-                return selectedFolder; 
+            get
+            {
+                return selectedFolder;
             }
-            
-            set 
-            { 
+
+            set
+            {
                 selectedFolder = value;
                 RaisePropertyChanged(() => SelectedFolder);
                 // Causing FolderEntries to update on UI
@@ -250,10 +284,9 @@ namespace SolPM.Core.ViewModels
             }
         }
 
-
         public MvxObservableCollection<Folder> VaultFolders
         {
-            get 
+            get
             {
                 if (Vault.Exists())
                 {
@@ -265,7 +298,7 @@ namespace SolPM.Core.ViewModels
                 }
             }
 
-            set 
+            set
             {
                 if (Vault.Exists())
                 {
@@ -277,7 +310,7 @@ namespace SolPM.Core.ViewModels
 
         public MvxObservableCollection<Entry> FolderEntries
         {
-            get 
+            get
             {
                 if (SelectedFolder != null)
                 {
@@ -288,8 +321,8 @@ namespace SolPM.Core.ViewModels
                     return null;
                 }
             }
-            
-            set 
+
+            set
             {
                 if (SelectedFolder != null)
                 {

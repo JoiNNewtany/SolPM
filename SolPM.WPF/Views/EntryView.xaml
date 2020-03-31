@@ -20,32 +20,38 @@
 
         <!-- Save -->
         <KeyBinding
-            Command="{Binding NavigateVaultView}"
+            Command="{Binding SaveEntryCommand}"
             Gesture="CTRL+S" />
     </views:MvxWpfView.InputBindings>
 
     <views:MvxWpfView.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <!-- Animations -->
+            <!-- Animations -->
 
-        <Storyboard
-            x:Key="ColorZoneSlideDown">
-            <DoubleAnimationUsingKeyFrames
-                Storyboard.TargetProperty="(FrameworkElement.Height)"
-                Storyboard.TargetName="ColorZone">
-                <EasingDoubleKeyFrame
-                    KeyTime="0"
-                    Value="40" />
-                <EasingDoubleKeyFrame
-                    KeyTime="0:0:0.5"
-                    Value="80">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase
-                            EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+            <Storyboard
+                x:Key="ColorZoneSlideDown">
+                <DoubleAnimationUsingKeyFrames
+                    Storyboard.TargetProperty="(FrameworkElement.Height)"
+                    Storyboard.TargetName="ColorZone">
+                    <EasingDoubleKeyFrame
+                        KeyTime="0"
+                        Value="40" />
+                    <EasingDoubleKeyFrame
+                        KeyTime="0:0:0.5"
+                        Value="80">
+                        <EasingDoubleKeyFrame.EasingFunction>
+                            <QuarticEase
+                                EasingMode="EaseInOut" />
+                        </EasingDoubleKeyFrame.EasingFunction>
+                    </EasingDoubleKeyFrame>
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+        </ResourceDictionary>
     </views:MvxWpfView.Resources>
 
     <UserControl.Triggers>
@@ -65,6 +71,9 @@
             <RowDefinition
                 Height="auto" />
         </Grid.RowDefinitions>
+
+        <!-- Color Zone -->
+
         <materialDesign:ColorZone
             x:Name="ColorZone"
             Mode="PrimaryDark"
@@ -82,6 +91,7 @@
                         Kind="ArrowBack" />
                 </Button>
                 <TextBox
+                    Text="{Binding Path=Entry.Name, Mode=TwoWay}"
                     materialDesign:HintAssist.Hint="Entry Name"
                     HorizontalContentAlignment="Center"
                     HorizontalAlignment="Center"
@@ -91,7 +101,7 @@
                     FontWeight="Light" />
                 <Button
                     Style="{StaticResource MaterialDesignIconForegroundButton}"
-                    Command="{Binding NavigateVaultView}"
+                    Command="{Binding SaveEntryCommand}"
                     HorizontalAlignment="Right"
                     ToolTip="Save">
                     <materialDesign:PackIcon
@@ -101,6 +111,9 @@
                 </Button>
             </Grid>
         </materialDesign:ColorZone>
+
+        <!-- Entry Fields and Settings -->
+
         <ScrollViewer
             Grid.Row="1">
             <Grid
@@ -112,6 +125,8 @@
                         Height="*" />
                 </Grid.RowDefinitions>
 
+                <!-- Entry Settings Expander -->
+
                 <materialDesign:Card>
                     <Expander
                         Grid.Row="0">
@@ -122,96 +137,41 @@
                                     Width="24"
                                     Height="24"
                                     Kind="Cog" />
-                                <TextBlock 
+                                <TextBlock
                                     Text="Entry Settings"
                                     FontSize="16"
                                     FontWeight="Normal"
                                     Margin="15 0 0 0"
-                                    VerticalAlignment="Center"/>
+                                    VerticalAlignment="Center" />
                             </StackPanel>
                         </Expander.Header>
                         <Grid
                             Margin="25 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition 
-                                    Width="1*"/>
+                                <ColumnDefinition
+                                    Width="1*" />
                                 <ColumnDefinition
                                     Width="1*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition 
-                                    Height="auto"/>
+                                <RowDefinition
+                                    Height="auto" />
                                 <RowDefinition
                                     Height="auto" />
                                 <RowDefinition
                                     Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <!--
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Text="Color:"
-                                FontSize="16"
-                                FontWeight="Normal"
-                                VerticalAlignment="Center" />
-                            <Ellipse
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Fill="BlueViolet"
-                                Height="64"
-                                Width="64"
-                                Margin="15 10" />
-                            <Button
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Content="Select Color..." />
-
-                            <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Text="Icon:"
-                                FontSize="16"
-                                FontWeight="Normal"
-                                VerticalAlignment="Center" />
-                            <Image
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Source="E:\Downloads\minecraft-logo.png"
-                                Height="64"
-                                MaxWidth="140" 
-                                Margin="15 10" />
-                            <Button
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                Content="Select Icon..." />
-
-                            <TextBlock
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                Text="Image:"
-                                FontSize="16"
-                                FontWeight="Normal"
-                                VerticalAlignment="Center" />
-                            <Image
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                Source="E:\Downloads\minecraft-logo.png"
-                                Stretch="Uniform"
-                                MaxWidth="150"
-                                MaxHeight="204"
-                                Margin="15 10" />
-                            <Button
-                                Grid.Row="2"
-                                Grid.Column="2"
-                                Content="Select Icon..." />
-                            -->
+                            <!-- Entry Preview -->
 
                             <materialDesign:Card
                                 Grid.Column="0"
                                 Width="150"
-                                Margin="20"
-                                Background="#ff217cc8">
+                                Margin="20">
+                                <materialDesign:Card.Background>
+                                    <SolidColorBrush
+                                        Color="{Binding Path=Entry.Color}" />
+                                </materialDesign:Card.Background>
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition
@@ -221,11 +181,11 @@
                                     </Grid.RowDefinitions>
                                     <Grid.Background>
                                         <ImageBrush
-                                            ImageSource="E:\Downloads\ShareX-ScreenRecordings\ramiras.png"
+                                            ImageSource="{Binding Path=Entry.Image}"
                                             Stretch="UniformToFill" />
                                     </Grid.Background>
                                     <Image
-                                        Source="E:\Downloads\minecraft-logo.png"
+                                        Source="{Binding Path=Entry.Icon}"
                                         Grid.Row="0"
                                         MaxWidth="140"
                                         Height="64"
@@ -237,7 +197,7 @@
                                         Fill="{DynamicResource MaterialDesignBackground}">
                                     </Rectangle>
                                     <TextBlock
-                                        Text="Entry Name"
+                                        Text="{Binding Path=Entry.Name}"
                                         Margin="8 15 8 15"
                                         Grid.Row="1"
                                         HorizontalAlignment="Center"
@@ -255,20 +215,22 @@
                                 <StackPanel
                                     Margin="0 15"
                                     Orientation="Horizontal">
-                                    <Button 
+                                    <Button
                                         Margin="0 0 10 0"
+                                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                                         Width="150"
-                                        Content="Select Logo..."/>
+                                        Content="Select Logo..." />
                                     <Button
                                         Width="150"
                                         Style="{StaticResource MaterialDesignFlatButton}"
-                                        Content="Clear Logo"/>
+                                        Content="Clear Logo" />
                                 </StackPanel>
                                 <StackPanel
                                     Margin="0 15"
                                     Orientation="Horizontal">
                                     <Button
                                         Margin="0 0 10 0"
+                                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                                         Width="150"
                                         Content="Select Color..." />
                                     <Button
@@ -281,6 +243,7 @@
                                     Orientation="Horizontal">
                                     <Button
                                         Margin="0 0 10 0"
+                                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                                         Width="150"
                                         Content="Select Image..." />
                                     <Button
@@ -289,54 +252,252 @@
                                         Content="Clear Image" />
                                 </StackPanel>
                             </StackPanel>
-                            
                         </Grid>
                     </Expander>
                 </materialDesign:Card>
-                
+
                 <!-- Field List -->
                 <ItemsControl
-                    ItemsSource="{Binding TestFields}"
+                    ItemsSource="{Binding Path=Entry.FieldList}"
                     Margin="0 10 0 0"
                     Grid.Row="1"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <materialDesign:Card
+                            <GroupBox
                                 Margin="0 10">
-                                <materialDesign:ColorZone
-                                    Mode="PrimaryMid"
-                                    Padding="12">
-                                    <DockPanel>
-                                        <TextBox
-                                            DockPanel.Dock="Left"
-                                            MaxWidth="200"
-                                            Text="{Binding Name}"
-                                            materialDesign:HintAssist.Hint="Field Name" />
+                                <GroupBox.Header>
+                                    <Grid>
+                                        <StackPanel
+                                            Orientation="Horizontal">
+                                            <materialDesign:PackIcon
+                                                Width="24"
+                                                Height="24"
+                                                Kind="Files" />
+                                            <TextBox
+                                                Text="{Binding Name, Mode=TwoWay}"
+                                                MinWidth="150"
+                                                MaxWidth="200"
+                                                Margin="15 0 0 0"
+                                                VerticalAlignment="Center"
+                                                materialDesign:HintAssist.Hint="Field Name" />
+                                        </StackPanel>
                                         <materialDesign:PopupBox
-                                            PlacementMode="LeftAndAlignMiddles"
-                                            UnfurlOrientation="Horizontal"
-                                            ToolTip="Manage items"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom">
+                                            HorizontalAlignment="Right">
                                             <StackPanel>
                                                 <Button
-                                                    Content="Delete" />
+                                                    Content="Move Up" />
                                                 <Button
-                                                    Content="Not Delete?" />
+                                                    Content="Move Down" />
+                                                <Separator />
+                                                <Button
+                                                    Content="Delete" />
                                             </StackPanel>
                                         </materialDesign:PopupBox>
-                                    </DockPanel>
-                                </materialDesign:ColorZone>
-                            </materialDesign:Card>
+                                    </Grid>
+                                </GroupBox.Header>
+                                <StackPanel
+                                    Margin="10"
+                                    HorizontalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Text="Attach a file..."
+                                        VerticalAlignment="Center" />
+                                    <Button
+                                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                                        Margin="20 0"
+                                        Content="Attach" />
+                                </StackPanel>
+                            </GroupBox>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+
+                <!-- Example Fields (REMOVE) -->
+                <!--<StackPanel
+                    Margin="0 10 0 0"
+                    Grid.Row="1">
+
+                    <GroupBox
+                        Margin="0 10">
+                        <GroupBox.Header>
+                            <Grid>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        Kind="Files" />
+                                    <TextBox
+                                        MinWidth="150"
+                                        MaxWidth="200"
+                                        Margin="15 0 0 0"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="Field Name"
+                                        DockPanel.Dock="Left" />
+                                </StackPanel>
+                                <materialDesign:PopupBox
+                                    HorizontalAlignment="Right">
+                                    <StackPanel>
+                                        <Button
+                                            Content="Move Up" />
+                                        <Button
+                                            Content="Move Down" />
+                                        <Separator />
+                                        <Button
+                                            Content="Delete" />
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </Grid>
+                        </GroupBox.Header>
+                        <StackPanel
+                            Margin="10"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Text="Attach a file..."
+                                VerticalAlignment="Center" />
+                            <Button
+                                Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                                Margin="20 0"
+                                Content="Attach" />
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox
+                        Margin="0 10">
+                        <GroupBox.Header>
+                            <Grid>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        Kind="DriveDocument" />
+                                    <TextBox
+                                        MinWidth="150"
+                                        MaxWidth="200"
+                                        Margin="15 0 0 0"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="Field Name"
+                                        DockPanel.Dock="Left" />
+                                </StackPanel>
+                                <materialDesign:PopupBox
+                                    HorizontalAlignment="Right">
+                                    <StackPanel>
+                                        <Button
+                                            Content="Move Up" />
+                                        <Button
+                                            Content="Move Down" />
+                                        <Separator />
+                                        <Button
+                                            Content="Delete" />
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </Grid>
+                        </GroupBox.Header>
+                        <TextBox
+                            Margin="10"
+                            AcceptsReturn="True"
+                            SpellCheck.IsEnabled="True"
+                            VerticalScrollBarVisibility="Auto"
+                            materialDesign:HintAssist.Hint="Enter Note Contents"
+                            MaxHeight="150" />
+                    </GroupBox>
+
+                    <GroupBox
+                        Margin="0 10">
+                        <GroupBox.Header>
+                            <Grid>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        Kind="KeyVariant" />
+                                    <TextBox
+                                        MinWidth="150"
+                                        MaxWidth="200"
+                                        Margin="15 0 0 0"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="Field Name"
+                                        DockPanel.Dock="Left" />
+                                </StackPanel>
+                                <materialDesign:PopupBox
+                                    HorizontalAlignment="Right">
+                                    <StackPanel>
+                                        <Button
+                                            Content="Move Up" />
+                                        <Button
+                                            Content="Move Down" />
+                                        <Separator />
+                                        <Button
+                                            Content="Delete" />
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </Grid>
+                        </GroupBox.Header>
+                        <Grid
+                            Margin="10">
+                            <PasswordBox
+                                Margin="0 0 10 0"
+                                materialDesign:HintAssist.Hint="Password"
+                                materialDesign:TextFieldAssist.HasClearButton="True" />
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox
+                        Margin="0 10">
+                        <GroupBox.Header>
+                            <Grid>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        Kind="AccountBox" />
+                                    <TextBox
+                                        MinWidth="150"
+                                        MaxWidth="200"
+                                        Margin="15 0 0 0"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="Field Name"
+                                        DockPanel.Dock="Left" />
+                                </StackPanel>
+                                <materialDesign:PopupBox
+                                    HorizontalAlignment="Right">
+                                    <StackPanel>
+                                        <Button
+                                            Content="Move Up" />
+                                        <Button
+                                            Content="Move Down" />
+                                        <Separator />
+                                        <Button
+                                            Content="Delete" />
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </Grid>
+                        </GroupBox.Header>
+                        <Grid
+                            Margin="10">
+                            <TextBox
+                                Margin="0 0 10 0"
+                                materialDesign:HintAssist.Hint="Username"
+                                materialDesign:TextFieldAssist.HasClearButton="True" />
+                        </Grid>
+                    </GroupBox>
+                </StackPanel>-->
             </Grid>
         </ScrollViewer>
+
+        <!-- Add Field Button -->
+
         <DockPanel
-            Grid.Row="2">
+            Grid.Row="1"
+            VerticalAlignment="Bottom">
             <materialDesign:PopupBox
+                Style="{StaticResource MaterialDesignMultiFloatingActionDarkPopupBox}"
+                Margin="0 0 25 15"
                 PlacementMode="LeftAndAlignMiddles"
                 UnfurlOrientation="Horizontal"
                 ToolTip="Add Field"
@@ -344,14 +505,49 @@
                 VerticalAlignment="Bottom">
                 <materialDesign:PopupBox.ToggleContent>
                     <materialDesign:PackIcon
+                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                         Kind="Add"
                         Height="24"
                         Width="24" />
                 </materialDesign:PopupBox.ToggleContent>
                 <StackPanel
                     Orientation="Horizontal">
-                    <Button />
-                    <Button />
+                    <Button
+                        ToolTip="Username">
+                        <Button.Content>
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="AccountBox" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        ToolTip="Password">
+                        <Button.Content>
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="KeyVariant" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        ToolTip="Note">
+                        <Button.Content>
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="DriveDocument" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        ToolTip="File">
+                        <Button.Content>
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Files" />
+                        </Button.Content>
+                    </Button>
                 </StackPanel>
             </materialDesign:PopupBox>
         </DockPanel>

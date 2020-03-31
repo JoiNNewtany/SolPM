@@ -15,11 +15,18 @@ namespace SolPM.Core.ViewModels
             // Commands
 
             NavigateVaultView = new MvxAsyncCommand(() => _navigationService.Navigate<VaultViewModel>());
+            CreateVaultCommand = new MvxCommand<string>((s) => CreateVault(s));
         }
 
         #region Commands
 
         public IMvxAsyncCommand NavigateVaultView { get; private set; }
+
+        public IMvxCommand<string> CreateVaultCommand { get; private set; }
+
+        private void CreateVault(string filename)
+        {
+        }
 
         #endregion Commands
     }

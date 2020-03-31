@@ -24,7 +24,7 @@
 
         <!-- New Entry -->
         <KeyBinding
-            Command="{Binding NavigateEntryView}"
+            Command="{Binding AddEntryCommand}"
             Gesture="CTRL+E" />
     </views:MvxWpfView.InputBindings>
 
@@ -480,10 +480,14 @@
                         <StackPanel
                             Orientation="Horizontal">
                             <materialDesign:PackIcon
-                                Foreground="{Binding TestColor}"
                                 Width="28"
                                 Height="28"
-                                Kind="Folder" />
+                                Kind="Folder">
+                                <materialDesign:PackIcon.Foreground>
+                                    <SolidColorBrush
+                                        Color="{Binding Color}" />
+                                </materialDesign:PackIcon.Foreground>
+                            </materialDesign:PackIcon>
                             <TextBlock
                                 Text="{Binding Name}"
                                 Margin="10 0 0 0"
@@ -511,8 +515,11 @@
                         <!-- TODO: Bind everything else!!! -->
                         <materialDesign:Card
                             Width="150"
-                            Margin="14"
-                            Background="#ff217cc8">
+                            Margin="14">
+                            <materialDesign:Card.Background>
+                                <SolidColorBrush
+                                    Color="{Binding Color}" />
+                            </materialDesign:Card.Background>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition
@@ -522,15 +529,15 @@
                                 </Grid.RowDefinitions>
                                 <Grid.Background>
                                     <ImageBrush
-                                        ImageSource="E:\Downloads\ShareX-ScreenRecordings\ramiras.png"
-                                        Stretch="UniformToFill"/>
+                                        ImageSource="{Binding Image}"
+                                        Stretch="UniformToFill" />
                                 </Grid.Background>
                                 <Image
-                                    Source="E:\Downloads\minecraft-logo.png"
+                                    Source="{Binding Icon}"
                                     Grid.Row="0"
                                     MaxWidth="140"
                                     Height="64"
-                                    Stretch="Uniform"/>
+                                    Stretch="Uniform" />
                                 <Rectangle
                                     Grid.Row="1"
                                     Margin="0 0 0 -1"

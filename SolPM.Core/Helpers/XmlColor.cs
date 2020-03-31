@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using System.Windows.Media;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -6,7 +6,7 @@ namespace SolPM.Core.Helpers
 {
     public class XmlColor
     {
-        private Color _color = Color.Black;
+        private Color _color = Color.FromRgb(0, 0, 0);
 
         public XmlColor()
         {
@@ -44,7 +44,7 @@ namespace SolPM.Core.Helpers
             set
             {
                 if (value != _color.A)
-                    _color = Color.FromArgb(value, _color);
+                    _color = Color.FromArgb(value, _color.R, _color.G, _color.B);
             }
         }
 
