@@ -1,5 +1,6 @@
 ﻿using MvvmCross.ViewModels;
 using SolPM.Core.Helpers;
+using System;
 using System.Windows.Media;
 using System.Xml;
 using System.Xml.Serialization;
@@ -9,6 +10,14 @@ namespace SolPM.Core.Models
     [XmlRoot("Folder")]
     public class Folder
     {
+        public Folder()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        [XmlElement("Id")]
+        public Guid Id { get; set; }
+
         [XmlElement("Name")]
         public string Name { get; set; }
 

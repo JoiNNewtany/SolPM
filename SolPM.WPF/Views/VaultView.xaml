@@ -406,6 +406,12 @@
                     <materialDesign:PackIcon
                         Kind="PencilAdd" />
                 </Button>
+                <Button
+                    ToolTip="Edit Entry"
+                    Padding="10">
+                    <materialDesign:PackIcon
+                        Kind="EditOutline" />
+                </Button>
                 <Separator />
                 <Button
                     ToolTip="Copy Password"

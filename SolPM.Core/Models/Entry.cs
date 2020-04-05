@@ -12,6 +12,14 @@ namespace SolPM.Core.Models
     [XmlRoot("Entry")]
     public class Entry
     {
+        public Entry()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        [XmlElement("Id")]
+        public Guid Id { get; set; }
+
         [XmlElement("Name")]
         public string Name { get; set; }
 

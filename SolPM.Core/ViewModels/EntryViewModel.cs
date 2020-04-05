@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace SolPM.Core.ViewModels
 {
-    public enum FieldTypes
-    {
-        Username,
-        Password,
-        Note,
-        File,
-    }
-
     public class EntryViewModel : MvxViewModel<Entry, Entry>
     {
         private readonly IMvxNavigationService _navigationService;
@@ -23,14 +15,12 @@ namespace SolPM.Core.ViewModels
         {
             _navigationService = navigationService;
 
-            // CHECK IT OUT AND DO IT
-            // https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.passwordbox.passwordrevealmode
-            // https://stackoverflow.com/questions/5018613/wpf-switching-usercontrols-depending-on-corresponding-viewmodels-mvvm
-
             // Commands
 
             NavigateVaultView = new MvxAsyncCommand(() => _navigationService.Navigate<VaultViewModel>());
             SaveEntryCommand = new MvxAsyncCommand(SaveEntry);
+            AddFieldCommand = new MvxCommand<FieldTypes>((s) => AddField(s));
+            RemoveFieldCommand = new MvxCommand<Field>((s) => RemoveField(s));
         }
 
         public override void Prepare()
@@ -48,9 +38,12 @@ namespace SolPM.Core.ViewModels
         public override async Task Initialize()
         {
             System.Diagnostics.Debug.WriteLine($"EntryViewModel: Initialize called.");
-            //Do heavy work and data loading here
-            Entry.Name = "Silly Solr Entry";
-            System.Diagnostics.Debug.WriteLine($"EntryViewModel: Recieved {Entry.Name}.");
+
+            // Creating a field list for an entry if it didn't already have one
+            if (Entry != null && Entry.FieldList == null)
+            {
+                Entry.FieldList = new MvxObservableCollection<Field>();
+            }
         }
 
         #region Commands
@@ -59,16 +52,29 @@ namespace SolPM.Core.ViewModels
 
         public IMvxAsyncCommand SaveEntryCommand { get; private set; }
 
+        public IMvxCommand AddFieldCommand { get; private set; }
+
+        public IMvxCommand RemoveFieldCommand { get; private set; }
+
         private async Task SaveEntry()
         {
             System.Diagnostics.Debug.WriteLine($"EntryViewModel: Returning {Entry.Name}...");
             await _navigationService.Close(this, Entry);
         }
 
-        public IMvxCommand AddFieldCommand { get; private set; }
-
-        private void AddField()
+        private void AddField(FieldTypes type)
         {
+            System.Diagnostics.Debug.WriteLine(type.ToString());
+            Entry.FieldList.Add(new Field() { Type = type });
+        }
+
+        private void RemoveField(Field field)
+        {
+            if (null != field)
+            {
+                System.Diagnostics.Debug.WriteLine(field.Name);
+                Entry.FieldList.Remove(field);
+            }
         }
 
         #endregion Commands

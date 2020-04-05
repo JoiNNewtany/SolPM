@@ -1,8 +1,9 @@
 ﻿<views:MvxWpfView
     x:Class="SolPM.WPF.Views.EntryView"
     xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
-    xmlns:viewmodels="clr-namespace:SolPM.Core.ViewModels;assembly=SolPM.Core"
+    xmlns:models="clr-namespace:SolPM.Core.Models;assembly=SolPM.Core"
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:dt="clr-namespace:SolPM.WPF"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -30,6 +31,254 @@
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Field types -->
+
+            <models:FieldTypes
+                x:Key="UsernameType">
+                Username
+            </models:FieldTypes>
+
+            <models:FieldTypes
+                x:Key="PasswordType">
+                Password
+            </models:FieldTypes>
+
+            <models:FieldTypes
+                x:Key="NoteType">
+                Note
+            </models:FieldTypes>
+
+            <models:FieldTypes
+                x:Key="FileType">
+                File
+            </models:FieldTypes>
+
+            <!-- Field Template Selector Style -->
+
+            <Style
+                x:Key="FieldListboxTemplateSelectorStyle"
+                TargetType="{x:Type ListBoxItem}">
+                <Setter
+                    Property="Template"
+                    Value="{DynamicResource UsernameField}" />
+                <Style.Triggers>
+                    <DataTrigger
+                        Binding="{Binding Type}"
+                        Value="Password">
+                        <Setter
+                            Property="Template"
+                            Value="{DynamicResource PasswordField}" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding Type}"
+                        Value="Note">
+                        <Setter
+                            Property="Template"
+                            Value="{DynamicResource NoteField}" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding Type}"
+                        Value="File">
+                        <Setter
+                            Property="Template"
+                            Value="{DynamicResource FileField}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- Control Templates -->
+
+            <ControlTemplate
+                x:Key="UsernameField">
+                <GroupBox
+                    Margin="0 10">
+                    <GroupBox.Header>
+                        <Grid>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Width="24"
+                                    Height="24"
+                                    Kind="AccountBox" />
+                                <TextBox
+                                    Text="{Binding Name, Mode=TwoWay}"
+                                    MinWidth="150"
+                                    MaxWidth="200"
+                                    Margin="15 0 0 0"
+                                    VerticalAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Field Name"
+                                    DockPanel.Dock="Left" />
+                            </StackPanel>
+                            <materialDesign:PopupBox
+                                HorizontalAlignment="Right">
+                                <StackPanel>
+                                    <Button
+                                        Content="Move Up" />
+                                    <Button
+                                        Content="Move Down" />
+                                    <Separator />
+                                    <Button
+                                        Content="Delete"
+                                        CommandParameter="{Binding}"
+                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}" />
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </Grid>
+                    </GroupBox.Header>
+                    <Grid
+                        Margin="10">
+                        <TextBox
+                            Text="{Binding Value, Mode=TwoWay}"
+                            Margin="0 0 10 0"
+                            materialDesign:HintAssist.Hint="Username"
+                            materialDesign:TextFieldAssist.HasClearButton="True" />
+                    </Grid>
+                </GroupBox>
+            </ControlTemplate>
+
+            <ControlTemplate
+                x:Key="PasswordField">
+                <GroupBox
+                    Margin="0 10">
+                    <GroupBox.Header>
+                        <Grid>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Width="24"
+                                    Height="24"
+                                    Kind="KeyVariant" />
+                                <TextBox
+                                    MinWidth="150"
+                                    MaxWidth="200"
+                                    Margin="15 0 0 0"
+                                    VerticalAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Field Name"
+                                    DockPanel.Dock="Left" />
+                            </StackPanel>
+                            <materialDesign:PopupBox
+                                HorizontalAlignment="Right">
+                                <StackPanel>
+                                    <Button
+                                        Content="Move Up" />
+                                    <Button
+                                        Content="Move Down" />
+                                    <Separator />
+                                    <Button
+                                        Content="Delete"
+                                        CommandParameter="{Binding}"
+                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}" />
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </Grid>
+                    </GroupBox.Header>
+                    <Grid
+                        Margin="10">
+                        <PasswordBox
+                            Margin="0 0 10 0"
+                            materialDesign:HintAssist.Hint="Password"
+                            materialDesign:TextFieldAssist.HasClearButton="True" />
+                    </Grid>
+                </GroupBox>
+            </ControlTemplate>
+
+            <ControlTemplate
+                x:Key="NoteField">
+                <GroupBox
+                    Margin="0 10">
+                    <GroupBox.Header>
+                        <Grid>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Width="24"
+                                    Height="24"
+                                    Kind="DriveDocument" />
+                                <TextBox
+                                    MinWidth="150"
+                                    MaxWidth="200"
+                                    Margin="15 0 0 0"
+                                    VerticalAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Field Name"
+                                    DockPanel.Dock="Left" />
+                            </StackPanel>
+                            <materialDesign:PopupBox
+                                HorizontalAlignment="Right">
+                                <StackPanel>
+                                    <Button
+                                        Content="Move Up" />
+                                    <Button
+                                        Content="Move Down" />
+                                    <Separator />
+                                    <Button
+                                        Content="Delete"
+                                        CommandParameter="{Binding}"
+                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}" />
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </Grid>
+                    </GroupBox.Header>
+                    <TextBox
+                        Margin="10"
+                        AcceptsReturn="True"
+                        SpellCheck.IsEnabled="True"
+                        VerticalScrollBarVisibility="Auto"
+                        materialDesign:HintAssist.Hint="Enter Note Contents"
+                        MaxHeight="150" />
+                </GroupBox>
+            </ControlTemplate>
+
+            <ControlTemplate
+                x:Key="FileField">
+                <GroupBox
+                    Margin="0 10">
+                    <GroupBox.Header>
+                        <Grid>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Width="24"
+                                    Height="24"
+                                    Kind="Files" />
+                                <TextBox
+                                    MinWidth="150"
+                                    MaxWidth="200"
+                                    Margin="15 0 0 0"
+                                    VerticalAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Field Name"
+                                    DockPanel.Dock="Left" />
+                            </StackPanel>
+                            <materialDesign:PopupBox
+                                HorizontalAlignment="Right">
+                                <StackPanel>
+                                    <Button
+                                        Content="Move Up" />
+                                    <Button
+                                        Content="Move Down" />
+                                    <Separator />
+                                    <Button
+                                        Content="Delete"
+                                        CommandParameter="{Binding}"
+                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}" />
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </Grid>
+                    </GroupBox.Header>
+                    <StackPanel
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Text="Attach a file..."
+                            VerticalAlignment="Center" />
+                        <Button
+                            Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                            Margin="20 0"
+                            Content="Attach" />
+                    </StackPanel>
+                </GroupBox>
+            </ControlTemplate>
 
             <!-- Animations -->
 
@@ -91,7 +340,7 @@
                         Kind="ArrowBack" />
                 </Button>
                 <TextBox
-                    Text="{Binding Path=Entry.Name, Mode=TwoWay}"
+                    Text="{Binding Path=Entry.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     materialDesign:HintAssist.Hint="Entry Name"
                     HorizontalContentAlignment="Center"
                     HorizontalAlignment="Center"
@@ -257,61 +506,13 @@
                 </materialDesign:Card>
 
                 <!-- Field List -->
-                <ItemsControl
+                <ListBox
+                    x:Name="FieldListBox"
+                    ItemContainerStyle="{StaticResource FieldListboxTemplateSelectorStyle}"
                     ItemsSource="{Binding Path=Entry.FieldList}"
                     Margin="0 10 0 0"
                     Grid.Row="1"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <GroupBox
-                                Margin="0 10">
-                                <GroupBox.Header>
-                                    <Grid>
-                                        <StackPanel
-                                            Orientation="Horizontal">
-                                            <materialDesign:PackIcon
-                                                Width="24"
-                                                Height="24"
-                                                Kind="Files" />
-                                            <TextBox
-                                                Text="{Binding Name, Mode=TwoWay}"
-                                                MinWidth="150"
-                                                MaxWidth="200"
-                                                Margin="15 0 0 0"
-                                                VerticalAlignment="Center"
-                                                materialDesign:HintAssist.Hint="Field Name" />
-                                        </StackPanel>
-                                        <materialDesign:PopupBox
-                                            HorizontalAlignment="Right">
-                                            <StackPanel>
-                                                <Button
-                                                    Content="Move Up" />
-                                                <Button
-                                                    Content="Move Down" />
-                                                <Separator />
-                                                <Button
-                                                    Content="Delete" />
-                                            </StackPanel>
-                                        </materialDesign:PopupBox>
-                                    </Grid>
-                                </GroupBox.Header>
-                                <StackPanel
-                                    Margin="10"
-                                    HorizontalAlignment="Center"
-                                    Orientation="Horizontal">
-                                    <TextBlock
-                                        Text="Attach a file..."
-                                        VerticalAlignment="Center" />
-                                    <Button
-                                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
-                                        Margin="20 0"
-                                        Content="Attach" />
-                                </StackPanel>
-                            </GroupBox>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
 
                 <!-- Example Fields (REMOVE) -->
                 <!--<StackPanel
@@ -513,7 +714,9 @@
                 <StackPanel
                     Orientation="Horizontal">
                     <Button
-                        ToolTip="Username">
+                        ToolTip="Username"
+                        CommandParameter="{StaticResource UsernameType}"
+                        Command="{Binding AddFieldCommand}">
                         <Button.Content>
                             <materialDesign:PackIcon
                                 Width="24"
@@ -522,7 +725,9 @@
                         </Button.Content>
                     </Button>
                     <Button
-                        ToolTip="Password">
+                        ToolTip="Password"
+                        CommandParameter="{StaticResource PasswordType}"
+                        Command="{Binding AddFieldCommand}">
                         <Button.Content>
                             <materialDesign:PackIcon
                                 Width="24"
@@ -531,7 +736,9 @@
                         </Button.Content>
                     </Button>
                     <Button
-                        ToolTip="Note">
+                        ToolTip="Note"
+                        CommandParameter="{StaticResource NoteType}"
+                        Command="{Binding AddFieldCommand}">
                         <Button.Content>
                             <materialDesign:PackIcon
                                 Width="24"
@@ -540,7 +747,9 @@
                         </Button.Content>
                     </Button>
                     <Button
-                        ToolTip="File">
+                        ToolTip="File"
+                        CommandParameter="{StaticResource FileType}"
+                        Command="{Binding AddFieldCommand}">
                         <Button.Content>
                             <materialDesign:PackIcon
                                 Width="24"
