@@ -14,5 +14,20 @@ namespace SolPM.WPF.Views
         {
             InitializeComponent();
         }
+
+        private void VaultViewDialogRoot_DialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+            if (!Equals(eventArgs.Parameter, true)) return;
+
+            // Get current ViewModel
+            var viewModel = (VaultViewModel)DataContext;
+
+            // Call command
+            viewModel.AddFolderCommand.Execute(new object[] { ColorPicker.Color, FolderNameBox.Text });
+            
+            // Clear fields
+            ColorPicker.Color = System.Windows.Media.Color.FromArgb(0, 0, 0, 0);
+            FolderNameBox.Text = string.Empty;
+        }
     }
 }

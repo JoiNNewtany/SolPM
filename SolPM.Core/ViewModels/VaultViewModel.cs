@@ -4,7 +4,9 @@ using MvvmCross.ViewModels;
 using SolPM.Core.Helpers;
 using SolPM.Core.Models;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Xml;
@@ -24,190 +26,220 @@ namespace SolPM.Core.ViewModels
 
             NavigateDatabaseView = new MvxAsyncCommand(() => _navigationService.Navigate<DatabaseViewModel>());
             NavigateEntryView = new MvxAsyncCommand(() => _navigationService.Navigate<EntryViewModel>());
-            AddEntryCommand = new MvxAsyncCommand(() => AddEntry());
+            AddEntryCommand = new MvxAsyncCommand(AddEntry);
+            EditEntryCommand = new MvxAsyncCommand(EditEntry);
+            RemoveEntryCommand = new MvxCommand(RemoveEntry);
+            AddFolderCommand = new MvxCommand<object[]>((s) => AddFolder(s));
+            EditFolderCommand = new MvxCommand(EditFolder);
+            RemoveFolderCommand = new MvxCommand(RemoveFolder);
         }
 
         public override async Task Initialize()
         {
             // TODO: Get rid of test actions AND MAKE VAULT A PROPERTY!!!
+            // TODO: Do all the TODO's in xaml files
 
             // Test Singleton Vault
 
-            Vault vault = Vault.GetInstance();
-            vault.Name = "My Test Vault";
+            //Vault vault;
 
-            vault.FolderList = new MvxObservableCollection<Folder>()
+            if (!Vault.Exists())
             {
-                new Folder()
+                Vault = Vault.GetInstance();
+                Vault.Name = "My Test Vault";
+
+                Vault.FolderList = new MvxObservableCollection<Folder>()
                 {
-                    Name = "Folder 1",
-                    Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 255, 0)),
-
-                    EntryList = new MvxObservableCollection<Entry>()
+                    new Folder()
                     {
-                        new Entry()
+                        Name = "Folder 1",
+                        Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 255, 0)),
+
+                        EntryList = new MvxObservableCollection<Entry>()
                         {
-                            Name = "Google",
-                            Icon = new BitmapImage(new Uri("E:\\Downloads\\google-logo.png")),
-                            Color = new XmlColor(System.Windows.Media.Color.FromRgb(255, 255, 255)),
-                            Created = DateTime.Now,
-                            Modified = DateTime.Now,
-                            Accessed = DateTime.Now,
-
-                            FieldList = new MvxObservableCollection<Field>()
+                            new Entry()
                             {
-                                new Field()
+                                Name = "Google",
+                                Icon = new BitmapImage(new Uri("E:\\Downloads\\google-logo.png")),
+                                Color = new XmlColor(System.Windows.Media.Color.FromRgb(255, 255, 255)),
+                                Created = DateTime.Now,
+                                Modified = DateTime.Now,
+                                Accessed = DateTime.Now,
+
+                                FieldList = new MvxObservableCollection<Field>()
                                 {
-                                    Name = "Username",
-                                    Value = "Solar",
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Username,
+                                        Name = "Username",
+                                        Value = "Solar",
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "Password",
-                                    Value = new byte[] { 1, 1, 1, 0, 0 },
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Password,
+                                        Name = "Password",
+                                        Value = new byte[] { 1, 1, 1, 0, 0 },
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "URL",
-                                    Value = "www.google.com",
-                                },
-                            }
-                        },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Note,
+                                        Name = "URL",
+                                        Value = "www.google.com",
+                                    },
+                                }
+                            },
 
-                        new Entry()
-                        {
-                            Name = "Secret",
-                            Image = new BitmapImage(new Uri("E:\\Downloads\\ShareX-ScreenRecordings\\ramiras.png")),
-                            Created = DateTime.Now,
-                            Modified = DateTime.Now,
-                            Accessed = DateTime.Now,
-
-                            FieldList = new MvxObservableCollection<Field>()
+                            new Entry()
                             {
-                                new Field()
+                                Name = "Secret",
+                                Image = new BitmapImage(new Uri("E:\\Downloads\\ShareX-ScreenRecordings\\ramiras.png")),
+                                Created = DateTime.Now,
+                                Modified = DateTime.Now,
+                                Accessed = DateTime.Now,
+
+                                FieldList = new MvxObservableCollection<Field>()
                                 {
-                                    Name = "Username",
-                                    Value = "Solar",
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Username,
+                                        Name = "Username",
+                                        Value = "Solar",
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "Password",
-                                    Value = new byte[] { 1, 0, 1, 1, 0 },
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Password,
+                                        Name = "Password",
+                                        Value = new byte[] { 1, 0, 1, 1, 0 },
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "URL",
-                                    Value = "www.google.com",
-                                },
-                            }
-                        },
-                    }
-                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Note,
+                                        Name = "URL",
+                                        Value = "www.google.com",
+                                    },
+                                }
+                            },
+                        }
+                    },
 
-                new Folder()
-                {
-                    Name = "Super Folder 2",
-                    Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 0, 255)),
-
-                    EntryList = new MvxObservableCollection<Entry>()
+                    new Folder()
                     {
-                        new Entry()
+                        Name = "Super Folder 2",
+                        Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 0, 255)),
+
+                        EntryList = new MvxObservableCollection<Entry>()
                         {
-                            Name = "Microsoft",
-                            Icon = new BitmapImage(new Uri("E:\\Downloads\\microsoft-logo.png")),
-                            Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 64, 131)),
-                            Created = DateTime.Now,
-                            Modified = DateTime.Now,
-                            Accessed = DateTime.Now,
-
-                            FieldList = new MvxObservableCollection<Field>()
+                            new Entry()
                             {
-                                new Field()
+                                Name = "Microsoft",
+                                Icon = new BitmapImage(new Uri("E:\\Downloads\\microsoft-logo.png")),
+                                Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 64, 131)),
+                                Created = DateTime.Now,
+                                Modified = DateTime.Now,
+                                Accessed = DateTime.Now,
+
+                                FieldList = new MvxObservableCollection<Field>()
                                 {
-                                    Name = "Username",
-                                    Value = "Solar Flaer",
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Username,
+                                        Name = "Username",
+                                        Value = "Solar Flaer",
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "Password",
-                                    Value = new byte[] { 0, 0, 1, 0, 1 },
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Password,
+                                        Name = "Password",
+                                        Value = new byte[] { 0, 0, 1, 0, 1 },
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "URL",
-                                    Value = "www.microsoft.com",
-                                },
-                            }
-                        },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Note,
+                                        Name = "URL",
+                                        Value = "www.microsoft.com",
+                                    },
+                                }
+                            },
 
-                        new Entry()
-                        {
-                            Name = "Ducc",
-                            Image = new BitmapImage(new Uri("E:\\Downloads\\duck-image.jpg")),
-                            Created = DateTime.Now,
-                            Modified = DateTime.Now,
-                            Accessed = DateTime.Now,
-
-                            FieldList = new MvxObservableCollection<Field>()
+                            new Entry()
                             {
-                                new Field()
+                                Name = "Ducc",
+                                Image = new BitmapImage(new Uri("E:\\Downloads\\duck-image.jpg")),
+                                Created = DateTime.Now,
+                                Modified = DateTime.Now,
+                                Accessed = DateTime.Now,
+
+                                FieldList = new MvxObservableCollection<Field>()
                                 {
-                                    Name = "Username",
-                                    Value = "Sauce Fire",
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Username,
+                                        Name = "Username",
+                                        Value = "Sauce Fire",
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "Password",
-                                    Value = new byte[] { 0, 0, 0, 1, 0 },
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Password,
+                                        Name = "Password",
+                                        Value = new byte[] { 0, 0, 0, 1, 0 },
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "URL",
-                                    Value = "www.duckduckgo.com",
-                                },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Note,
+                                        Name = "URL",
+                                        Value = "www.duckduckgo.com",
+                                    },
 
-                                new Field()
-                                {
-                                    Name = "Note",
-                                    Value = "Ducc is cute\nDucc needs pat",
-                                },
-                            }
-                        },
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Note,
+                                        Name = "Note",
+                                        Value = "Ducc is cute\nDucc needs pat",
+                                    },
+                                }
+                            },
 
-                        new Entry()
-                        {
-                            Name = "Duce Nuce",
-                            Icon = new BitmapImage(new Uri("E:\\Downloads\\minecraft-logo-big.png")),
-                            Created = DateTime.Now,
-                            Modified = DateTime.Now,
-                            Accessed = DateTime.Now,
-
-                            FieldList = new MvxObservableCollection<Field>()
+                            new Entry()
                             {
-                                new Field()
-                                {
-                                    Name = "Username",
-                                    Value = "Sauce Fire",
-                                },
+                                Name = "Duce Nuce",
+                                Icon = new BitmapImage(new Uri("E:\\Downloads\\minecraft-logo-big.png")),
+                                Created = DateTime.Now,
+                                Modified = DateTime.Now,
+                                Accessed = DateTime.Now,
 
-                                new Field()
+                                FieldList = new MvxObservableCollection<Field>()
                                 {
-                                    Name = "Password",
-                                    Value = new byte[] { 1, 1, 0, 1, 1 },
-                                },
-                            }
-                        },
-                    }
-                },
-            };
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Username,
+                                        Name = "Username",
+                                        Value = "Sauce Fire",
+                                    },
+
+                                    new Field()
+                                    {
+                                        Type = FieldTypes.Password,
+                                        Name = "Password",
+                                        Value = new byte[] { 1, 1, 0, 1, 1 },
+                                    },
+                                }
+                            },
+                        }
+                    },
+                };
+            }
+            else
+            {
+                Vault = Vault.GetInstance();
+            }
 
             // Test export
 
@@ -218,7 +250,7 @@ namespace SolPM.Core.ViewModels
             {
                 using (XmlWriter writer = XmlWriter.Create(sww))
                 {
-                    xsSubmit.Serialize(writer, vault);
+                    xsSubmit.Serialize(writer, Vault);
                     xml = sww.ToString();
                 }
             }
@@ -232,38 +264,111 @@ namespace SolPM.Core.ViewModels
         public IMvxAsyncCommand NavigateEntryView { get; private set; }
 
         public IMvxAsyncCommand AddEntryCommand { get; private set; }
+        public IMvxAsyncCommand EditEntryCommand { get; private set; }
+        public IMvxCommand RemoveEntryCommand { get; private set; }
+
+        public IMvxCommand AddFolderCommand { get; private set; }
+        public IMvxCommand EditFolderCommand { get; private set; }
+        public IMvxCommand RemoveFolderCommand { get; private set; }
+
+        #endregion Commands
 
         private async Task AddEntry()
         {
-            var newEntry = await _navigationService.Navigate<EntryViewModel, Entry, Entry>(
-                new Entry()
-                {
-                    // Setting default color to special gray
-                    Color = System.Windows.Media.Color.FromRgb(102, 115, 121)
-                });
+            var newEntry = await _navigationService.Navigate<EntryViewModel, Entry, Entry>(new Entry());
             if (newEntry != null)
             {
-                System.Diagnostics.Debug.WriteLine($"VaultViewModel: Recieved {newEntry.Name}.");
+                Debug.WriteLine($"VaultViewModel: Recieved {newEntry.Name}.");
                 FolderEntries.Add(newEntry);
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($"EntryViewModel: Recieved no entries.");
+                Debug.WriteLine($"EntryViewModel: Recieved no entries.");
             }
         }
 
-        public IMvxAsyncCommand AddFolderCommand { get; private set; }
+        // TODO: Fix Edit Command
+        private async Task EditEntry()
+        {
+            if (null != SelectedEntry)
+            {
+                // HACK: Find a way to fix binding issues and fix awful code
+                Entry tempEntry = new Entry()
+                {
+                    Name = SelectedEntry.Name,
+                    FieldList = SelectedEntry.FieldList,
+                    Color = SelectedEntry.Color,
+                    Icon = SelectedEntry.Icon,
+                    Image = SelectedEntry.Image,
+                    Created = SelectedEntry.Created,
+                    Accessed = SelectedEntry.Accessed,
+                    Modified = SelectedEntry.Modified,
+                };
 
-        public IMvxAsyncCommand EditEntryCommand { get; private set; }
-        public IMvxAsyncCommand EditFolderCommand { get; private set; }
+                Entry editedEntry = await _navigationService.Navigate<EntryViewModel, Entry, Entry>(tempEntry);
+                if (editedEntry != null)
+                {
+                    // Replacing original entry with the edited one
+                    var replacedEntry = Vault.FolderList.Single(s => s == SelectedFolder).EntryList.Where(
+                        s => s == SelectedEntry).First();
+                    var index = Vault.FolderList.Single(s => s == SelectedFolder).EntryList.IndexOf(replacedEntry);
 
-        public IMvxAsyncCommand RemoveEntryCommand { get; private set; }
-        public IMvxAsyncCommand RemoveFolderCommand { get; private set; }
+                    if (index != -1)
+                        Vault.FolderList.Single(s => s == SelectedFolder).EntryList[index] = editedEntry;
 
-        #endregion Commands
+                    await RaisePropertyChanged(() => SelectedEntry);
+                }
+                else
+                {
+                    tempEntry = null;
+                }
+            }
+        }
+
+        private void RemoveEntry()
+        {
+            // TODO: Error handling
+            if (null != SelectedEntry)
+            {
+                FolderEntries.Remove(FolderEntries.Single(s => s == SelectedEntry));
+            }
+        }
+
+        private void AddFolder(object[] args)
+        {
+            // HACK: Redo folder creation please
+            
+            // args[0] is color; args[1] is name
+            if (null != args && null != args[0] && null != args[1])
+            {
+                VaultFolders.Add(new Folder()
+                {
+                    Color = (System.Windows.Media.Color)args[0],
+                    Name = (string)args[1],
+                    EntryList = new MvxObservableCollection<Entry>(),
+                });
+                RaisePropertyChanged(() => VaultFolders);
+            }
+        }
+
+        private void EditFolder()
+        {
+
+        }
+
+        private void RemoveFolder()
+        {
+            if (null != SelectedFolder)
+            {
+                VaultFolders.Remove(VaultFolders.Single(s => s == SelectedFolder));
+            }
+        }
 
         #region Properties
 
+        // TODO: Rethink property structure (may be the cause of entry editor bug)
+
+        public Vault Vault { get; set; }
         public Entry SelectedEntry { get; set; }
 
         private Folder selectedFolder;
@@ -290,7 +395,8 @@ namespace SolPM.Core.ViewModels
             {
                 if (Vault.Exists())
                 {
-                    return Vault.GetInstance().FolderList;
+                    //return Vault.GetInstance().FolderList;
+                    return Vault.FolderList;
                 }
                 else
                 {
@@ -302,7 +408,8 @@ namespace SolPM.Core.ViewModels
             {
                 if (Vault.Exists())
                 {
-                    Vault.GetInstance().FolderList = value;
+                    //Vault.GetInstance().FolderList = value;
+                    Vault.FolderList = value;
                     RaisePropertyChanged(() => VaultFolders);
                 }
             }
