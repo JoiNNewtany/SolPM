@@ -29,8 +29,7 @@ namespace SolPM.Core.ViewModels
             AddEntryCommand = new MvxAsyncCommand(AddEntry);
             EditEntryCommand = new MvxAsyncCommand(EditEntry);
             RemoveEntryCommand = new MvxCommand(RemoveEntry);
-            AddFolderCommand = new MvxCommand<object[]>((s) => AddFolder(s));
-            EditFolderCommand = new MvxCommand(EditFolder);
+            AddFolderCommand = new MvxCommand<Folder>((s) => AddFolder(s));
             RemoveFolderCommand = new MvxCommand(RemoveFolder);
         }
 
@@ -268,35 +267,37 @@ namespace SolPM.Core.ViewModels
         public IMvxCommand RemoveEntryCommand { get; private set; }
 
         public IMvxCommand AddFolderCommand { get; private set; }
-        public IMvxCommand EditFolderCommand { get; private set; }
         public IMvxCommand RemoveFolderCommand { get; private set; }
 
         #endregion Commands
 
         private async Task AddEntry()
         {
-            var newEntry = await _navigationService.Navigate<EntryViewModel, Entry, Entry>(new Entry());
-            if (newEntry != null)
+            if (null != SelectedFolder)
             {
-                Debug.WriteLine($"VaultViewModel: Recieved {newEntry.Name}.");
-                FolderEntries.Add(newEntry);
-            }
-            else
-            {
-                Debug.WriteLine($"EntryViewModel: Recieved no entries.");
+                var newEntry = await _navigationService.Navigate<EntryViewModel, Entry, Entry>(new Entry());
+                if (newEntry != null)
+                {
+                    Debug.WriteLine($"VaultViewModel: Recieved {newEntry.Name}.");
+                    FolderEntries.Add(newEntry);
+                }
+                else
+                {
+                    Debug.WriteLine($"EntryViewModel: Recieved no entries.");
+                }
             }
         }
 
-        // TODO: Fix Edit Command
+        // TODO: Rewrite edit command
         private async Task EditEntry()
         {
             if (null != SelectedEntry)
             {
-                // HACK: Find a way to fix binding issues and fix awful code
+                // HACK: Find a way to fix binding issues
                 Entry tempEntry = new Entry()
                 {
                     Name = SelectedEntry.Name,
-                    FieldList = SelectedEntry.FieldList,
+                    FieldList = new MvxObservableCollection<Field>(),
                     Color = SelectedEntry.Color,
                     Icon = SelectedEntry.Icon,
                     Image = SelectedEntry.Image,
@@ -304,6 +305,8 @@ namespace SolPM.Core.ViewModels
                     Accessed = SelectedEntry.Accessed,
                     Modified = SelectedEntry.Modified,
                 };
+
+                tempEntry.FieldList.ReplaceWith(SelectedEntry.FieldList);
 
                 Entry editedEntry = await _navigationService.Navigate<EntryViewModel, Entry, Entry>(tempEntry);
                 if (editedEntry != null)
@@ -334,26 +337,13 @@ namespace SolPM.Core.ViewModels
             }
         }
 
-        private void AddFolder(object[] args)
+        private void AddFolder(Folder folder)
         {
-            // HACK: Redo folder creation please
-            
-            // args[0] is color; args[1] is name
-            if (null != args && null != args[0] && null != args[1])
+            if (null != folder)
             {
-                VaultFolders.Add(new Folder()
-                {
-                    Color = (System.Windows.Media.Color)args[0],
-                    Name = (string)args[1],
-                    EntryList = new MvxObservableCollection<Entry>(),
-                });
+                VaultFolders.Add(folder);
                 RaisePropertyChanged(() => VaultFolders);
             }
-        }
-
-        private void EditFolder()
-        {
-
         }
 
         private void RemoveFolder()
@@ -365,8 +355,6 @@ namespace SolPM.Core.ViewModels
         }
 
         #region Properties
-
-        // TODO: Rethink property structure (may be the cause of entry editor bug)
 
         public Vault Vault { get; set; }
         public Entry SelectedEntry { get; set; }
