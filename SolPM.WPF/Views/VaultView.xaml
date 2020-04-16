@@ -52,9 +52,9 @@
     </views:MvxWpfView.InputBindings>
 
     <materialDesign:DialogHost
+        x:Name="RootDialog"
         Identifier="VaultViewDialogRoot"
-        CloseOnClickAway="True"
-        DialogClosing="VaultViewDialogRoot_DialogClosing">
+        CloseOnClickAway="True">
         <materialDesign:DialogHost.DialogContent>
             <Grid
                 Margin="16">
@@ -81,7 +81,7 @@
                         </materialDesign:PackIcon.Foreground>
                     </materialDesign:PackIcon>
                     <TextBox
-                        x:Name="FolderNameBox"
+                        Text="{Binding Path=SelectedFolder.Name, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
                         materialDesign:HintAssist.Hint="Folder Name"
                         materialDesign:HintAssist.IsFloating="False"
@@ -125,7 +125,7 @@
                         </DockPanel>
                         <materialDesign:ColorPicker
                             x:Name="ColorPicker"
-                            Color="{Binding Color, Delay=25}"
+                            Color="{Binding Path=SelectedFolder.Color, Delay=25}"
                             Width="400"
                             Height="200" />
                     </StackPanel>
@@ -145,7 +145,7 @@
                         </Button.CommandParameter>
                         ACCEPT
                     </Button>
-                    <Button
+                    <!--<Button
                         Style="{StaticResource MaterialDesignFlatButton}"
                         IsCancel="True"
                         Margin="0 8 8 0"
@@ -154,7 +154,7 @@
                             <system:Boolean>False</system:Boolean>
                         </Button.CommandParameter>
                         CANCEL
-                    </Button>
+                    </Button>-->
                 </StackPanel>
             </Grid>
         </materialDesign:DialogHost.DialogContent>
@@ -181,6 +181,7 @@
                     Background="{DynamicResource PrimaryHueDarkBrush}"
                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                     Grid.Row="0">
+                    <!-- Vault Items -->
                     <MenuItem
                         Header="_Vault"
                         Height="40">
@@ -309,12 +310,13 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <!-- Folder Items -->
                     <MenuItem
                         Header="_Folder"
                         Height="40">
                         <MenuItem
                             Header="Add Folder..."
-                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                            Click="AddFolder_Click">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="FolderPlusOutline"
@@ -326,7 +328,8 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem
-                            Header="Edit Folder...">
+                            Header="Edit Folder..."
+                            Click="EditFolder_Click">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="FolderEditOutline"
@@ -351,6 +354,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <!-- Entry Items -->
                     <MenuItem
                         Header="_Entry"
                         Height="40">
@@ -410,7 +414,8 @@
                         <Separator />
                         <MenuItem
                             Header="Add Entry..."
-                            InputGestureText="Ctrl+E">
+                            InputGestureText="Ctrl+E"
+                            Command="{Binding AddEntryCommand}">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="PencilPlusOutline"
@@ -424,7 +429,7 @@
                         <MenuItem
                             Header="Edit Entry..."
                             InputGestureText="Enter"
-                            Command="{Binding NavigateEntryView}">
+                            Command="{Binding EditEntryCommand}">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="EditOutline"
@@ -437,7 +442,8 @@
                         </MenuItem>
                         <MenuItem
                             Header="Remove Entry"
-                            InputGestureText="Del">
+                            InputGestureText="Del"
+                            Command="{Binding RemoveEntryCommand}">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="PencilMinusOutline"
@@ -449,6 +455,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <!-- Tool Items -->
                     <MenuItem
                         Header="_Tools"
                         Height="40">
@@ -478,6 +485,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <!-- Help Items -->
                     <MenuItem
                         Header="Help"
                         Height="40">
@@ -512,9 +520,11 @@
                 <!-- Main Toolbar -->
                 <ToolBar
                     Grid.Row="1">
+                    <!-- Vault -->
                     <Button
                         ToolTip="New"
-                        Padding="10">
+                        Padding="10"
+                        Command="{Binding NavigateDatabaseView}">
                         <materialDesign:PackIcon
                             Kind="AddThick" />
                     </Button>
@@ -531,15 +541,18 @@
                             Kind="ContentSave" />
                     </Button>
                     <Separator />
+                    <!-- Entry -->
                     <Button
                         ToolTip="Add Entry"
-                        Padding="10">
+                        Padding="10"
+                        Command="{Binding AddEntryCommand}">
                         <materialDesign:PackIcon
                             Kind="PencilAdd" />
                     </Button>
                     <Button
                         ToolTip="Edit Entry"
-                        Padding="10">
+                        Padding="10"
+                        Command="{Binding EditEntryCommand}">
                         <materialDesign:PackIcon
                             Kind="EditOutline" />
                     </Button>
@@ -604,6 +617,7 @@
 
                 <!-- Folder List -->
                 <ListBox
+                    x:Name="FolderList"
                     ItemsSource="{Binding VaultFolders}"
                     SelectedItem="{Binding SelectedFolder}"
                     Margin="0 10 0 0"

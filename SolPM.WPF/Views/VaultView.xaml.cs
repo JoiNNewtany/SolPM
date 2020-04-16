@@ -1,6 +1,9 @@
-﻿using MvvmCross.Platforms.Wpf.Views;
+﻿using MaterialDesignThemes.Wpf;
+using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
+using SolPM.Core.Models;
 using SolPM.Core.ViewModels;
+using System.Threading.Tasks;
 
 namespace SolPM.WPF.Views
 {
@@ -15,19 +18,36 @@ namespace SolPM.WPF.Views
             InitializeComponent();
         }
 
-        private void VaultViewDialogRoot_DialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        private void EditFolder_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (!Equals(eventArgs.Parameter, true)) return;
-
             // Get current ViewModel
             var viewModel = (VaultViewModel)DataContext;
 
-            // Call command
-            viewModel.AddFolderCommand.Execute(new object[] { ColorPicker.Color, FolderNameBox.Text });
-            
-            // Clear fields
-            ColorPicker.Color = System.Windows.Media.Color.FromArgb(0, 0, 0, 0);
-            FolderNameBox.Text = string.Empty;
+            if (null != viewModel.SelectedFolder)
+            {
+                RootDialog.IsOpen = true;
+            }
+        }
+
+        private void AddFolder_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            // Get current ViewModel
+            var viewModel = (VaultViewModel)DataContext;
+
+            // Creating new folder and selecting it
+            Folder folder = new Folder()
+            {
+                EntryList = new MvxObservableCollection<Entry>(),
+            };
+
+            if (viewModel.AddFolderCommand.CanExecute(folder))
+            {
+                viewModel.AddFolderCommand.Execute(folder);
+            }
+
+            FolderList.SelectedItem = folder;
+
+            RootDialog.IsOpen = true;
         }
     }
 }
