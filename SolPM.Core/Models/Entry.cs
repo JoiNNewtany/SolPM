@@ -16,6 +16,7 @@ namespace SolPM.Core.Models
         public Entry()
         {
             Id = Guid.NewGuid();
+            FieldList = new MvxObservableCollection<Field>();
         }
 
         [XmlElement("Id")]

@@ -59,7 +59,7 @@ namespace SolPM.Core.ViewModels
                             new Entry()
                             {
                                 Name = "Google",
-                                Icon = new BitmapImage(new Uri("E:\\Downloads\\google-logo.png")),
+                                //Icon = new BitmapImage(new Uri("E:\\Downloads\\google-logo.png")),
                                 Color = new XmlColor(System.Windows.Media.Color.FromRgb(255, 255, 255)),
                                 Created = DateTime.Now,
                                 Modified = DateTime.Now,
@@ -93,7 +93,7 @@ namespace SolPM.Core.ViewModels
                             new Entry()
                             {
                                 Name = "Secret",
-                                Image = new BitmapImage(new Uri("E:\\Downloads\\ShareX-ScreenRecordings\\ramiras.png")),
+                                //Image = new BitmapImage(new Uri("E:\\Downloads\\ShareX-ScreenRecordings\\ramiras.png")),
                                 Created = DateTime.Now,
                                 Modified = DateTime.Now,
                                 Accessed = DateTime.Now,
@@ -135,7 +135,7 @@ namespace SolPM.Core.ViewModels
                             new Entry()
                             {
                                 Name = "Microsoft",
-                                Icon = new BitmapImage(new Uri("E:\\Downloads\\microsoft-logo.png")),
+                                //Icon = new BitmapImage(new Uri("E:\\Downloads\\microsoft-logo.png")),
                                 Color = new XmlColor(System.Windows.Media.Color.FromRgb(0, 64, 131)),
                                 Created = DateTime.Now,
                                 Modified = DateTime.Now,
@@ -169,7 +169,7 @@ namespace SolPM.Core.ViewModels
                             new Entry()
                             {
                                 Name = "Ducc",
-                                Image = new BitmapImage(new Uri("E:\\Downloads\\duck-image.jpg")),
+                                //Image = new BitmapImage(new Uri("E:\\Downloads\\duck-image.jpg")),
                                 Created = DateTime.Now,
                                 Modified = DateTime.Now,
                                 Accessed = DateTime.Now,
@@ -209,7 +209,7 @@ namespace SolPM.Core.ViewModels
                             new Entry()
                             {
                                 Name = "Duce Nuce",
-                                Icon = new BitmapImage(new Uri("E:\\Downloads\\minecraft-logo-big.png")),
+                                //Icon = new BitmapImage(new Uri("E:\\Downloads\\minecraft-logo-big.png")),
                                 Created = DateTime.Now,
                                 Modified = DateTime.Now,
                                 Accessed = DateTime.Now,
@@ -254,7 +254,7 @@ namespace SolPM.Core.ViewModels
                 }
             }
 
-            //File.WriteAllText("E:\\Downloads\\DEBUG.txt", xml);
+            File.WriteAllText("E:\\Downloads\\DEBUG.txt", xml);
         }
 
         #region Commands

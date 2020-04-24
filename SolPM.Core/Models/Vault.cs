@@ -1,5 +1,12 @@
 ﻿using MvvmCross.ViewModels;
+using SolPM.Core.Cryptography;
 using SolPM.Core.Helpers;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Security;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -13,6 +20,8 @@ namespace SolPM.Core.Models
     {
         private Vault()
         {
+            FolderList = new MvxObservableCollection<Folder>();
+            EncryptionInfo = new EncryptionInfo();
         }
 
         // Implementation of the Singleton pattern
@@ -43,11 +52,184 @@ namespace SolPM.Core.Models
             return _instance != null;
         }
 
+        public static void Delete()
+        {
+            _instance = null;
+        }
+
+        [XmlElement("EncryptionInfo")]
+        public EncryptionInfo EncryptionInfo { get; set; }
+
         [XmlElement("Name")]
         public string Name { get; set; }
 
-        [XmlArray("FolderList")]
-        [XmlArrayItem("Folder")]
+        //[XmlArray("FolderList")]
+        //[XmlArrayItem("Folder")]
+        [XmlIgnore]
         public MvxObservableCollection<Folder> FolderList { get; set; }
+
+        [XmlElement("Data")]
+        public byte[] Data { get; set; }
+
+        // TODO: Exception handling
+
+        /// <summary>
+        /// Fills <c>EncryptionInfo</c> structure and prepares vault
+        /// for encryption.
+        /// </summary>
+        public void SetupEncryption(SecureString password)
+        {
+            if (null == password)
+            {
+                throw new ArgumentNullException("password");
+            }
+
+            EncryptionInfo.Salt = CryptoUtilities.RandomBytes(16);
+            EncryptionInfo.IV = CryptoUtilities.RandomBytes(16);
+            EncryptionInfo.ValidationKey = CryptoUtilities.GetValidationKey(password, EncryptionInfo.Salt);
+
+            // Protecting encryption key using chosen encryption algorythm
+            using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
+            {
+                EncryptionInfo.EncryptionKey = cu.ProtectEncryptionKey(password,
+                    CryptoUtilities.RandomBytes(16), EncryptionInfo.Salt, EncryptionInfo.IV);
+            }
+        }
+
+        public void EncryptToFile(string filepath, SecureString password)
+        {
+            if (null == filepath)
+            {
+                throw new ArgumentNullException("filepath", "Filepath can't be empty");
+            }
+
+            if (null == EncryptionInfo)
+            {
+                throw new NullReferenceException("EncryptionInfo can't be empty");
+            }
+
+            if (null == EncryptionInfo.EncryptionKey)
+            {
+                throw new NullReferenceException("EncryptionKey can't be empty");
+            }
+
+            if (null == EncryptionInfo.ValidationKey)
+            {
+                throw new NullReferenceException("ValidationKey can't be empty");
+            }
+
+            if (null == EncryptionInfo.IV)
+            {
+                throw new NullReferenceException("IV can't be empty");
+            }
+
+            if (null == EncryptionInfo.Salt)
+            {
+                throw new NullReferenceException("Salt can't be empty");
+            }
+
+            try
+            {
+                using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
+                {
+                    if (!CryptoUtilities.ValidatePassword(password, EncryptionInfo.ValidationKey, EncryptionInfo.Salt))
+                    {
+                        throw new ArgumentException("Incorrect password", "password");
+                    }
+
+                    // Serialize and encrypt folder list
+
+                    XmlSerializer xsSubmit = new XmlSerializer(typeof(MvxObservableCollection<Folder>));
+                    var xml = string.Empty;
+
+                    using (var sww = new StringWriter())
+                    using (XmlWriter writer = XmlWriter.Create(sww))
+                    {
+                        xsSubmit.Serialize(writer, FolderList);
+                        xml = sww.ToString(); // Serialized XML
+                    }
+
+                    // Unprotect the key and encrypt data
+
+                    Data = cu.Encrypt(Encoding.UTF8.GetBytes(xml),
+                        cu.UnprotectEncryptionKey(password,
+                        EncryptionInfo.EncryptionKey, EncryptionInfo.Salt, EncryptionInfo.IV),
+                        EncryptionInfo.IV);
+
+                    // Serialize vault and save to file
+
+                    xsSubmit = new XmlSerializer(typeof(Vault));
+                    xml = string.Empty;
+
+                    using (var sww = new StringWriter())
+                    using (XmlWriter writer = XmlWriter.Create(sww))
+                    {
+                        xsSubmit.Serialize(writer, GetInstance());
+                        xml = sww.ToString(); // Serialized XML
+                    }
+
+                    File.WriteAllText(filepath, xml);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void DecryptFromFile(string filepath, SecureString password)
+        {
+            if (null == filepath)
+            {
+                throw new ArgumentNullException("filepath", "Filepath can't be empty");
+            }
+
+            if (Vault.Exists())
+            {
+                // TODO: Vault.Close();
+            }
+
+            try
+            {
+                // Deserializing vault
+
+                var xml = File.ReadAllText(filepath);
+
+                XmlSerializer serializer = new XmlSerializer(typeof(Vault));
+                using (TextReader reader = new StringReader(xml))
+                {
+                    var vault = (Vault)serializer.Deserialize(reader);
+                    EncryptionInfo = vault.EncryptionInfo;
+                    Data = vault.Data;
+                    Name = vault.Name;
+                }
+                
+                using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
+                {
+                    if (!CryptoUtilities.ValidatePassword(password, EncryptionInfo.ValidationKey, EncryptionInfo.Salt))
+                    {
+                        throw new ArgumentException("Incorrect password", "password");
+                    }
+
+                    // Unprotect the key and decrypt data
+
+                    var plainData = cu.Decrypt(Data, cu.UnprotectEncryptionKey(password,
+                        EncryptionInfo.EncryptionKey, EncryptionInfo.Salt, EncryptionInfo.IV),
+                        EncryptionInfo.IV);
+
+                    // Deserialize folder list
+
+                    serializer = new XmlSerializer(typeof(MvxObservableCollection<Folder>));
+                    using (TextReader reader = new StringReader(Encoding.UTF8.GetString(plainData)))
+                    {
+                        FolderList = (MvxObservableCollection<Folder>)serializer.Deserialize(reader);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
