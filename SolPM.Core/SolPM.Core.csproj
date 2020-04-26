@@ -8,6 +8,7 @@
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
     <PackageReference Include="MvvmCross" Version="6.4.2" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="5.0.0-preview.3.20214.6" />
     <PackageReference Include="WindowsBase" Version="4.6.1055" />
   </ItemGroup>
 

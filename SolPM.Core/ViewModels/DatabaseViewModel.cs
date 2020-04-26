@@ -5,6 +5,7 @@ using SolPM.Core.Cryptography;
 using SolPM.Core.Models;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -40,14 +41,24 @@ namespace SolPM.Core.ViewModels
 
             vault.EncryptionInfo.SelectedAlgorithm = Algorithm.Twofish_256;
             vault.SetupEncryption(testPassword);
-            vault.EncryptToFile("E:\\Downloads\\TestVault.solpv", testPassword);
-            
+            //_ = CryptoUtilities.DeriveKey(CryptoUtilities.SecStrBytes(testPassword), vault.EncryptionInfo.Salt, 64).Take(32).ToArray();
+            vault.EncryptToFile("E:\\Downloads\\TestVault1.solpv", testPassword);
+            vault.EncryptToFile("E:\\Downloads\\TestVault2.solpv", vault.EncryptionInfo.ProtectedKey);
+
             // Reset vault to empty
             Vault.Delete();
             vault = Vault.GetInstance();
 
             Debug.WriteLine($"Vault exists: {Vault.Exists()}");
-            vault.DecryptFromFile("E:\\Downloads\\TestVault.solpv", testPassword);
+            vault.DecryptFromFile("E:\\Downloads\\TestVault1.solpv", testPassword);
+            Debug.WriteLine($"Opened vault: {vault.Name}");
+
+            // Reset vault to empty
+            Vault.Delete();
+            vault = Vault.GetInstance();
+
+            Debug.WriteLine($"Vault exists: {Vault.Exists()}");
+            vault.DecryptFromFile("E:\\Downloads\\TestVault2.solpv", testPassword);
             Debug.WriteLine($"Opened vault: {vault.Name}");
         }
 
@@ -57,10 +68,11 @@ namespace SolPM.Core.ViewModels
 
         public IMvxCommand<string> CreateVaultCommand { get; private set; }
 
+        #endregion Commands
+
         private void CreateVault(string filename)
         {
-        }
 
-        #endregion Commands
+        }
     }
 }

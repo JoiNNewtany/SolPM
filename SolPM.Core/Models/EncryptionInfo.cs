@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Xml.Serialization;
+using System.Security.Cryptography;
+using SolPM.Core.Cryptography;
+using System.Linq;
 
 namespace SolPM.Core.Models
 {
@@ -24,5 +27,38 @@ namespace SolPM.Core.Models
 
         [XmlElement("IV")]
         public byte[] IV { get; set; }
+
+        // HACK: Do not store this if possible
+        // Key used to encrypt EncryptionKey
+        [XmlIgnore]
+        private byte[] protectedKey;
+        [XmlIgnore]
+        public byte[] ProtectedKey
+        {
+            get 
+            {
+                // Get appended entropy from data
+                byte[] entropy = protectedKey.Skip(protectedKey.Length - 16).ToArray();
+
+                // Get proteccted data
+                byte[] proteccted = protectedKey.Take(protectedKey.Length - 16).ToArray();
+
+                return ProtectedData.Unprotect(proteccted, entropy, DataProtectionScope.CurrentUser); 
+            }
+            
+            set 
+            {
+                byte[] entropy = CryptoUtilities.RandomBytes(16);
+                byte[] protecc = ProtectedData.Protect(value, entropy, DataProtectionScope.CurrentUser);
+                byte[] result = new byte[protecc.Length + 16];
+
+                // Append entropy to proteccted data
+                Buffer.BlockCopy(entropy, 0, result, protecc.Length, entropy.Length);
+                Buffer.BlockCopy(protecc, 0, result, 0, protecc.Length);
+                
+                protectedKey = result;
+            }
+        }
+
     }
 }

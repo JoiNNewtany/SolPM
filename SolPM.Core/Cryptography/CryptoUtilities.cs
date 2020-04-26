@@ -17,14 +17,6 @@ namespace SolPM.Core.Cryptography
 
         public CryptoUtilities(Algorithm algorithm)
         {
-            //// If given type does not derive from SymmetricAlgorythm
-            //if (!typeof(SymmetricAlgorithm).IsAssignableFrom(algorithm))
-            //{
-            //    throw new ArgumentException("Given type does not derive from SymmetricAlgorithm", "algorithm");
-            //}
-
-            //this.algorithm = (SymmetricAlgorithm)Activator.CreateInstance(algorithm);
-
             switch (algorithm)
             {
                 case Algorithm.AES_256:
@@ -107,6 +99,12 @@ namespace SolPM.Core.Cryptography
             return Decrypt(protectedKey, DeriveKey(SecStrBytes(password), salt, 64).Take(32).ToArray(), iv);
         }
 
+        public byte[] UnprotectEncryptionKey(byte[] passwordKey, byte[] protectedKey, byte[] salt, byte[] iv)
+        {
+            // Decrypt Key with first 256 bits of derived key
+            return Decrypt(protectedKey, passwordKey, iv);
+        }
+
         /// <summary>
         /// Allows to retrieve an encrypted version of the key
         /// used to encrypt the data.
@@ -123,6 +121,15 @@ namespace SolPM.Core.Cryptography
         public static byte[] GetValidationKey(SecureString password, byte[] salt)
         {
             return DeriveKey(SecStrBytes(password), salt, 64).Skip(32).ToArray();
+        }
+
+        /// <summary>
+        /// This key is used to encrypt the encryption key.
+        /// <b>Unsafe to store.</b>
+        /// </summary>
+        public static byte[] GetEncryptionProtectionKey(SecureString password, byte[] salt)
+        {
+            return DeriveKey(SecStrBytes(password), salt, 64).Take(32).ToArray();
         }
 
         public static bool ValidatePassword(SecureString password, byte[] validationKey, byte[] salt)

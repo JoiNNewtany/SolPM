@@ -5,7 +5,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security;
-using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -87,6 +86,8 @@ namespace SolPM.Core.Models
             EncryptionInfo.Salt = CryptoUtilities.RandomBytes(16);
             EncryptionInfo.IV = CryptoUtilities.RandomBytes(16);
             EncryptionInfo.ValidationKey = CryptoUtilities.GetValidationKey(password, EncryptionInfo.Salt);
+            EncryptionInfo.ProtectedKey = CryptoUtilities.GetEncryptionProtectionKey(password, EncryptionInfo.Salt);
+            Debug.WriteLine(EncryptionInfo.ProtectedKey);
 
             // Protecting encryption key using chosen encryption algorythm
             using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
@@ -177,6 +178,83 @@ namespace SolPM.Core.Models
             }
         }
 
+        // To encrypt using stored copy of the key
+        public void EncryptToFile(string filepath, byte[] protectedKey)
+        {
+            if (null == filepath)
+            {
+                throw new ArgumentNullException("filepath", "Filepath can't be empty");
+            }
+
+            if (null == EncryptionInfo)
+            {
+                throw new NullReferenceException("EncryptionInfo can't be empty");
+            }
+
+            if (null == EncryptionInfo.EncryptionKey)
+            {
+                throw new NullReferenceException("EncryptionKey can't be empty");
+            }
+
+            if (null == EncryptionInfo.ValidationKey)
+            {
+                throw new NullReferenceException("ValidationKey can't be empty");
+            }
+
+            if (null == EncryptionInfo.IV)
+            {
+                throw new NullReferenceException("IV can't be empty");
+            }
+
+            if (null == EncryptionInfo.Salt)
+            {
+                throw new NullReferenceException("Salt can't be empty");
+            }
+
+            try
+            {
+                using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
+                {
+                    // Serialize and encrypt folder list
+
+                    XmlSerializer xsSubmit = new XmlSerializer(typeof(MvxObservableCollection<Folder>));
+                    var xml = string.Empty;
+
+                    using (var sww = new StringWriter())
+                    using (XmlWriter writer = XmlWriter.Create(sww))
+                    {
+                        xsSubmit.Serialize(writer, FolderList);
+                        xml = sww.ToString(); // Serialized XML
+                    }
+
+                    // Unprotect the key and encrypt data
+
+                    Data = cu.Encrypt(Encoding.UTF8.GetBytes(xml),
+                        cu.UnprotectEncryptionKey(protectedKey,
+                            EncryptionInfo.EncryptionKey, EncryptionInfo.Salt, EncryptionInfo.IV),
+                        EncryptionInfo.IV);
+
+                    // Serialize vault and save to file
+
+                    xsSubmit = new XmlSerializer(typeof(Vault));
+                    xml = string.Empty;
+
+                    using (var sww = new StringWriter())
+                    using (XmlWriter writer = XmlWriter.Create(sww))
+                    {
+                        xsSubmit.Serialize(writer, GetInstance());
+                        xml = sww.ToString(); // Serialized XML
+                    }
+
+                    File.WriteAllText(filepath, xml);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public void DecryptFromFile(string filepath, SecureString password)
         {
             if (null == filepath)
@@ -203,7 +281,7 @@ namespace SolPM.Core.Models
                     Data = vault.Data;
                     Name = vault.Name;
                 }
-                
+
                 using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
                 {
                     if (!CryptoUtilities.ValidatePassword(password, EncryptionInfo.ValidationKey, EncryptionInfo.Salt))
