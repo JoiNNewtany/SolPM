@@ -99,7 +99,7 @@ namespace SolPM.Core.Cryptography
             return Decrypt(protectedKey, DeriveKey(SecStrBytes(password), salt, 64).Take(32).ToArray(), iv);
         }
 
-        public byte[] UnprotectEncryptionKey(byte[] passwordKey, byte[] protectedKey, byte[] salt, byte[] iv)
+        public byte[] UnprotectEncryptionKey(byte[] passwordKey, byte[] protectedKey, byte[] iv)
         {
             // Decrypt Key with first 256 bits of derived key
             return Decrypt(protectedKey, passwordKey, iv);

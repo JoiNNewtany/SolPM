@@ -2,7 +2,6 @@
 using SolPM.Core.Helpers;
 using System;
 using System.IO;
-using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;

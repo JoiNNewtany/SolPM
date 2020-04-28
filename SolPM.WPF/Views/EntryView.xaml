@@ -33,12 +33,12 @@
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <!-- Converters -->
 
             <converters:ColorToBrushConverter
                 x:Key="ColorToBrushConverter" />
-            
+
             <converters:BrushToHexConverter
                 x:Key="BrushToHexConverter" />
 
@@ -324,7 +324,7 @@
                 Storyboard="{StaticResource ColorZoneSlideDown}" />
         </EventTrigger>
     </UserControl.Triggers>
-    
+
     <materialDesign:DialogHost
         Identifier="EntryViewDialogRoot"
         CloseOnClickAway="True">
@@ -353,7 +353,7 @@
                         Width="400"
                         Height="200" />
                 </StackPanel>
-                
+
                 <StackPanel
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
@@ -543,7 +543,7 @@
                                             Width="150"
                                             Style="{StaticResource MaterialDesignFlatButton}"
                                             Content="Clear Icon"
-                                            Command="{Binding ClearEntryIconCommand}"/>
+                                            Command="{Binding ClearEntryIconCommand}" />
                                     </StackPanel>
                                     <StackPanel
                                         Margin="0 15"
@@ -574,7 +574,7 @@
                                             Width="150"
                                             Style="{StaticResource MaterialDesignFlatButton}"
                                             Content="Clear Image"
-                                            Command="{Binding ClearEntryImageCommand}"/>
+                                            Command="{Binding ClearEntryImageCommand}" />
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>

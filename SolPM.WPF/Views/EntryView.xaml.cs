@@ -2,7 +2,6 @@
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
 using SolPM.Core.ViewModels;
-using System;
 
 namespace SolPM.WPF.Views
 {

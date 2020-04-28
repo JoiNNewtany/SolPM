@@ -1,8 +1,8 @@
-﻿using System;
-using System.Xml.Serialization;
-using System.Security.Cryptography;
-using SolPM.Core.Cryptography;
+﻿using SolPM.Core.Cryptography;
+using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Xml.Serialization;
 
 namespace SolPM.Core.Models
 {
@@ -32,10 +32,11 @@ namespace SolPM.Core.Models
         // Key used to encrypt EncryptionKey
         [XmlIgnore]
         private byte[] protectedKey;
+
         [XmlIgnore]
         public byte[] ProtectedKey
         {
-            get 
+            get
             {
                 // Get appended entropy from data
                 byte[] entropy = protectedKey.Skip(protectedKey.Length - 16).ToArray();
@@ -43,10 +44,10 @@ namespace SolPM.Core.Models
                 // Get proteccted data
                 byte[] proteccted = protectedKey.Take(protectedKey.Length - 16).ToArray();
 
-                return ProtectedData.Unprotect(proteccted, entropy, DataProtectionScope.CurrentUser); 
+                return ProtectedData.Unprotect(proteccted, entropy, DataProtectionScope.CurrentUser);
             }
-            
-            set 
+
+            set
             {
                 byte[] entropy = CryptoUtilities.RandomBytes(16);
                 byte[] protecc = ProtectedData.Protect(value, entropy, DataProtectionScope.CurrentUser);
@@ -55,10 +56,9 @@ namespace SolPM.Core.Models
                 // Append entropy to proteccted data
                 Buffer.BlockCopy(entropy, 0, result, protecc.Length, entropy.Length);
                 Buffer.BlockCopy(protecc, 0, result, 0, protecc.Length);
-                
+
                 protectedKey = result;
             }
         }
-
     }
 }

@@ -79,7 +79,7 @@ namespace SolPM.Core.ViewModels
         public IMvxCommand RemoveFieldCommand { get; private set; }
 
         #endregion Commands
-        
+
         private async Task Cancel()
         {
             await _navigationService.Close(this);
