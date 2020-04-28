@@ -8,5 +8,8 @@
     <Setting Name="WindowWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">950</Value>
     </Setting>
+    <Setting Name="LastOpenedVaultLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

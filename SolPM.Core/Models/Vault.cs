@@ -2,7 +2,6 @@
 using SolPM.Core.Cryptography;
 using SolPM.Core.Helpers;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Security;
 using System.Text;
@@ -62,6 +61,15 @@ namespace SolPM.Core.Models
         [XmlElement("Name")]
         public string Name { get; set; }
 
+        [XmlElement("Description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Stores the path to the vault when it is opened.
+        /// </summary>
+        [XmlIgnore]
+        public string Location { get; set; }
+
         //[XmlArray("FolderList")]
         //[XmlArrayItem("Folder")]
         [XmlIgnore]
@@ -87,7 +95,6 @@ namespace SolPM.Core.Models
             EncryptionInfo.IV = CryptoUtilities.RandomBytes(16);
             EncryptionInfo.ValidationKey = CryptoUtilities.GetValidationKey(password, EncryptionInfo.Salt);
             EncryptionInfo.ProtectedKey = CryptoUtilities.GetEncryptionProtectionKey(password, EncryptionInfo.Salt);
-            Debug.WriteLine(EncryptionInfo.ProtectedKey);
 
             // Protecting encryption key using chosen encryption algorythm
             using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
@@ -231,7 +238,7 @@ namespace SolPM.Core.Models
 
                     Data = cu.Encrypt(Encoding.UTF8.GetBytes(xml),
                         cu.UnprotectEncryptionKey(protectedKey,
-                            EncryptionInfo.EncryptionKey, EncryptionInfo.Salt, EncryptionInfo.IV),
+                            EncryptionInfo.EncryptionKey, EncryptionInfo.IV),
                         EncryptionInfo.IV);
 
                     // Serialize vault and save to file
@@ -255,23 +262,27 @@ namespace SolPM.Core.Models
             }
         }
 
-        public void DecryptFromFile(string filepath, SecureString password)
+        public void DecryptFromFile(string filePath, SecureString password)
         {
-            if (null == filepath)
+            if (string.IsNullOrWhiteSpace(filePath))
             {
-                throw new ArgumentNullException("filepath", "Filepath can't be empty");
+                throw new ArgumentNullException("filePath", "File path is empty or null");
             }
 
-            if (Vault.Exists())
-            {
-                // TODO: Vault.Close();
-            }
+            //if (Vault.Exists())
+            //{
+            //    // TODO: Figure out what to do with this
+            //    //throw new NotImplementedException("Vault already exists but idk what to do with it yet");
+            //    var _vault = Vault.GetInstance();
+            //    _vault.EncryptToFile(_vault.Location, _vault.EncryptionInfo.ProtectedKey);
+            //    Vault.Delete();
+            //}
 
             try
             {
                 // Deserializing vault
 
-                var xml = File.ReadAllText(filepath);
+                var xml = File.ReadAllText(filePath);
 
                 XmlSerializer serializer = new XmlSerializer(typeof(Vault));
                 using (TextReader reader = new StringReader(xml))
@@ -302,6 +313,9 @@ namespace SolPM.Core.Models
                     {
                         FolderList = (MvxObservableCollection<Folder>)serializer.Deserialize(reader);
                     }
+
+                    // Set vault's Location
+                    Location = filePath;
                 }
             }
             catch (Exception)

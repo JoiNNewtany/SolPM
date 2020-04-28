@@ -2,6 +2,9 @@
     x:Class="SolPM.WPF.Views.DatabaseView"
     xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:converters="clr-namespace:SolPM.WPF.Converters"
+    xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behaviors="clr-namespace:SolPM.WPF.Behaviors"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -37,6 +40,12 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+
+        <converters:IntToStringConverter
+            x:Key="IntToStrConverter" />
+
+        <converters:VaultParamsMultiConverter
+            x:Key="VaultParamsMultiConverter" />
     </views:MvxWpfView.Resources>
 
     <UserControl.Triggers>
@@ -78,9 +87,9 @@
                     FontWeight="Light" />
                 <Button
                     Style="{StaticResource MaterialDesignIconForegroundButton}"
-                    Command="{Binding NavigateVaultView}"
                     HorizontalAlignment="Right"
-                    ToolTip="Create">
+                    ToolTip="Create"
+                    Click="CreateVaultButton_Click">
                     <materialDesign:PackIcon
                         Width="32"
                         Height="32"
@@ -94,21 +103,41 @@
                 Margin="50 20">
                 <StackPanel>
                     <GroupBox
-                        Header="General Vault Information"
                         Style="{DynamicResource MaterialDesignGroupBox}"
                         materialDesign:ShadowAssist.ShadowDepth="Depth3"
                         Margin="0 0 0 20"
                         BorderThickness="0">
+                        <GroupBox.Header>
+                            <TextBlock
+                                Text="General Vault Information" />
+                        </GroupBox.Header>
                         <StackPanel>
                             <TextBlock
                                 TextWrapping="Wrap"
-                                Text="Please enter the display name as well as optional description of the new vault."
+                                Text="Please select the location of the vault and enter its display name as well as optional description of the new vault."
                                 Margin="0 10 0 20" />
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <TextBox
+                                    x:Name="VaultLocationTextBox"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    IsReadOnly="True"
+                                    HorizontalAlignment="Left"
+                                    Width="318"
+                                    Margin="0 0 10 20"
+                                    materialDesign:HintAssist.Hint="Vault Location">
+                                </TextBox>
+                                <Button
+                                    Content="Browse"
+                                    Foreground="White"
+                                    Click="VaultLocation_Click" />
+                            </StackPanel>
+
                             <TextBox
                                 x:Name="VaultNameTextBox"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 HorizontalAlignment="Left"
-                                Width="220"
+                                Width="407"
                                 Margin="0 0 0 20"
                                 materialDesign:HintAssist.Hint="Vault Name">
                             </TextBox>
@@ -129,10 +158,13 @@
                     </GroupBox>
 
                     <GroupBox
-                        Header="Security Settings"
                         Style="{DynamicResource MaterialDesignGroupBox}"
                         materialDesign:ShadowAssist.ShadowDepth="Depth3"
                         BorderThickness="0">
+                        <GroupBox.Header>
+                            <TextBlock
+                                Text="Security Settings" />
+                        </GroupBox.Header>
                         <StackPanel>
                             <TextBlock
                                 TextWrapping="Wrap"
@@ -163,6 +195,7 @@
                                     Grid.Row="0"
                                     Grid.Column="0" />
                                 <ComboBox
+                                    x:Name="AlgorithmComboBox"
                                     Width="220"
                                     Grid.Row="0"
                                     Grid.Column="1">
@@ -171,10 +204,36 @@
                                         Content="AES: 256-bit" />
                                     <ComboBoxItem
                                         Content="Twofish: 256-bit" />
-                                    <ComboBoxItem
-                                        Content="ChaCha20: 256-bit" />
                                 </ComboBox>
 
+                                <TextBlock
+                                    Text="Key Deriviation Rounds:"
+                                    VerticalAlignment="Center"
+                                    Margin="0 0 30 0"
+                                    Grid.Row="1"
+                                    Grid.Column="0" />
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Grid.Row="1"
+                                    Grid.Column="1">
+                                    <Slider
+                                        x:Name="RoundsSlider"
+                                        ToolTip="Higher amounts will offer more protection, but opening the vault will take longer"
+                                        Minimum="1000"
+                                        IsSnapToTickEnabled="True"
+                                        TickFrequency="1000"
+                                        TickPlacement="BottomRight"
+                                        Value="10000"
+                                        Maximum="20000"
+                                        Margin="0 0 10 0"
+                                        Width="170" />
+                                    <TextBlock
+                                        Text="{Binding Value, ElementName=RoundsSlider, Mode=OneWay, Converter={StaticResource IntToStrConverter}}"
+                                        Width="40" />
+                                </StackPanel>
+
+                                <!-- Not Implemented Yet
                                 <TextBlock
                                     Text="Key Deriviation Function:"
                                     VerticalAlignment="Center"
@@ -191,8 +250,10 @@
                                     <ComboBoxItem
                                         Content="PBKDF2" />
                                 </ComboBox>
+                                -->
 
                                 <PasswordBox
+                                    x:Name="VaultPasswordBox"
                                     Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
                                     VerticalAlignment="Center"
                                     Margin="0 20 0 0"
@@ -201,6 +262,7 @@
                                     materialDesign:TextFieldAssist.HasClearButton="True"
                                     materialDesign:HintAssist.Hint="Enter Master Password" />
                                 <PasswordBox
+                                    x:Name="VaultPasswordVerificationBox"
                                     Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
                                     VerticalAlignment="Center"
                                     Margin="0 20 0 0"

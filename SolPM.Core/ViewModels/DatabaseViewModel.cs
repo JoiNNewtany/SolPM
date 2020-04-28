@@ -1,13 +1,9 @@
 ﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
-using SolPM.Core.Cryptography;
 using SolPM.Core.Models;
-using System;
+using SolPM.Core.ViewModels.Parameters;
 using System.Diagnostics;
-using System.Linq;
-using System.Security;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace SolPM.Core.ViewModels
@@ -23,25 +19,26 @@ namespace SolPM.Core.ViewModels
             // Commands
 
             NavigateVaultView = new MvxAsyncCommand(() => _navigationService.Navigate<VaultViewModel>());
-            CreateVaultCommand = new MvxCommand<string>((s) => CreateVault(s));
+            CreateVaultCommand = new MvxCommand<VaultParams>((s) => CreateVault(s));
         }
 
         public override async Task Initialize()
         {
             Debug.WriteLine($"DatabaseViewModel: Initialize called.");
 
-            Vault vault = Vault.GetInstance();
+            //Vault vault = Vault.GetInstance();
 
-            SecureString testPassword = new SecureString();
-            testPassword.AppendChar('S');
-            testPassword.AppendChar('i');
-            testPassword.AppendChar('1');
-            testPassword.AppendChar('1');
-            testPassword.AppendChar('y');
+            //SecureString testPassword = new SecureString();
+            //testPassword.AppendChar('t');
+            //testPassword.AppendChar('e');
+            //testPassword.AppendChar('s');
+            //testPassword.AppendChar('t');
 
-            vault.EncryptionInfo.SelectedAlgorithm = Algorithm.Twofish_256;
-            vault.SetupEncryption(testPassword);
-            //_ = CryptoUtilities.DeriveKey(CryptoUtilities.SecStrBytes(testPassword), vault.EncryptionInfo.Salt, 64).Take(32).ToArray();
+            //vault.Location = "E:\\Downloads\\TestVault1.solpv";
+
+            //vault.EncryptionInfo.SelectedAlgorithm = Algorithm.Twofish_256;
+            //vault.SetupEncryption(testPassword);
+            /*
             vault.EncryptToFile("E:\\Downloads\\TestVault1.solpv", testPassword);
             vault.EncryptToFile("E:\\Downloads\\TestVault2.solpv", vault.EncryptionInfo.ProtectedKey);
 
@@ -58,21 +55,44 @@ namespace SolPM.Core.ViewModels
             vault = Vault.GetInstance();
 
             Debug.WriteLine($"Vault exists: {Vault.Exists()}");
-            vault.DecryptFromFile("E:\\Downloads\\TestVault2.solpv", testPassword);
-            Debug.WriteLine($"Opened vault: {vault.Name}");
+            */
+            //vault.DecryptFromFile("E:\\Downloads\\test.solpv", testPassword);
+            //Debug.WriteLine($"Opened vault: {vault.Name}");
+
+            // TODO: PASSWORD IS BREAKING FOR SOME REASON?
         }
 
         #region Commands
 
         public IMvxAsyncCommand NavigateVaultView { get; private set; }
-
-        public IMvxCommand<string> CreateVaultCommand { get; private set; }
+        public IMvxCommand CreateVaultCommand { get; private set; }
 
         #endregion Commands
 
-        private void CreateVault(string filename)
+        private void CreateVault(VaultParams vaultParams)
         {
+            if (Vault.Exists())
+            {
+                // TODO: Rewrite this
+                //throw new NotImplementedException("Vault already exists but idk what to do with it yet");
+                var _vault = Vault.GetInstance();
+                _vault.EncryptToFile(_vault.Location, _vault.EncryptionInfo.ProtectedKey);
+                Vault.Delete();
+            }
 
+            var vault = Vault.GetInstance();
+
+            vault.Location = vaultParams.FilePath;
+            vault.Name = vaultParams.Name;
+            vault.Description = vaultParams.Description;
+            vault.EncryptionInfo = vaultParams.EncryptionInfo;
+
+            vault.FolderList = new MvxObservableCollection<Folder>();
+
+            vault.SetupEncryption(vaultParams.Password);
+            vaultParams.Password.Dispose();
+
+            _navigationService.Navigate<VaultViewModel>();
         }
     }
 }

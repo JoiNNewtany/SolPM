@@ -1,0 +1,148 @@
+﻿<views:MvxWpfView
+    x:Class="SolPM.WPF.Views.OpenVaultView"
+    xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+    xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:converters="clr-namespace:SolPM.WPF.Converters"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SolPM.WPF.Views"
+    mc:Ignorable="d"
+    d:DesignHeight="450"
+    d:DesignWidth="800">
+
+    <views:MvxWpfView.InputBindings>
+        <!-- Cancel -->
+        <KeyBinding
+            Command="{Binding NavigateVaultView}"
+            Gesture="ESC" />
+    </views:MvxWpfView.InputBindings>
+
+    <views:MvxWpfView.Resources>
+        <Storyboard
+            x:Key="ColorZoneSlideDown">
+            <DoubleAnimationUsingKeyFrames
+                Storyboard.TargetProperty="(FrameworkElement.Height)"
+                Storyboard.TargetName="ColorZone">
+                <EasingDoubleKeyFrame
+                    KeyTime="0"
+                    Value="40" />
+                <EasingDoubleKeyFrame
+                    KeyTime="0:0:0.5"
+                    Value="80">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase
+                            EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <converters:IntToStringConverter
+            x:Key="IntToStrConverter" />
+
+        <converters:VaultParamsMultiConverter
+            x:Key="VaultParamsMultiConverter" />
+    </views:MvxWpfView.Resources>
+
+    <views:MvxWpfView.Triggers>
+        <EventTrigger
+            RoutedEvent="views:MvxWpfView.Loaded">
+            <BeginStoryboard
+                Storyboard="{StaticResource ColorZoneSlideDown}" />
+        </EventTrigger>
+    </views:MvxWpfView.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+
+        <materialDesign:ColorZone
+            x:Name="ColorZone"
+            Mode="PrimaryDark"
+            Grid.Row="0"
+            Padding="16">
+            <Grid>
+                <Button
+                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                    Command="{Binding NavigateVaultView}"
+                    HorizontalAlignment="Left"
+                    ToolTip="Back">
+                    <materialDesign:PackIcon
+                        Width="32"
+                        Height="32"
+                        Kind="ArrowBack" />
+                </Button>
+                <TextBlock
+                    Text="Open Vault"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    FontWeight="Light" />
+                <Button
+                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                    Click="OpenVaultButton_Click"
+                    HorizontalAlignment="Right"
+                    ToolTip="Open">
+                    <materialDesign:PackIcon
+                        Width="32"
+                        Height="32"
+                        Kind="FolderOpenOutline" />
+                </Button>
+            </Grid>
+        </materialDesign:ColorZone>
+        <ScrollViewer
+            Grid.Row="1">
+            <Grid
+                Margin="50 20">
+                <GroupBox
+                    Style="{DynamicResource MaterialDesignGroupBox}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                    Margin="0 0 0 20"
+                    BorderThickness="0">
+                    <GroupBox.Header>
+                        <TextBlock
+                            Text="Unlock SolPM Vault" />
+                    </GroupBox.Header>
+                    <StackPanel>
+                        <TextBlock
+                            TextWrapping="Wrap"
+                            Text="Please enter the location of the vault you wish to unlock as well as the password used to protect it."
+                            Margin="0 10 0 20" />
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <TextBox
+                                x:Name="VaultLocationTextBox"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                HorizontalAlignment="Left"
+                                IsReadOnly="True"
+                                Width="318"
+                                Margin="0 0 10 20"
+                                materialDesign:HintAssist.Hint="Vault Location">
+                            </TextBox>
+                            <Button
+                                Content="Browse"
+                                Foreground="White"
+                                Click="VaultLocationButton_Click" />
+                        </StackPanel>
+
+                        <PasswordBox
+                            x:Name="VaultPasswordBox"
+                            Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Margin="0 20 0 0"
+                            Width="318"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="Enter Master Password" />
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</views:MvxWpfView>

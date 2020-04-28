@@ -1,9 +1,8 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using Microsoft.Win32;
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
 using SolPM.Core.Models;
 using SolPM.Core.ViewModels;
-using System.Threading.Tasks;
 
 namespace SolPM.WPF.Views
 {
@@ -48,6 +47,26 @@ namespace SolPM.WPF.Views
             FolderList.SelectedItem = folder;
 
             RootDialog.IsOpen = true;
+        }
+
+        private void SaveVaultAs_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var dialog = new SaveFileDialog
+            {
+                DefaultExt = ".solpv",
+                Filter = "Solar Password Vault (*.solpv)|*.solpv"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                // Get current ViewModel
+                var viewModel = (VaultViewModel)DataContext;
+
+                if (viewModel.SaveVaultAsCommand.CanExecute())
+                {
+                    viewModel.SaveVaultAsCommand.Execute(dialog.FileName);
+                }
+            }
         }
     }
 }

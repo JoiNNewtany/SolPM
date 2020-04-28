@@ -33,6 +33,21 @@
             Command="{Binding NavigateDatabaseView}"
             Gesture="CTRL+N" />
 
+        <!-- Save Vault -->
+        <KeyBinding
+            Command="{Binding SaveVaultCommand}"
+            Gesture="CTRL+S" />
+
+        <!-- Open Vault -->
+        <KeyBinding
+            Command="{Binding NavigateOpenVaultView}"
+            Gesture="CTRL+O" />
+
+        <!-- Close Vault -->
+        <KeyBinding
+            Command="{Binding CloseVaultCommand}"
+            Gesture="CTRL+W" />
+
         <!-- Entry Menu Bindings-->
 
         <!-- New Entry -->
@@ -130,7 +145,7 @@
                             Height="200" />
                     </StackPanel>
                 </Expander>
-                
+
                 <StackPanel
                     Grid.Row="2"
                     Orientation="Horizontal"
@@ -203,7 +218,8 @@
                             Header="Open">
                             <MenuItem
                                 Header="Open..."
-                                InputGestureText="Ctrl+O">
+                                InputGestureText="Ctrl+O"
+                                Command="{Binding NavigateOpenVaultView}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon
                                         Kind="FolderOpenOutline"
@@ -230,7 +246,8 @@
                         </MenuItem>
                         <MenuItem
                             Header="Close"
-                            InputGestureText="Ctrl+W">
+                            InputGestureText="Ctrl+W"
+                            Command="{Binding CloseVaultCommand}">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="CloseBoxOutline"
@@ -244,7 +261,8 @@
                         <Separator />
                         <MenuItem
                             Header="Save"
-                            InputGestureText="Ctrl+S">
+                            InputGestureText="Ctrl+S"
+                            Command="{Binding SaveVaultCommand}">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="ContentSaveOutline"
@@ -258,7 +276,8 @@
                         <MenuItem
                             Header="Save As">
                             <MenuItem
-                                Header="Save to File...">
+                                Header="Save to File..."
+                                Click="SaveVaultAs_Click">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon
                                         Kind="ContentSaveEditOutline"
@@ -530,13 +549,15 @@
                     </Button>
                     <Button
                         ToolTip="Open"
-                        Padding="10">
+                        Padding="10"
+                        Command="{Binding NavigateOpenVaultView}">
                         <materialDesign:PackIcon
                             Kind="FolderOpen" />
                     </Button>
                     <Button
                         ToolTip="Save"
-                        Padding="10">
+                        Padding="10"
+                        Command="{Binding SaveVaultCommand}">
                         <materialDesign:PackIcon
                             Kind="ContentSave" />
                     </Button>
