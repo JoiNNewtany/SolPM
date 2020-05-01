@@ -1,8 +1,12 @@
 ﻿using Microsoft.Win32;
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
+using SolPM.Core.Models;
 using SolPM.Core.ViewModels;
 using SolPM.Core.ViewModels.Parameters;
+using System.Diagnostics;
+using System.Security;
+using System.Windows.Input;
 
 namespace SolPM.WPF.Views
 {
@@ -15,7 +19,49 @@ namespace SolPM.WPF.Views
         public OpenVaultView()
         {
             InitializeComponent();
+            Parameters = new VaultParams();
         }
+
+        public VaultParams Parameters { get; set; }
+
+        // Exposing parameters as properties to force re-evaluation of CanExecute
+        #region Parameters Properties
+
+        public string FilePath
+        {
+            get
+            {
+                return Parameters.FilePath;
+            }
+            set
+            {
+                Parameters.FilePath = value;
+
+                Debug.WriteLine($"FilePath = {value}");
+
+                var viewModel = (OpenVaultViewModel)DataContext;
+                viewModel.OpenVaultCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public SecureString Password
+        {
+            get
+            {
+                return Parameters.Password;
+            }
+            set
+            {
+                Parameters.Password = value;
+
+                Debug.WriteLine($"Password = {value}");
+
+                var viewModel = (OpenVaultViewModel)DataContext;
+                viewModel.OpenVaultCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        # endregion Parameters Properties
 
         private void VaultLocationButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -31,26 +77,6 @@ namespace SolPM.WPF.Views
             if (dialog.ShowDialog() == true)
             {
                 VaultLocationTextBox.Text = dialog.FileName;
-            }
-        }
-
-        private void OpenVaultButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            // Why write MultiValueConverters when you can
-            // just use code-behind and it actually works, right?
-
-            VaultParams vaultParams = new VaultParams();
-
-            vaultParams.FilePath = VaultLocationTextBox.Text;
-            vaultParams.Password = VaultPasswordBox.SecurePassword;
-
-            // Get current ViewModel
-            var viewModel = (OpenVaultViewModel)DataContext;
-
-            // Execute command
-            if (viewModel.OpenVaultCommand.CanExecute(vaultParams))
-            {
-                viewModel.OpenVaultCommand.Execute(vaultParams);
             }
         }
     }

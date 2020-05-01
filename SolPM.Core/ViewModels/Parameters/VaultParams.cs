@@ -10,5 +10,6 @@ namespace SolPM.Core.ViewModels.Parameters
         public string Description;
         public EncryptionInfo EncryptionInfo;
         public SecureString Password;
+        public SecureString ValidationPassword;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using SolPM.Core.Helpers;
 using SolPM.Core.Models;
 using SolPM.Core.ViewModels.Parameters;
 using System.Diagnostics;
@@ -19,47 +20,11 @@ namespace SolPM.Core.ViewModels
             // Commands
 
             NavigateVaultView = new MvxAsyncCommand(() => _navigationService.Navigate<VaultViewModel>());
-            CreateVaultCommand = new MvxCommand<VaultParams>((s) => CreateVault(s));
+            CreateVaultCommand = new MvxCommand<VaultParams>((s) => CreateVault(s), (s) => CanCreateVault(s));
         }
 
         public override async Task Initialize()
         {
-            Debug.WriteLine($"DatabaseViewModel: Initialize called.");
-
-            //Vault vault = Vault.GetInstance();
-
-            //SecureString testPassword = new SecureString();
-            //testPassword.AppendChar('t');
-            //testPassword.AppendChar('e');
-            //testPassword.AppendChar('s');
-            //testPassword.AppendChar('t');
-
-            //vault.Location = "E:\\Downloads\\TestVault1.solpv";
-
-            //vault.EncryptionInfo.SelectedAlgorithm = Algorithm.Twofish_256;
-            //vault.SetupEncryption(testPassword);
-            /*
-            vault.EncryptToFile("E:\\Downloads\\TestVault1.solpv", testPassword);
-            vault.EncryptToFile("E:\\Downloads\\TestVault2.solpv", vault.EncryptionInfo.ProtectedKey);
-
-            // Reset vault to empty
-            Vault.Delete();
-            vault = Vault.GetInstance();
-
-            Debug.WriteLine($"Vault exists: {Vault.Exists()}");
-            vault.DecryptFromFile("E:\\Downloads\\TestVault1.solpv", testPassword);
-            Debug.WriteLine($"Opened vault: {vault.Name}");
-
-            // Reset vault to empty
-            Vault.Delete();
-            vault = Vault.GetInstance();
-
-            Debug.WriteLine($"Vault exists: {Vault.Exists()}");
-            */
-            //vault.DecryptFromFile("E:\\Downloads\\test.solpv", testPassword);
-            //Debug.WriteLine($"Opened vault: {vault.Name}");
-
-            // TODO: PASSWORD IS BREAKING FOR SOME REASON?
         }
 
         #region Commands
@@ -74,7 +39,6 @@ namespace SolPM.Core.ViewModels
             if (Vault.Exists())
             {
                 // TODO: Rewrite this
-                //throw new NotImplementedException("Vault already exists but idk what to do with it yet");
                 var _vault = Vault.GetInstance();
                 _vault.EncryptToFile(_vault.Location, _vault.EncryptionInfo.ProtectedKey);
                 Vault.Delete();
@@ -93,6 +57,36 @@ namespace SolPM.Core.ViewModels
             vaultParams.Password.Dispose();
 
             _navigationService.Navigate<VaultViewModel>();
+        }
+
+        public bool CanCreateVault(VaultParams vaultParams)
+        {
+            if (null == vaultParams)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(vaultParams.FilePath))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(vaultParams.Name))
+            {
+                return false;
+            }
+
+            if (null == vaultParams.Password || null == vaultParams.ValidationPassword)
+            {
+                return false;
+            }
+
+            if (!SecureStringExtension.Equals(vaultParams.Password, vaultParams.ValidationPassword))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace SolPM.WPF.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Debug.WriteLine($"CONVERTER: recieved {value} of {value.GetType()}");
             if (value is double)
             {
                 return ((double)value).ToString();
@@ -24,7 +23,6 @@ namespace SolPM.WPF.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Debug.WriteLine($"CONVERTER: returned {value} of {value.GetType()}");
             if (value is string text)
             {
                 if (int.TryParse(text, out var number))

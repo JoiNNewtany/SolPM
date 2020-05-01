@@ -4,7 +4,9 @@ using MvvmCross.ViewModels;
 using SolPM.Core.Models;
 using SolPM.Core.ViewModels;
 using SolPM.Core.ViewModels.Parameters;
-using System;
+using System.Diagnostics;
+using System.Security;
+using System.Windows.Controls;
 
 namespace SolPM.WPF.Views
 {
@@ -17,7 +19,119 @@ namespace SolPM.WPF.Views
         public DatabaseView()
         {
             InitializeComponent();
+            Parameters = new VaultParams();
+            EncryptionInfo = new EncryptionInfo
+            {
+                DeriviationRounds = 10000,
+                SelectedAlgorithm = Algorithm.AES_256,
+            };
         }
+
+        public VaultParams Parameters { get; set; }
+
+        // Exposing parameters as properties to force re-evaluation of CanExecute
+        #region Parameters Properties
+
+        public string FilePath
+        {
+            get
+            {
+                return Parameters.FilePath;
+            }
+            set
+            {
+                Parameters.FilePath = value;
+
+                Debug.WriteLine($"FilePath = {value}");
+
+                var viewModel = (DatabaseViewModel)DataContext;
+                viewModel.CreateVaultCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string VaultName
+        {
+            get
+            {
+                return Parameters.Name;
+            }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    Debug.WriteLine("BIG REEE ITS NULL!!!");
+                }
+
+                Parameters.Name = value;
+
+                Debug.WriteLine($"VaultName = {value}");
+
+                var viewModel = (DatabaseViewModel)DataContext;
+                viewModel.CreateVaultCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return Parameters.Description;
+            }
+            set
+            {
+                Parameters.Description = value;
+
+                Debug.WriteLine($"Description = {value}");
+            }
+        }
+
+        public EncryptionInfo EncryptionInfo
+        {
+            get
+            {
+                return Parameters.EncryptionInfo;
+            }
+            set
+            {
+                Parameters.EncryptionInfo = value;
+            }
+        }
+
+        public SecureString Password
+        {
+            get
+            {
+                return Parameters.Password;
+            }
+            set
+            {
+                Parameters.Password = value;
+
+                Debug.WriteLine($"Password = {value}");
+
+                var viewModel = (DatabaseViewModel)DataContext;
+                viewModel.CreateVaultCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public SecureString ValidationPassword
+        {
+            get
+            {
+                return Parameters.ValidationPassword;
+            }
+            set
+            {
+                Parameters.ValidationPassword = value;
+
+                Debug.WriteLine($"ValidationPassword = {value}");
+
+                var viewModel = (DatabaseViewModel)DataContext;
+                viewModel.CreateVaultCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        # endregion Parameters Properties
 
         private void VaultLocation_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -33,45 +147,18 @@ namespace SolPM.WPF.Views
             }
         }
 
-        private void CreateVaultButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void MvxWpfView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            // Doing this in code-behind since PasswordBox
-            // doesn't work with MultiValueConverters
-            // despite SecurePassword being bindable
+            // Workaround to change the index to 0
+            // because it's -1 by default and nothing else worked
+            AlgorithmComboBox.SelectedIndex = 0;
+        }
 
-            VaultParams vaultParams = new VaultParams();
-            vaultParams.EncryptionInfo = new EncryptionInfo();
-
-            vaultParams.FilePath = VaultLocationTextBox.Text;
-            vaultParams.Name = VaultNameTextBox.Text;
-            vaultParams.Description = VaultDescriptionTextBox.Text;
-            vaultParams.EncryptionInfo.DeriviationRounds = Convert.ToInt32(Math.Floor(RoundsSlider.Value));
-
-            // Algorithm combobox index
-            switch (AlgorithmComboBox.SelectedIndex)
-            {
-                case 0:
-                    vaultParams.EncryptionInfo.SelectedAlgorithm = Algorithm.AES_256;
-                    break;
-
-                case 1:
-                    vaultParams.EncryptionInfo.SelectedAlgorithm = Algorithm.Twofish_256;
-                    break;
-
-                default:
-                    break;
-            }
-
-            vaultParams.Password = VaultPasswordBox.SecurePassword;
-
-            // Get current ViewModel
-            var viewModel = (DatabaseViewModel)DataContext;
-
-            // Execute command
-            if (viewModel.CreateVaultCommand.CanExecute(vaultParams))
-            {
-                viewModel.CreateVaultCommand.Execute(vaultParams);
-            }
+        private void VaultPasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        {
+            // Workaround to set the VerificationPassword property
+            // of the PasswordRule since it cannot be bound
+            //PasswordValidation.ValidationPassword = ((PasswordBox)sender).SecurePassword;
         }
     }
 }
