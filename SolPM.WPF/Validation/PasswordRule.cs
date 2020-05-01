@@ -1,8 +1,7 @@
-﻿using System;
+﻿using SolPM.Core.Helpers;
 using System.Globalization;
 using System.Security;
 using System.Windows.Controls;
-using SolPM.Core.Helpers;
 
 namespace SolPM.WPF.Validation
 {

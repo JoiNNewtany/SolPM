@@ -54,7 +54,7 @@
             x:Key="AES_256">
             AES_256
         </models:Algorithm>
-        
+
         <models:Algorithm
             x:Key="Twofish_256">
             Twofish_256
@@ -359,7 +359,7 @@
                                                     UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
                                                         <!-- ValidationPassword property is set in code-behind -->
-                                                        <validation:EmptyRule/>
+                                                        <validation:EmptyRule />
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </behaviors:SecurePasswordBindingBehavior.SecurePassword>

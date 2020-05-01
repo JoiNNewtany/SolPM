@@ -6,7 +6,6 @@ using SolPM.Core.ViewModels;
 using SolPM.Core.ViewModels.Parameters;
 using System.Diagnostics;
 using System.Security;
-using System.Windows.Controls;
 
 namespace SolPM.WPF.Views
 {

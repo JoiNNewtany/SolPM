@@ -6,7 +6,6 @@ using SolPM.Core.ViewModels.Parameters;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SolPM.Core.ViewModels
 {

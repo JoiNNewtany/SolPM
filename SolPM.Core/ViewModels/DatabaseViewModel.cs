@@ -4,7 +4,6 @@ using MvvmCross.ViewModels;
 using SolPM.Core.Helpers;
 using SolPM.Core.Models;
 using SolPM.Core.ViewModels.Parameters;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace SolPM.Core.ViewModels

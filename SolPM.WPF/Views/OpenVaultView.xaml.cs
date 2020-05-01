@@ -1,12 +1,10 @@
 ﻿using Microsoft.Win32;
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
-using SolPM.Core.Models;
 using SolPM.Core.ViewModels;
 using SolPM.Core.ViewModels.Parameters;
 using System.Diagnostics;
 using System.Security;
-using System.Windows.Input;
 
 namespace SolPM.WPF.Views
 {
