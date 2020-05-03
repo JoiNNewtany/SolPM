@@ -5,6 +5,8 @@
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:converters="clr-namespace:SolPM.WPF.Converters"
+    xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behaviors="clr-namespace:SolPM.WPF.Behaviors"
     xmlns:dt="clr-namespace:SolPM.WPF"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -123,10 +125,30 @@
                             <materialDesign:PopupBox
                                 HorizontalAlignment="Right">
                                 <StackPanel>
-                                    <Button
-                                        Content="Move Up" />
-                                    <Button
-                                        Content="Move Down" />
+                                    <StackPanel
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            ToolTip="Move Up">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon
+                                                    Margin="-4"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Kind="ArrowTop" />
+                                            </Button.Content>
+                                        </Button>
+                                        <Button
+                                            ToolTip="Move Down">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon
+                                                    Margin="-4"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Kind="ArrowBottom" />
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
                                     <Separator />
                                     <Button
                                         Content="Delete"
@@ -171,11 +193,34 @@
                             <materialDesign:PopupBox
                                 HorizontalAlignment="Right">
                                 <StackPanel>
-                                    <Button
-                                        Content="Move Up" />
-                                    <Button
-                                        Content="Move Down" />
+                                    <StackPanel
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            ToolTip="Move Up">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon
+                                                    Margin="-4"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Kind="ArrowTop" />
+                                            </Button.Content>
+                                        </Button>
+                                        <Button
+                                            ToolTip="Move Down">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon
+                                                    Margin="-4"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Kind="ArrowBottom"/>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
                                     <Separator />
+                                    <Button 
+                                        Content="Copy Value"
+                                        Click="CopyPassword_Click"/>
                                     <Button
                                         Content="Delete"
                                         CommandParameter="{Binding}"
@@ -189,7 +234,12 @@
                         <PasswordBox
                             Margin="0 0 10 0"
                             materialDesign:HintAssist.Hint="Password"
-                            materialDesign:TextFieldAssist.HasClearButton="True" />
+                            materialDesign:TextFieldAssist.HasClearButton="False">
+                            <interactions:Interaction.Behaviors>
+                                <behaviors:SecurePasswordBindingBehavior
+                                    SecurePassword="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </interactions:Interaction.Behaviors>
+                        </PasswordBox>
                     </Grid>
                 </GroupBox>
             </ControlTemplate>
@@ -218,10 +268,30 @@
                             <materialDesign:PopupBox
                                 HorizontalAlignment="Right">
                                 <StackPanel>
-                                    <Button
-                                        Content="Move Up" />
-                                    <Button
-                                        Content="Move Down" />
+                                    <StackPanel
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            ToolTip="Move Up">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon
+                                                    Margin="-4"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Kind="ArrowTop" />
+                                            </Button.Content>
+                                        </Button>
+                                        <Button
+                                            ToolTip="Move Down">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon
+                                                    Margin="-4"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Kind="ArrowBottom" />
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
                                     <Separator />
                                     <Button
                                         Content="Delete"
@@ -266,10 +336,30 @@
                             <materialDesign:PopupBox
                                 HorizontalAlignment="Right">
                                 <StackPanel>
-                                    <Button
-                                        Content="Move Up" />
-                                    <Button
-                                        Content="Move Down" />
+                                    <StackPanel
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            ToolTip="Move Up">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon
+                                                    Margin="-4"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Kind="ArrowTop" />
+                                            </Button.Content>
+                                        </Button>
+                                        <Button
+                                            ToolTip="Move Down">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon
+                                                    Margin="-4"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Kind="ArrowBottom" />
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
                                     <Separator />
                                     <Button
                                         Content="Delete"
@@ -279,17 +369,29 @@
                             </materialDesign:PopupBox>
                         </Grid>
                     </GroupBox.Header>
-                    <StackPanel
-                        Margin="10"
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Text="Attach a file..."
-                            VerticalAlignment="Center" />
-                        <Button
-                            Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
-                            Margin="20 0"
-                            Content="Attach" />
+                    <StackPanel>
+                        <TextBlock 
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="10"
+                            Text="{Binding FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <StackPanel
+                            Margin="10"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Button
+                                Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                                Margin="20 0"
+                                Width="150"
+                                Click="UploadButton_Click"
+                                Content="Upload file..." />
+                            <Button
+                                Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                                Margin="20 0"
+                                Width="150"
+                                Click="DownloadButton_Click"
+                                Content="Download file..." />
+                        </StackPanel>
                     </StackPanel>
                 </GroupBox>
             </ControlTemplate>
@@ -661,6 +763,11 @@
                     </StackPanel>
                 </materialDesign:PopupBox>
             </DockPanel>
+
+            <materialDesign:Snackbar
+                Grid.Row="2"
+                MessageQueue="{materialDesign:MessageQueue}"
+                x:Name="EntrySnackbar" />
         </Grid>
     </materialDesign:DialogHost>
 </views:MvxWpfView>

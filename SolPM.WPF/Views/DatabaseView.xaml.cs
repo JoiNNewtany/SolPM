@@ -41,8 +41,6 @@ namespace SolPM.WPF.Views
             {
                 Parameters.FilePath = value;
 
-                Debug.WriteLine($"FilePath = {value}");
-
                 var viewModel = (DatabaseViewModel)DataContext;
                 viewModel.CreateVaultCommand.RaiseCanExecuteChanged();
             }
@@ -56,14 +54,7 @@ namespace SolPM.WPF.Views
             }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    Debug.WriteLine("BIG REEE ITS NULL!!!");
-                }
-
                 Parameters.Name = value;
-
-                Debug.WriteLine($"VaultName = {value}");
 
                 var viewModel = (DatabaseViewModel)DataContext;
                 viewModel.CreateVaultCommand.RaiseCanExecuteChanged();
@@ -79,8 +70,6 @@ namespace SolPM.WPF.Views
             set
             {
                 Parameters.Description = value;
-
-                Debug.WriteLine($"Description = {value}");
             }
         }
 
@@ -106,8 +95,6 @@ namespace SolPM.WPF.Views
             {
                 Parameters.Password = value;
 
-                Debug.WriteLine($"Password = {value}");
-
                 var viewModel = (DatabaseViewModel)DataContext;
                 viewModel.CreateVaultCommand.RaiseCanExecuteChanged();
             }
@@ -122,8 +109,6 @@ namespace SolPM.WPF.Views
             set
             {
                 Parameters.ValidationPassword = value;
-
-                Debug.WriteLine($"ValidationPassword = {value}");
 
                 var viewModel = (DatabaseViewModel)DataContext;
                 viewModel.CreateVaultCommand.RaiseCanExecuteChanged();

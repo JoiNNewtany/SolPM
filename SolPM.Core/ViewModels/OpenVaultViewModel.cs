@@ -54,6 +54,7 @@ namespace SolPM.Core.ViewModels
             var vault = Vault.GetInstance();
 
             vault.DecryptFromFile(vaultParams.FilePath, vaultParams.Password);
+            vault.SetupProtectedKey(vaultParams.Password);
 
             _navigationService.Navigate<VaultViewModel>();
         }

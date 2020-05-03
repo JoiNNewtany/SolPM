@@ -64,6 +64,7 @@
         <KeyBinding
             Command="{Binding RemoveEntryCommand}"
             Gesture="DEL" />
+
     </views:MvxWpfView.InputBindings>
 
     <materialDesign:DialogHost
@@ -160,16 +161,6 @@
                         </Button.CommandParameter>
                         ACCEPT
                     </Button>
-                    <!--<Button
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        IsCancel="True"
-                        Margin="0 8 8 0"
-                        Command="materialDesign:DialogHost.CloseDialogCommand">
-                        <Button.CommandParameter>
-                            <system:Boolean>False</system:Boolean>
-                        </Button.CommandParameter>
-                        CANCEL
-                    </Button>-->
                 </StackPanel>
             </Grid>
         </materialDesign:DialogHost.DialogContent>
@@ -231,6 +222,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem
+                                IsEnabled="False"
                                 Header="Open from Cloud Drive..."
                                 InputGestureText="Ctrl+Alt+O">
                                 <MenuItem.Icon>
@@ -289,7 +281,8 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem
-                                Header="Save to Cloud Drive...">
+                                Header="Save to Cloud Drive..."
+                                IsEnabled="False">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon
                                         Kind="CloudUploadOutline"
@@ -304,6 +297,7 @@
                         <Separator />
                         <MenuItem
                             Header="Lock Vault"
+                            IsEnabled="False"
                             InputGestureText="Ctrl+L">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -317,6 +311,7 @@
                         </MenuItem>
                         <MenuItem
                             Header="Exit"
+                            Command="{Binding ExitApplicationCommand}"
                             InputGestureText="Alt+F4">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -379,6 +374,7 @@
                         Height="40">
                         <MenuItem
                             Header="Copy Password"
+                            IsEnabled="False"
                             InputGestureText="Ctrl+C">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -392,6 +388,7 @@
                         </MenuItem>
                         <MenuItem
                             Header="Copy Username"
+                            IsEnabled="False"
                             InputGestureText="Ctrl+B">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -404,6 +401,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem
+                            IsEnabled="False"
                             Header="Copy Field">
                             <MenuItem
                                 Header="Example Field 1">
@@ -479,6 +477,7 @@
                         Header="_Tools"
                         Height="40">
                         <MenuItem
+                            IsEnabled="False"
                             Header="Generate Password...">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -492,6 +491,7 @@
                         </MenuItem>
                         <Separator />
                         <MenuItem
+                            IsEnabled="False"
                             Header="Options...">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -509,7 +509,21 @@
                         Header="Help"
                         Height="40">
                         <MenuItem
-                            Header="SolPM Wiki">
+                            Header="SolPM on Github"
+                            Command="{Binding OpenGithubCommand}">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon
+                                    Kind="MicrosoftGithub"
+                                    Width="24"
+                                    Height="24"
+                                    Margin="-10"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Header="SolPM Wiki"
+                            Command="{Binding OpenWikiCommand}">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="BookOutline"
@@ -522,6 +536,7 @@
                         </MenuItem>
                         <Separator />
                         <MenuItem
+                            IsEnabled="False"
                             Header="About SolPM">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -579,12 +594,14 @@
                     </Button>
                     <Separator />
                     <Button
+                        IsEnabled="False"
                         ToolTip="Copy Password"
                         Padding="10">
                         <materialDesign:PackIcon
                             Kind="Clipboard" />
                     </Button>
                     <Button
+                        IsEnabled="False"
                         ToolTip="Copy Username"
                         Padding="10">
                         <materialDesign:PackIcon
@@ -593,6 +610,7 @@
                     <Separator />
                     <!-- Search bar -->
                     <materialDesign:ColorZone
+                        IsEnabled="False"
                         Mode="Standard"
                         VerticalAlignment="Center"
                         Padding="8 2 8 2"

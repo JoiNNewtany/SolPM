@@ -104,6 +104,15 @@ namespace SolPM.Core.Models
             }
         }
 
+        /// <summary>
+        /// Unlike <c>SetupEncryption</c> this method prepares only
+        /// the <c>ProtectedKey</c> property of the vault.
+        /// </summary>
+        public void SetupProtectedKey(SecureString password)
+        {
+            EncryptionInfo.ProtectedKey = CryptoUtilities.GetEncryptionProtectionKey(password, EncryptionInfo.Salt);
+        }
+
         public void EncryptToFile(string filepath, SecureString password)
         {
             if (null == filepath)

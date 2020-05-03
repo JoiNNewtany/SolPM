@@ -80,15 +80,6 @@ namespace SolPM.Core.Cryptography
             }
         }
 
-        /*
-
-        1) Generate a random 128-bit key (k1), a random 128-bit IV, and a random salt (64 bits is probably sufficient).
-        2) Use PBKDF2 to generate a 256-bit key from your password and the salt, then split that into two 128-bit keys (k2, k3).
-        3) Use k2 to AES encrypt k1 using the random IV.
-        4) Save the encrypted key, k3, the salt and the IV to a file somewhere.
-
-        */
-
         /// <summary>
         /// Allows to retrieve a decrypted version of the key
         /// used to encrypt the data.
@@ -172,6 +163,7 @@ namespace SolPM.Core.Cryptography
                 if (ptr != IntPtr.Zero)
                     Marshal.ZeroFreeBSTR(ptr);
             }
+
             return bytes.Select(c => (byte)c).ToArray();
         }
 

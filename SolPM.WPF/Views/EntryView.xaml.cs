@@ -1,7 +1,14 @@
 ﻿using Microsoft.Win32;
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
+using SolPM.Core.Cryptography;
+using SolPM.Core.Models;
 using SolPM.Core.ViewModels;
+using System.IO;
+using System.Security;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace SolPM.WPF.Views
 {
@@ -16,7 +23,7 @@ namespace SolPM.WPF.Views
             InitializeComponent();
         }
 
-        private void SelectIconBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void SelectIconBtn_Click(object sender, RoutedEventArgs e)
         {
             // Get current ViewModel
             var viewModel = (EntryViewModel)DataContext;
@@ -26,11 +33,7 @@ namespace SolPM.WPF.Views
                 CheckFileExists = true,
                 Multiselect = false,
                 DefaultExt = ".png",
-                Filter = @"Image Files (*.png, *.jpg, *.bmp, *.ico)|*.png;*.jpeg;*.jpg;*.bmp;*.ico|
-                              PNG Files (*.png)|*.png|
-                              JPEG Files (*.jpg)|*.jpeg;*.jpg|
-                              Bitmap Files (*.bmp)|*.bmp|
-                              ICO Files (*.ico)|*.ico"
+                Filter = "Image Files (*.png, *.jpg, *.bmp, *.ico)|*.png;*.jpeg;*.jpg;*.bmp;*.ico|PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpeg;*.jpg|Bitmap Files (*.bmp)|*.bmp|ICO Files (*.ico)|*.ico"
             };
 
             // Call command
@@ -41,7 +44,7 @@ namespace SolPM.WPF.Views
             }
         }
 
-        private void SelectImageBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void SelectImageBtn_Click(object sender, RoutedEventArgs e)
         {
             // Get current ViewModel
             var viewModel = (EntryViewModel)DataContext;
@@ -51,11 +54,7 @@ namespace SolPM.WPF.Views
                 CheckFileExists = true,
                 Multiselect = false,
                 DefaultExt = ".png",
-                Filter = @"Image Files (*.png, *.jpg, *.bmp, *.ico)|*.png;*.jpeg;*.jpg;*.bmp;*.ico|
-                              PNG Files (*.png)|*.png|
-                              JPEG Files (*.jpg)|*.jpeg;*.jpg|
-                              Bitmap Files (*.bmp)|*.bmp|
-                              ICO Files (*.ico)|*.ico"
+                Filter = "Image Files (*.png, *.jpg, *.bmp, *.ico)|*.png;*.jpeg;*.jpg;*.bmp;*.ico|PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpeg;*.jpg|Bitmap Files (*.bmp)|*.bmp|ICO Files (*.ico)|*.ico"
             };
 
             // Call command
@@ -63,6 +62,75 @@ namespace SolPM.WPF.Views
                 viewModel.SetEntryImageCommand.CanExecute(dialog.FileName))
             {
                 viewModel.SetEntryImageCommand.Execute(dialog.FileName);
+            }
+        }
+
+        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog
+            {
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false,
+                Filter = "All Files (*.*)|*.*",
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    var content = File.ReadAllBytes(dialog.FileName);
+                    ((sender as Button).DataContext as Field).Value = content;
+                    ((sender as Button).DataContext as Field).FileName = dialog.SafeFileName;
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
+        private void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            var content = ((sender as Button).DataContext as Field).Value as byte[];
+            var fileName = ((sender as Button).DataContext as Field).FileName;
+
+            if (null == content)
+            {
+                EntrySnackbar.MessageQueue.Enqueue("This field does not contain any files.");
+                return;
+            }
+
+            var dialog = new SaveFileDialog
+            {
+                FileName = fileName,
+                DefaultExt = Path.GetExtension(fileName),
+                Filter = "All Files (*.*)|*.*",
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    File.WriteAllBytes(dialog.FileName, content);
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
+        private void CopyPassword_Click(object sender, RoutedEventArgs e)
+        {
+            var temp = (SecureString)((sender as Button).DataContext as Field).Value;
+            if (null != temp)
+            {
+                Clipboard.SetText(Encoding.UTF8.GetString(CryptoUtilities.SecStrBytes(temp)));
+            }
+            else
+            {
+                EntrySnackbar.MessageQueue.Enqueue("This field is empty.");
             }
         }
     }

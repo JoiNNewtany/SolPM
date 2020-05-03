@@ -3,7 +3,6 @@ using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
 using SolPM.Core.ViewModels;
 using SolPM.Core.ViewModels.Parameters;
-using System.Diagnostics;
 using System.Security;
 
 namespace SolPM.WPF.Views
@@ -35,8 +34,6 @@ namespace SolPM.WPF.Views
             {
                 Parameters.FilePath = value;
 
-                Debug.WriteLine($"FilePath = {value}");
-
                 var viewModel = (OpenVaultViewModel)DataContext;
                 viewModel.OpenVaultCommand.RaiseCanExecuteChanged();
             }
@@ -51,8 +48,6 @@ namespace SolPM.WPF.Views
             set
             {
                 Parameters.Password = value;
-
-                Debug.WriteLine($"Password = {value}");
 
                 var viewModel = (OpenVaultViewModel)DataContext;
                 viewModel.OpenVaultCommand.RaiseCanExecuteChanged();

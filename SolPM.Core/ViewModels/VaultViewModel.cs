@@ -1,10 +1,12 @@
 ﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using SolPM.Core.Cryptography;
 using SolPM.Core.Models;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace SolPM.Core.ViewModels
@@ -30,6 +32,9 @@ namespace SolPM.Core.ViewModels
             SaveVaultCommand = new MvxCommand(SaveVault);
             SaveVaultAsCommand = new MvxCommand<string>((s) => SaveVaultAs(s));
             CloseVaultCommand = new MvxCommand(CloseVault);
+            OpenGithubCommand = new MvxCommand(() => Process.Start("https://github.com/JoiNNewtany/SolPM"));
+            OpenWikiCommand = new MvxCommand(() => Process.Start("https://github.com/JoiNNewtany/SolPM/wiki"));
+            ExitApplicationCommand = new MvxCommand(ExitApplication);
         }
 
         public override async Task Initialize()
@@ -57,6 +62,10 @@ namespace SolPM.Core.ViewModels
         public IMvxCommand SaveVaultCommand { get; private set; }
         public IMvxCommand SaveVaultAsCommand { get; private set; }
         public IMvxCommand CloseVaultCommand { get; private set; }
+
+        public IMvxCommand OpenGithubCommand { get; set; }
+        public IMvxCommand OpenWikiCommand { get; set; }
+        public IMvxCommand ExitApplicationCommand { get; set; }
 
         #endregion Commands
 
@@ -255,6 +264,11 @@ namespace SolPM.Core.ViewModels
         private void CloseVault()
         {
             // TODO: Implement unsaved changes dialog
+            if (!Vault.Exists())
+            {
+                return;
+            }
+
             Vault.Delete();
             Vault = null;
             SelectedEntry = null;
@@ -266,6 +280,15 @@ namespace SolPM.Core.ViewModels
             RaisePropertyChanged(() => SelectedFolder);
             RaisePropertyChanged(() => FolderEntries);
             RaisePropertyChanged(() => VaultFolders);
+        }
+
+        private void ExitApplication()
+        {
+            SaveVault();
+            CloseVault();
+
+            // TODO: Implement proper application shutdown
+            Environment.Exit(0);
         }
     }
 }
