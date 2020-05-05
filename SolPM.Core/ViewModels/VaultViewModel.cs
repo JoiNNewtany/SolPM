@@ -1,12 +1,11 @@
 ﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
-using SolPM.Core.Cryptography;
+using SolPM.Core.Interactions;
 using SolPM.Core.Models;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace SolPM.Core.ViewModels
@@ -14,6 +13,12 @@ namespace SolPM.Core.ViewModels
     public class VaultViewModel : MvxViewModel
     {
         private readonly IMvxNavigationService _navigationService;
+
+        private MvxInteraction<YesNoInteraction> _yesNoInteraction = new MvxInteraction<YesNoInteraction>();
+        public IMvxInteraction<YesNoInteraction> YNInteraction => _yesNoInteraction;
+
+        private MvxInteraction<MessageInteraction> _messageInteraction = new MvxInteraction<MessageInteraction>();
+        public IMvxInteraction<MessageInteraction> MessageInteraction => _messageInteraction;
 
         public VaultViewModel(IMvxNavigationService navigationService)
         {
@@ -71,8 +76,63 @@ namespace SolPM.Core.ViewModels
 
         #region Properties
 
-        public Vault Vault { get; set; }
-        public Entry SelectedEntry { get; set; }
+        private Vault vault;
+
+        public Vault Vault
+        {
+            get
+            {
+                return vault;
+            }
+
+            set
+            {
+                vault = value;
+                // Causing UI buttons to enable/disable
+                RaisePropertyChanged(() => IsVaultOpen);
+            }
+        }
+
+        private Entry selectedEntry;
+
+        public Entry SelectedEntry
+        {
+            get
+            {
+                return selectedEntry;
+            }
+
+            set
+            {
+                selectedEntry = value;
+                // Causing UI buttons to enable/disable
+                RaisePropertyChanged(() => IsEntrySelected);
+            }
+        }
+
+        public bool IsVaultOpen
+        {
+            get
+            {
+                return Vault.Exists();
+            }
+        }
+
+        public bool IsFolderOpen
+        {
+            get
+            {
+                return null != SelectedFolder;
+            }
+        }
+
+        public bool IsEntrySelected
+        {
+            get
+            {
+                return null != SelectedEntry;
+            }
+        }
 
         private Folder selectedFolder;
 
@@ -89,6 +149,8 @@ namespace SolPM.Core.ViewModels
                 RaisePropertyChanged(() => SelectedFolder);
                 // Causing FolderEntries to update on UI
                 RaisePropertyChanged(() => FolderEntries);
+                // Causing UI buttons to enable/disable
+                RaisePropertyChanged(() => IsFolderOpen);
             }
         }
 
@@ -98,7 +160,6 @@ namespace SolPM.Core.ViewModels
             {
                 if (Vault.Exists())
                 {
-                    //return Vault.GetInstance().FolderList;
                     return Vault.FolderList;
                 }
                 else
@@ -111,7 +172,6 @@ namespace SolPM.Core.ViewModels
             {
                 if (Vault.Exists())
                 {
-                    //Vault.GetInstance().FolderList = value;
                     Vault.FolderList = value;
                     RaisePropertyChanged(() => VaultFolders);
                 }
@@ -227,6 +287,27 @@ namespace SolPM.Core.ViewModels
             }
         }
 
+        //private void DisplayDialog(Action action, string message)
+        //{
+        //    var request = new YesNoInteraction
+        //    {
+        //        YesNoCallback = (accepted) =>
+        //        {
+        //            if (accepted)
+        //            {
+        //                action();
+        //            }
+        //        },
+        //        Message = message,
+        //    };
+        //    _yesNoInteraction.Raise(request);
+        //}
+
+        private void DisplayMessage(string message)
+        {
+            _messageInteraction.Raise(new MessageInteraction(message));
+        }
+
         private void SaveVault()
         {
             if (!Vault.Exists())
@@ -241,7 +322,15 @@ namespace SolPM.Core.ViewModels
                 throw new NotImplementedException("I don't know what to do with this ;-;");
             }
 
-            vault.EncryptToFile(vault.Location, vault.EncryptionInfo.ProtectedKey);
+            try
+            {
+                vault.EncryptToFile(vault.Location, vault.EncryptionInfo.ProtectedKey);
+                DisplayMessage("Vault saved.");
+            }
+            catch (Exception e)
+            {
+                DisplayMessage($"Unable to save: {e.Message}");
+            }
         }
 
         private void SaveVaultAs(string filePath)
@@ -258,7 +347,15 @@ namespace SolPM.Core.ViewModels
 
             var vault = Vault.GetInstance();
 
-            vault.EncryptToFile(filePath, vault.EncryptionInfo.ProtectedKey);
+            try
+            {
+                vault.EncryptToFile(filePath, vault.EncryptionInfo.ProtectedKey);
+                DisplayMessage("Vault saved.");
+            }
+            catch (Exception e)
+            {
+                DisplayMessage($"Unable to save: {e.Message}");
+            }
         }
 
         private void CloseVault()
@@ -268,6 +365,10 @@ namespace SolPM.Core.ViewModels
             {
                 return;
             }
+
+            // TODO: Add IsSaved so the dialog isn't displayed every time
+            // Display save vault dialog
+            // DisplayDialog(SaveVault, "Save changes in the vault?");
 
             Vault.Delete();
             Vault = null;
@@ -284,7 +385,6 @@ namespace SolPM.Core.ViewModels
 
         private void ExitApplication()
         {
-            SaveVault();
             CloseVault();
 
             // TODO: Implement proper application shutdown

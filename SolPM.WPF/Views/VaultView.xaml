@@ -238,6 +238,7 @@
                         </MenuItem>
                         <MenuItem
                             Header="Close"
+                            IsEnabled="{Binding IsVaultOpen}"
                             InputGestureText="Ctrl+W"
                             Command="{Binding CloseVaultCommand}">
                             <MenuItem.Icon>
@@ -253,6 +254,7 @@
                         <Separator />
                         <MenuItem
                             Header="Save"
+                            IsEnabled="{Binding IsVaultOpen}"
                             InputGestureText="Ctrl+S"
                             Command="{Binding SaveVaultCommand}">
                             <MenuItem.Icon>
@@ -266,7 +268,8 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem
-                            Header="Save As">
+                            Header="Save As"
+                            IsEnabled="{Binding IsVaultOpen}">
                             <MenuItem
                                 Header="Save to File..."
                                 Click="SaveVaultAs_Click">
@@ -330,6 +333,7 @@
                         Height="40">
                         <MenuItem
                             Header="Add Folder..."
+                            IsEnabled="{Binding IsVaultOpen}"
                             Click="AddFolder_Click">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -343,6 +347,7 @@
                         </MenuItem>
                         <MenuItem
                             Header="Edit Folder..."
+                            IsEnabled="{Binding IsFolderOpen}"
                             Click="EditFolder_Click">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -356,6 +361,7 @@
                         </MenuItem>
                         <MenuItem
                             Header="Remove Folder"
+                            IsEnabled="{Binding IsFolderOpen}"
                             Command="{Binding RemoveFolderCommand}">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
@@ -431,6 +437,7 @@
                         <Separator />
                         <MenuItem
                             Header="Add Entry..."
+                            IsEnabled="{Binding IsFolderOpen}"
                             InputGestureText="Ctrl+E"
                             Command="{Binding AddEntryCommand}">
                             <MenuItem.Icon>
@@ -445,6 +452,7 @@
                         </MenuItem>
                         <MenuItem
                             Header="Edit Entry..."
+                            IsEnabled="{Binding IsEntrySelected}"
                             InputGestureText="Enter"
                             Command="{Binding EditEntryCommand}">
                             <MenuItem.Icon>
@@ -459,6 +467,7 @@
                         </MenuItem>
                         <MenuItem
                             Header="Remove Entry"
+                            IsEnabled="{Binding IsEntrySelected}"
                             InputGestureText="Del"
                             Command="{Binding RemoveEntryCommand}">
                             <MenuItem.Icon>
@@ -571,6 +580,7 @@
                     </Button>
                     <Button
                         ToolTip="Save"
+                        IsEnabled="{Binding IsVaultOpen}"
                         Padding="10"
                         Command="{Binding SaveVaultCommand}">
                         <materialDesign:PackIcon
@@ -580,6 +590,7 @@
                     <!-- Entry -->
                     <Button
                         ToolTip="Add Entry"
+                        IsEnabled="{Binding IsFolderOpen}"
                         Padding="10"
                         Command="{Binding AddEntryCommand}">
                         <materialDesign:PackIcon
@@ -587,6 +598,7 @@
                     </Button>
                     <Button
                         ToolTip="Edit Entry"
+                        IsEnabled="{Binding IsEntrySelected}"
                         Padding="10"
                         Command="{Binding EditEntryCommand}">
                         <materialDesign:PackIcon
@@ -745,6 +757,11 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Grid>
+
+            <materialDesign:Snackbar
+                Grid.Row="1"
+                MessageQueue="{materialDesign:MessageQueue}"
+                x:Name="VaultSnackbar" />
         </Grid>
     </materialDesign:DialogHost>
 </views:MvxWpfView>

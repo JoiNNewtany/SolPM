@@ -3,7 +3,11 @@ using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
 using SolPM.Core.ViewModels;
 using SolPM.Core.ViewModels.Parameters;
+using SolPM.Core.Interactions;
 using System.Security;
+using MvvmCross.Base;
+using MvvmCross.Binding.BindingContext;
+using System.Data.SqlTypes;
 
 namespace SolPM.WPF.Views
 {
@@ -17,6 +21,10 @@ namespace SolPM.WPF.Views
         {
             InitializeComponent();
             Parameters = new VaultParams();
+
+            var set = this.CreateBindingSet<OpenVaultView, OpenVaultViewModel>();
+            set.Bind(this).For(view => view.Interaction).To(viewModel => viewModel.MessageInteraction).OneWay();
+            set.Apply();
         }
 
         public VaultParams Parameters { get; set; }
@@ -55,6 +63,31 @@ namespace SolPM.WPF.Views
         }
 
         # endregion Parameters Properties
+
+        private IMvxInteraction<MessageInteraction> _interaction = new MvxInteraction<MessageInteraction>();
+        public IMvxInteraction<MessageInteraction> Interaction
+        {
+            get => _interaction;
+            set
+            {
+                if (null != _interaction)
+                    _interaction.Requested -= OnInteractionRequested;
+                
+                if (null != value)
+                {
+                    _interaction = value;
+                    _interaction.Requested += OnInteractionRequested;
+                }
+            }
+        }
+
+        private void OnInteractionRequested(object sender, MvxValueEventArgs<MessageInteraction> eventArgs)
+        {
+            var message = eventArgs.Value;
+            // show dialog
+            OpenVaultSnackbar.MessageQueue.Enqueue(message.Message);
+        }
+
 
         private void VaultLocationButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {

@@ -152,6 +152,7 @@
                             Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
+                            MaxLength="256"
                             Margin="0 20 0 0"
                             Width="318"
                             materialDesign:TextFieldAssist.HasClearButton="True"
@@ -174,6 +175,9 @@
                         </PasswordBox>
                     </StackPanel>
                 </GroupBox>
+                <materialDesign:Snackbar
+                    MessageQueue="{materialDesign:MessageQueue}"
+                    x:Name="OpenVaultSnackbar" />
             </Grid>
         </ScrollViewer>
     </Grid>

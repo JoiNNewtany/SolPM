@@ -3,15 +3,20 @@ using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using SolPM.Core.Models;
 using SolPM.Core.ViewModels.Parameters;
+using SolPM.Core.Interactions;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using MvvmCross.Binding.BindingContext;
 
 namespace SolPM.Core.ViewModels
 {
     public class OpenVaultViewModel : MvxViewModel
     {
         private readonly IMvxNavigationService _navigationService;
+
+        private MvxInteraction<MessageInteraction> _messageInteraction = new MvxInteraction<MessageInteraction>();
+        public IMvxInteraction<MessageInteraction> MessageInteraction => _messageInteraction;
 
         public OpenVaultViewModel(IMvxNavigationService navigationService)
         {
@@ -53,10 +58,17 @@ namespace SolPM.Core.ViewModels
 
             var vault = Vault.GetInstance();
 
-            vault.DecryptFromFile(vaultParams.FilePath, vaultParams.Password);
-            vault.SetupProtectedKey(vaultParams.Password);
-
-            _navigationService.Navigate<VaultViewModel>();
+            try
+            {
+                vault.DecryptFromFile(vaultParams.FilePath, vaultParams.Password);
+                vault.SetupProtectedKey(vaultParams.Password);
+                _navigationService.Navigate<VaultViewModel>();
+            }
+            catch (Exception e)
+            {
+                Vault.Delete();
+                _messageInteraction.Raise(new MessageInteraction(e.Message));
+            }
         }
 
         public bool CanOpenVault(VaultParams vaultParams)
@@ -67,6 +79,11 @@ namespace SolPM.Core.ViewModels
             }
 
             if (string.IsNullOrWhiteSpace(vaultParams.FilePath))
+            {
+                return false;
+            }
+
+            if (!Uri.IsWellFormedUriString("file:///" + vaultParams.FilePath.Replace("\\", "/"), UriKind.Absolute))
             {
                 return false;
             }
