@@ -4,6 +4,7 @@ using MvvmCross.ViewModels;
 using SolPM.Core.Helpers;
 using SolPM.Core.Models;
 using SolPM.Core.ViewModels.Parameters;
+using System;
 using System.Threading.Tasks;
 
 namespace SolPM.Core.ViewModels
@@ -69,6 +70,11 @@ namespace SolPM.Core.ViewModels
             {
                 return false;
             }
+
+            //if (!Uri.IsWellFormedUriString("file:///" + vaultParams.FilePath.Replace("\\", "/"), UriKind.Absolute))
+            //{
+            //    return false;
+            //}
 
             if (string.IsNullOrWhiteSpace(vaultParams.Name))
             {

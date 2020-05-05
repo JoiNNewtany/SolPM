@@ -135,8 +135,8 @@
                                 <TextBox
                                     x:Name="VaultLocationTextBox"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    IsReadOnly="True"
                                     HorizontalAlignment="Left"
+                                    IsReadOnly="True"
                                     Width="318"
                                     Margin="0 0 10 20"
                                     materialDesign:HintAssist.Hint="Vault Location">
@@ -147,7 +147,7 @@
                                             Mode="TwoWay"
                                             UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
-                                                <validation:EmptyRule />
+                                                <validation:SaveFilePathRule />
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
@@ -183,7 +183,7 @@
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 MaxHeight="90"
                                 Width="407"
-                                MaxLength="512"
+                                MaxLength="256"
                                 TextWrapping="Wrap"
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Left"
@@ -318,6 +318,7 @@
                                     x:Name="VaultPasswordBox"
                                     Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
                                     VerticalAlignment="Center"
+                                    MaxLength="256"
                                     Margin="0 20 0 0"
                                     PasswordChanged="VaultPasswordBox_PasswordChanged"
                                     Grid.Row="2"
@@ -344,6 +345,7 @@
                                     x:Name="VaultPasswordVerificationBox"
                                     Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
                                     VerticalAlignment="Center"
+                                    MaxLength="256"
                                     Margin="0 20 0 0"
                                     Grid.Row="3"
                                     Grid.ColumnSpan="2"

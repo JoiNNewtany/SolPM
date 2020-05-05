@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Security;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -115,9 +116,11 @@ namespace SolPM.Core.Models
 
         public void EncryptToFile(string filepath, SecureString password)
         {
+            #region Parameter Checks
+
             if (null == filepath)
             {
-                throw new ArgumentNullException("filepath", "Filepath can't be empty");
+                throw new ArgumentNullException("Filepath can't be empty");
             }
 
             if (null == EncryptionInfo)
@@ -145,13 +148,15 @@ namespace SolPM.Core.Models
                 throw new NullReferenceException("Salt can't be empty");
             }
 
+            #endregion Parameter Checks
+
             try
             {
                 using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
                 {
                     if (!CryptoUtilities.ValidatePassword(password, EncryptionInfo.ValidationKey, EncryptionInfo.Salt))
                     {
-                        throw new ArgumentException("Incorrect password", "password");
+                        throw new ArgumentException("Incorrect password");
                     }
 
                     // Serialize and encrypt folder list
@@ -197,35 +202,39 @@ namespace SolPM.Core.Models
         // To encrypt using stored copy of the key
         public void EncryptToFile(string filepath, byte[] protectedKey)
         {
+            #region Parameter Checks
+
             if (null == filepath)
             {
-                throw new ArgumentNullException("filepath", "Filepath can't be empty");
+                throw new ArgumentNullException("Filepath can't be empty.");
             }
 
             if (null == EncryptionInfo)
             {
-                throw new NullReferenceException("EncryptionInfo can't be empty");
+                throw new NullReferenceException("EncryptionInfo can't be empty.");
             }
 
             if (null == EncryptionInfo.EncryptionKey)
             {
-                throw new NullReferenceException("EncryptionKey can't be empty");
+                throw new NullReferenceException("EncryptionKey can't be empty.");
             }
 
             if (null == EncryptionInfo.ValidationKey)
             {
-                throw new NullReferenceException("ValidationKey can't be empty");
+                throw new NullReferenceException("ValidationKey can't be empty.");
             }
 
             if (null == EncryptionInfo.IV)
             {
-                throw new NullReferenceException("IV can't be empty");
+                throw new NullReferenceException("IV can't be empty.");
             }
 
             if (null == EncryptionInfo.Salt)
             {
-                throw new NullReferenceException("Salt can't be empty");
+                throw new NullReferenceException("Salt can't be empty.");
             }
+
+            #endregion Parameter Checks
 
             try
             {
@@ -263,6 +272,15 @@ namespace SolPM.Core.Models
                     }
 
                     File.WriteAllText(filepath, xml);
+
+                    //byte[] encodedText = Encoding.UTF8.GetBytes(xml);
+
+                    //using (FileStream sourceStream = new FileStream(filepath,
+                    //    FileMode.Create, FileAccess.Write, FileShare.None,
+                    //    bufferSize: 4096, useAsync: true))
+                    //{
+                    //    await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
+                    //};
                 }
             }
             catch (Exception)
@@ -275,20 +293,32 @@ namespace SolPM.Core.Models
         {
             if (string.IsNullOrWhiteSpace(filePath))
             {
-                throw new ArgumentNullException("filePath", "File path is empty or null");
+                throw new ArgumentNullException("File path is empty.");
             }
-
-            //if (Vault.Exists())
-            //{
-            //    // TODO: Figure out what to do with this
-            //    //throw new NotImplementedException("Vault already exists but idk what to do with it yet");
-            //    var _vault = Vault.GetInstance();
-            //    _vault.EncryptToFile(_vault.Location, _vault.EncryptionInfo.ProtectedKey);
-            //    Vault.Delete();
-            //}
 
             try
             {
+                // Reading vault from file
+
+                //string xml = string.Empty;
+
+                //using (FileStream sourceStream = new FileStream(filePath,
+                //    FileMode.Open, FileAccess.Read, FileShare.Read,
+                //    bufferSize: 4096, useAsync: true))
+                //{
+                //    StringBuilder sb = new StringBuilder();
+
+                //    byte[] buffer = new byte[0x1000];
+                //    int numRead;
+                //    while ((numRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                //    {
+                //        string text = Encoding.UTF8.GetString(buffer, 0, numRead);
+                //        sb.Append(text);
+                //    }
+
+                //    xml = sb.ToString();
+                //}
+
                 // Deserializing vault
 
                 var xml = File.ReadAllText(filePath);
@@ -306,7 +336,7 @@ namespace SolPM.Core.Models
                 {
                     if (!CryptoUtilities.ValidatePassword(password, EncryptionInfo.ValidationKey, EncryptionInfo.Salt))
                     {
-                        throw new ArgumentException("Incorrect password", "password");
+                        throw new ArgumentException("Incorrect password.");
                     }
 
                     // Unprotect the key and decrypt data

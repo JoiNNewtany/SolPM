@@ -83,10 +83,10 @@ namespace SolPM.Core.ViewModels
                 return false;
             }
 
-            if (!Uri.IsWellFormedUriString("file:///" + vaultParams.FilePath.Replace("\\", "/"), UriKind.Absolute))
-            {
-                return false;
-            }
+            //if (!Uri.IsWellFormedUriString("file:///" + vaultParams.FilePath.Replace("\\", "/"), UriKind.Absolute))
+            //{
+            //    return false;
+            //}
 
             if (!File.Exists(vaultParams.FilePath))
             {

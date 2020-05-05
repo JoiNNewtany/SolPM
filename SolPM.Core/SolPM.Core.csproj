@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="Cryptography\KeyDerivation\" />
     <Folder Include="Cryptography\PasswordGenerator\" />
-    <Folder Include="Interactions\" />
   </ItemGroup>
 
 </Project>

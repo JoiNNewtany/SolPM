@@ -105,11 +105,15 @@
     <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\IntToStringConverter.cs" />
     <Compile Include="Converters\VaultParamsMultiConverter.cs" />
+    <Compile Include="Dialogs\YesNoDialog.xaml.cs">
+      <DependentUpon>YesNoDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Validation\EmptyRule.cs" />
     <Compile Include="Validation\LengthRule.cs" />
     <Compile Include="Validation\OpenFilePathRule.cs" />
     <Compile Include="Validation\PasswordRule.cs" />
+    <Compile Include="Validation\SaveFilePathRule.cs" />
     <Compile Include="Views\DatabaseView.xaml.cs">
       <DependentUpon>DatabaseView.xaml</DependentUpon>
     </Compile>
@@ -122,6 +126,10 @@
     <Compile Include="Views\VaultView.xaml.cs">
       <DependentUpon>VaultView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Dialogs\YesNoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
