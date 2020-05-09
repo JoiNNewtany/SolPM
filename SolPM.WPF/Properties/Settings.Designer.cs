@@ -49,13 +49,12 @@ namespace SolPM.WPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LastOpenedVaultLocation {
+        public global::SolPM.Core.ViewModels.Parameters.PwdGenParams PwdGenParams {
             get {
-                return ((string)(this["LastOpenedVaultLocation"]));
+                return ((global::SolPM.Core.ViewModels.Parameters.PwdGenParams)(this["PwdGenParams"]));
             }
             set {
-                this["LastOpenedVaultLocation"] = value;
+                this["PwdGenParams"] = value;
             }
         }
     }

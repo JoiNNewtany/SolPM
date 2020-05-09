@@ -486,8 +486,8 @@
                         Header="_Tools"
                         Height="40">
                         <MenuItem
-                            IsEnabled="False"
-                            Header="Generate Password...">
+                            Header="Generate Password..."
+                            Click="PwdGenerator_Click">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
                                     Kind="TextboxPassword"

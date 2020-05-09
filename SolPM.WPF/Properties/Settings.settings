@@ -8,7 +8,7 @@
     <Setting Name="WindowWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">950</Value>
     </Setting>
-    <Setting Name="LastOpenedVaultLocation" Type="System.String" Scope="User">
+    <Setting Name="PwdGenParams" Type="SolPM.Core.ViewModels.Parameters.PwdGenParams" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

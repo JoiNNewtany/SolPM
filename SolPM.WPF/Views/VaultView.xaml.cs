@@ -5,9 +5,11 @@ using MvvmCross.ViewModels;
 using SolPM.Core.Models;
 using SolPM.Core.ViewModels;
 using SolPM.WPF.Dialogs;
+using SolPM.WPF.Windows;
 using MaterialDesignThemes.Wpf;
 using MvvmCross.Binding.BindingContext;
 using SolPM.Core.Interactions;
+using System.Windows;
 
 namespace SolPM.WPF.Views
 {
@@ -131,6 +133,13 @@ namespace SolPM.WPF.Views
                     viewModel.SaveVaultAsCommand.Execute(dialog.FileName);
                 }
             }
+        }
+
+        private void PwdGenerator_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new PwdGeneratorWindow();
+            window.DataContext = new PwdGeneratorViewModel();
+            window.Show();
         }
     }
 }

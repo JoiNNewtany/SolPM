@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Cryptography\KeyDerivation\" />
-    <Folder Include="Cryptography\PasswordGenerator\" />
   </ItemGroup>
 
 </Project>

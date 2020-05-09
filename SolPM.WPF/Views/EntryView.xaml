@@ -313,6 +313,7 @@
                     <TextBox
                         Text="{Binding Value, Mode=TwoWay}"
                         Margin="10"
+                        TextWrapping="Wrap"
                         AcceptsReturn="True"
                         SpellCheck.IsEnabled="True"
                         VerticalScrollBarVisibility="Auto"
