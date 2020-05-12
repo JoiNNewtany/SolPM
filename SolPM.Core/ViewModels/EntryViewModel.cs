@@ -4,6 +4,7 @@ using MvvmCross.ViewModels;
 using SolPM.Core.Helpers;
 using SolPM.Core.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -31,6 +32,8 @@ namespace SolPM.Core.ViewModels
             ClearEntryColorCommand = new MvxCommand(ClearEntryColor);
             AddFieldCommand = new MvxCommand<FieldTypes>((s) => AddField(s));
             RemoveFieldCommand = new MvxCommand<Field>((s) => RemoveField(s));
+            MoveFieldUpCommand = new MvxCommand<Field>((s) => MoveFieldUp(s));
+            MoveFieldDownCommand = new MvxCommand<Field>((s) => MoveFieldDown(s));
         }
 
         public override void Prepare()
@@ -77,6 +80,10 @@ namespace SolPM.Core.ViewModels
         public IMvxCommand AddFieldCommand { get; private set; }
 
         public IMvxCommand RemoveFieldCommand { get; private set; }
+
+        public IMvxCommand MoveFieldUpCommand { get; private set; }
+
+        public IMvxCommand MoveFieldDownCommand { get; private set; }
 
         #endregion Commands
 
@@ -139,6 +146,34 @@ namespace SolPM.Core.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine(field.Name);
                 Entry.FieldList.Remove(field);
+            }
+        }
+
+        private void MoveFieldUp(Field field)
+        {
+            var index = Entry.FieldList.IndexOf(field);
+
+            if ((index - 1) >= 0)
+            {
+                var old = Entry.FieldList[index - 1];
+                Entry.FieldList[index - 1] = field;
+                Entry.FieldList[index] = old;
+
+                RaisePropertyChanged(() => Entry);
+            }
+        }
+
+        private void MoveFieldDown(Field field)
+        {
+            var index = Entry.FieldList.IndexOf(field);
+
+            if ((index + 1) < Entry.FieldList.Count)
+            {
+                var old = Entry.FieldList[index + 1];
+                Entry.FieldList[index + 1] = field;
+                Entry.FieldList[index] = old;
+
+                RaisePropertyChanged(() => Entry);
             }
         }
     }

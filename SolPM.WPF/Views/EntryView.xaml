@@ -120,45 +120,89 @@
                                     MaxLength="42"
                                     Margin="15 0 0 0"
                                     VerticalAlignment="Center"
+                                    CaretBrush="{DynamicResource PrimaryHueLightBrush}"
+                                    materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueLightBrush}"
                                     materialDesign:HintAssist.Hint="Field Name"
                                     DockPanel.Dock="Left" />
                             </StackPanel>
-                            <materialDesign:PopupBox
+                            <StackPanel
+                                Orientation="Horizontal"
                                 HorizontalAlignment="Right">
-                                <StackPanel>
+
+                                <materialDesign:Card
+                                    Margin="10 0 0 0"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
+                                    <Button
+                                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                        ToolTip="Copy"
+                                        Click="CopyValue_Click">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="ClipboardOutline"
+                                                Margin="-11"
+                                                Width="24"
+                                                Height="24" />
+                                        </Button.Content>
+                                    </Button>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card
+                                    Background="{DynamicResource PrimaryHueMidBrush}"
+                                    Margin="10 0 0 0">
                                     <StackPanel
-                                        HorizontalAlignment="Center"
                                         Orientation="Horizontal">
                                         <Button
-                                            IsEnabled="False"
-                                            ToolTip="Move Up">
+                                            Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            ToolTip="Move Up"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.MoveFieldUpCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
                                             <Button.Content>
                                                 <materialDesign:PackIcon
-                                                    Margin="-4"
+                                                    Kind="ArrowTop"
+                                                    Margin="-11"
                                                     Width="24"
-                                                    Height="24"
-                                                    Kind="ArrowTop" />
+                                                    Height="24" />
                                             </Button.Content>
                                         </Button>
                                         <Button
-                                            IsEnabled="False"
-                                            ToolTip="Move Down">
+                                            Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            ToolTip="Move Down"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.MoveFieldDownCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
                                             <Button.Content>
                                                 <materialDesign:PackIcon
-                                                    Margin="-4"
+                                                    Kind="ArrowBottom"
+                                                    Margin="-11"
                                                     Width="24"
-                                                    Height="24"
-                                                    Kind="ArrowBottom" />
+                                                    Height="24" />
                                             </Button.Content>
                                         </Button>
                                     </StackPanel>
-                                    <Separator />
+                                </materialDesign:Card>
+
+                                <materialDesign:Card
+                                    Margin="10 0 0 0"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
                                     <Button
-                                        Content="Delete"
+                                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                        ToolTip="Remove"
                                         CommandParameter="{Binding}"
-                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}" />
-                                </StackPanel>
-                            </materialDesign:PopupBox>
+                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="CloseBoxOutline"
+                                                Margin="-11"
+                                                Width="24"
+                                                Height="24" />
+                                        </Button.Content>
+                                    </Button>
+                                </materialDesign:Card>
+
+                            </StackPanel>
                         </Grid>
                     </GroupBox.Header>
                     <Grid
@@ -191,48 +235,89 @@
                                     MaxLength="42"
                                     Margin="15 0 0 0"
                                     VerticalAlignment="Center"
+                                    CaretBrush="{DynamicResource PrimaryHueLightBrush}"
+                                    materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueLightBrush}"
                                     materialDesign:HintAssist.Hint="Field Name"
                                     DockPanel.Dock="Left" />
                             </StackPanel>
-                            <materialDesign:PopupBox
+                            <StackPanel
+                                Orientation="Horizontal"
                                 HorizontalAlignment="Right">
-                                <StackPanel>
+
+                                <materialDesign:Card
+                                    Margin="10 0 0 0"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
+                                    <Button
+                                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                        ToolTip="Copy"
+                                        Click="CopyValue_Click">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="ClipboardOutline"
+                                                Margin="-11"
+                                                Width="24"
+                                                Height="24" />
+                                        </Button.Content>
+                                    </Button>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card
+                                    Background="{DynamicResource PrimaryHueMidBrush}"
+                                    Margin="10 0 0 0">
                                     <StackPanel
-                                        HorizontalAlignment="Center"
                                         Orientation="Horizontal">
                                         <Button
-                                            IsEnabled="False"
-                                            ToolTip="Move Up">
+                                            Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            ToolTip="Move Up"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.MoveFieldUpCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
                                             <Button.Content>
                                                 <materialDesign:PackIcon
-                                                    Margin="-4"
+                                                    Kind="ArrowTop"
+                                                    Margin="-11"
                                                     Width="24"
-                                                    Height="24"
-                                                    Kind="ArrowTop" />
+                                                    Height="24" />
                                             </Button.Content>
                                         </Button>
                                         <Button
-                                            IsEnabled="False"
-                                            ToolTip="Move Down">
+                                            Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            ToolTip="Move Down"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.MoveFieldDownCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
                                             <Button.Content>
                                                 <materialDesign:PackIcon
-                                                    Margin="-4"
+                                                    Kind="ArrowBottom"
+                                                    Margin="-11"
                                                     Width="24"
-                                                    Height="24"
-                                                    Kind="ArrowBottom"/>
+                                                    Height="24" />
                                             </Button.Content>
                                         </Button>
                                     </StackPanel>
-                                    <Separator />
-                                    <Button 
-                                        Content="Copy Value"
-                                        Click="CopyPassword_Click"/>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card
+                                    Margin="10 0 0 0"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
                                     <Button
-                                        Content="Delete"
+                                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                        ToolTip="Remove"
                                         CommandParameter="{Binding}"
-                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}" />
-                                </StackPanel>
-                            </materialDesign:PopupBox>
+                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="CloseBoxOutline"
+                                                Margin="-11"
+                                                Width="24"
+                                                Height="24" />
+                                        </Button.Content>
+                                    </Button>
+                                </materialDesign:Card>
+
+                            </StackPanel>
                         </Grid>
                     </GroupBox.Header>
                     <Grid
@@ -269,45 +354,89 @@
                                     MaxLength="42"
                                     Margin="15 0 0 0"
                                     VerticalAlignment="Center"
+                                    CaretBrush="{DynamicResource PrimaryHueLightBrush}"
+                                    materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueLightBrush}"
                                     materialDesign:HintAssist.Hint="Field Name"
                                     DockPanel.Dock="Left" />
                             </StackPanel>
-                            <materialDesign:PopupBox
+                            <StackPanel
+                                Orientation="Horizontal"
                                 HorizontalAlignment="Right">
-                                <StackPanel>
+
+                                <materialDesign:Card
+                                    Margin="10 0 0 0"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
+                                    <Button
+                                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                        ToolTip="Copy"
+                                        Click="CopyValue_Click">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="ClipboardOutline"
+                                                Margin="-11"
+                                                Width="24"
+                                                Height="24" />
+                                        </Button.Content>
+                                    </Button>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card
+                                    Background="{DynamicResource PrimaryHueMidBrush}"
+                                    Margin="10 0 0 0">
                                     <StackPanel
-                                        HorizontalAlignment="Center"
                                         Orientation="Horizontal">
                                         <Button
-                                            IsEnabled="False"
-                                            ToolTip="Move Up">
+                                            Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            ToolTip="Move Up"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.MoveFieldUpCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
                                             <Button.Content>
                                                 <materialDesign:PackIcon
-                                                    Margin="-4"
+                                                    Kind="ArrowTop"
+                                                    Margin="-11"
                                                     Width="24"
-                                                    Height="24"
-                                                    Kind="ArrowTop" />
+                                                    Height="24" />
                                             </Button.Content>
                                         </Button>
                                         <Button
-                                            IsEnabled="False"
-                                            ToolTip="Move Down">
+                                            Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            ToolTip="Move Down"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.MoveFieldDownCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
                                             <Button.Content>
                                                 <materialDesign:PackIcon
-                                                    Margin="-4"
+                                                    Kind="ArrowBottom"
+                                                    Margin="-11"
                                                     Width="24"
-                                                    Height="24"
-                                                    Kind="ArrowBottom" />
+                                                    Height="24" />
                                             </Button.Content>
                                         </Button>
                                     </StackPanel>
-                                    <Separator />
+                                </materialDesign:Card>
+
+                                <materialDesign:Card
+                                    Margin="10 0 0 0"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
                                     <Button
-                                        Content="Delete"
+                                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                        ToolTip="Remove"
                                         CommandParameter="{Binding}"
-                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}" />
-                                </StackPanel>
-                            </materialDesign:PopupBox>
+                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="CloseBoxOutline"
+                                                Margin="-11"
+                                                Width="24"
+                                                Height="24" />
+                                        </Button.Content>
+                                    </Button>
+                                </materialDesign:Card>
+
+                            </StackPanel>
                         </Grid>
                     </GroupBox.Header>
                     <TextBox
@@ -341,45 +470,89 @@
                                     MaxLength="42"
                                     Margin="15 0 0 0"
                                     VerticalAlignment="Center"
+                                    CaretBrush="{DynamicResource PrimaryHueLightBrush}"
+                                    materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueLightBrush}"
                                     materialDesign:HintAssist.Hint="Field Name"
                                     DockPanel.Dock="Left" />
                             </StackPanel>
-                            <materialDesign:PopupBox
+                            <StackPanel
+                                Orientation="Horizontal"
                                 HorizontalAlignment="Right">
-                                <StackPanel>
+
+                                <materialDesign:Card
+                                    Margin="10 0 0 0"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
+                                    <Button
+                                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                        ToolTip="Copy"
+                                        Click="CopyValue_Click">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="ClipboardOutline"
+                                                Margin="-11"
+                                                Width="24"
+                                                Height="24" />
+                                        </Button.Content>
+                                    </Button>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card
+                                    Background="{DynamicResource PrimaryHueMidBrush}"
+                                    Margin="10 0 0 0">
                                     <StackPanel
-                                        HorizontalAlignment="Center"
                                         Orientation="Horizontal">
                                         <Button
-                                            IsEnabled="False"
-                                            ToolTip="Move Up">
+                                            Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            ToolTip="Move Up"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.MoveFieldUpCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
                                             <Button.Content>
                                                 <materialDesign:PackIcon
-                                                    Margin="-4"
+                                                    Kind="ArrowTop"
+                                                    Margin="-11"
                                                     Width="24"
-                                                    Height="24"
-                                                    Kind="ArrowTop" />
+                                                    Height="24" />
                                             </Button.Content>
                                         </Button>
                                         <Button
-                                            IsEnabled="False"
-                                            ToolTip="Move Down">
+                                            Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            ToolTip="Move Down"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.MoveFieldDownCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
                                             <Button.Content>
                                                 <materialDesign:PackIcon
-                                                    Margin="-4"
+                                                    Kind="ArrowBottom"
+                                                    Margin="-11"
                                                     Width="24"
-                                                    Height="24"
-                                                    Kind="ArrowBottom" />
+                                                    Height="24" />
                                             </Button.Content>
                                         </Button>
                                     </StackPanel>
-                                    <Separator />
+                                </materialDesign:Card>
+
+                                <materialDesign:Card
+                                    Margin="10 0 0 0"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
                                     <Button
-                                        Content="Delete"
+                                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                        ToolTip="Remove"
                                         CommandParameter="{Binding}"
-                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}" />
-                                </StackPanel>
-                            </materialDesign:PopupBox>
+                                        Command="{Binding DataContext.RemoveFieldCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="CloseBoxOutline"
+                                                Margin="-11"
+                                                Width="24"
+                                                Height="24" />
+                                        </Button.Content>
+                                    </Button>
+                                </materialDesign:Card>
+
+                            </StackPanel>
                         </Grid>
                     </GroupBox.Header>
                     <StackPanel>
@@ -482,16 +655,6 @@
                         </Button.CommandParameter>
                         ACCEPT
                     </Button>
-                    <!--<Button
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        IsCancel="True"
-                        Margin="0 8 8 0"
-                        Command="materialDesign:DialogHost.CloseDialogCommand">
-                        <Button.CommandParameter>
-                            <system:Boolean>False</system:Boolean>
-                        </Button.CommandParameter>
-                        CANCEL
-                    </Button>-->
                 </StackPanel>
             </StackPanel>
         </materialDesign:DialogHost.DialogContent>

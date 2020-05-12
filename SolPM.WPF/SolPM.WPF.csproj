@@ -144,6 +144,9 @@
     <Compile Include="Views\VaultView.xaml.cs">
       <DependentUpon>VaultView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\EntryViewerWindow.xaml.cs">
+      <DependentUpon>EntryViewerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\PwdGeneratorWindow.xaml.cs">
       <DependentUpon>PwdGeneratorWindow.xaml</DependentUpon>
     </Compile>
@@ -176,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\VaultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EntryViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

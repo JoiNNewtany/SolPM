@@ -121,16 +121,23 @@ namespace SolPM.WPF.Views
             }
         }
 
-        private void CopyPassword_Click(object sender, RoutedEventArgs e)
+        private void CopyValue_Click(object sender, RoutedEventArgs e)
         {
-            var temp = (SecureString)((sender as Button).DataContext as Field).Value;
-            if (null != temp)
+            var value = ((sender as Button).DataContext as Field).Value;
+
+            if (null == value)
             {
-                Clipboard.SetText(Encoding.UTF8.GetString(CryptoUtilities.SecStrBytes(temp)));
+                return;
             }
-            else
+
+            if (value is string str)
             {
-                EntrySnackbar.MessageQueue.Enqueue("This field is empty.");
+                Clipboard.SetText(str);
+            }
+
+            if (value is SecureString sstr && 0 < sstr.Length)
+            {
+                Clipboard.SetText(Encoding.UTF8.GetString(CryptoUtilities.SecStrBytes(sstr)));
             }
         }
     }
