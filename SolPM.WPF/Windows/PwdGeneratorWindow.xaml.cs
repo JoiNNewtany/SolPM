@@ -18,7 +18,7 @@ namespace SolPM.WPF.Windows
             {
                 PwdGenParameters = new PwdGenParams();
 
-                PwdGenParameters.Length = 8;
+                PwdGenParameters.Length = 16;
                 PwdGenParameters.Consecutive = false;
                 PwdGenParameters.LowerCase = true;
                 PwdGenParameters.UpperCase = true;

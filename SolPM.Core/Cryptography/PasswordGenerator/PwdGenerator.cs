@@ -85,6 +85,12 @@ namespace SolPM.Core.Cryptography.PwdGenerator
 
         public string Generate()
         {
+            if (ExcludeLowerCase && ExcludeUpperCase &&
+                ExcludeNumbers && ExcludeSymbols)
+            {
+                return string.Empty;
+            }
+
             StringBuilder pwdBuffer = new StringBuilder();
             pwdBuffer.Capacity = Length;
 
