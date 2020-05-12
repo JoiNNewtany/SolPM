@@ -36,22 +36,13 @@ namespace SolPM.Core.ViewModels
             MoveFieldDownCommand = new MvxCommand<Field>((s) => MoveFieldDown(s));
         }
 
-        public override void Prepare()
-        {
-            System.Diagnostics.Debug.WriteLine("EntryViewModel: Prepare() called.");
-            // first callback. Initialize parameter-agnostic stuff here
-        }
-
         public override void Prepare(Entry parameter)
         {
-            System.Diagnostics.Debug.WriteLine($"EntryViewModel: Prepare with parameter called: {parameter}.");
             Entry = parameter;
         }
 
         public override async Task Initialize()
         {
-            System.Diagnostics.Debug.WriteLine($"EntryViewModel: Initialize called.");
-
             // Creating a field list for an entry if it didn't already have one
             if (Entry != null && Entry.FieldList == null)
             {
@@ -94,7 +85,6 @@ namespace SolPM.Core.ViewModels
 
         private async Task SaveEntry()
         {
-            System.Diagnostics.Debug.WriteLine($"EntryViewModel: Returning {Entry.Name}...");
             await _navigationService.Close(this, Entry);
         }
 
@@ -136,15 +126,30 @@ namespace SolPM.Core.ViewModels
 
         private void AddField(FieldTypes type)
         {
-            System.Diagnostics.Debug.WriteLine(type.ToString());
-            Entry.FieldList.Add(new Field() { Type = type });
+            switch (type)
+            {
+                case FieldTypes.Username:
+                    Entry.FieldList.Add(new Field() { Type = type, Name = "Username" });
+                    break;
+                case FieldTypes.Password:
+                    Entry.FieldList.Add(new Field() { Type = type, Name = "Password" });
+                    break;
+                case FieldTypes.Note:
+                    Entry.FieldList.Add(new Field() { Type = type, Name = "Note" });
+                    break;
+                case FieldTypes.File:
+                    Entry.FieldList.Add(new Field() { Type = type, Name = "File" });
+                    break;
+                default:
+                    Entry.FieldList.Add(new Field() { Type = type });
+                    break;
+            }
         }
 
         private void RemoveField(Field field)
         {
             if (null != field)
             {
-                System.Diagnostics.Debug.WriteLine(field.Name);
                 Entry.FieldList.Remove(field);
             }
         }

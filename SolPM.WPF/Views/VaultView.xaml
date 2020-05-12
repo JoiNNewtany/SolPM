@@ -716,6 +716,95 @@
                                     <SolidColorBrush
                                         Color="{Binding Color}" />
                                 </materialDesign:Card.Background>
+                                <materialDesign:Card.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem
+                                            Header="Copy Password"
+                                            IsEnabled="False"
+                                            InputGestureText="Ctrl+C">
+                                            <MenuItem.Icon>
+                                                <materialDesign:PackIcon
+                                                    Kind="ClipboardOutline"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Margin="-10"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem
+                                            Header="Copy Username"
+                                            IsEnabled="False"
+                                            InputGestureText="Ctrl+B">
+                                            <MenuItem.Icon>
+                                                <materialDesign:PackIcon
+                                                    Kind="ClipboardAccountOutline"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Margin="-10"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem
+                                            IsEnabled="False"
+                                            Header="Copy Field">
+                                            <MenuItem
+                                                Header="Example Field 1">
+                                                <MenuItem.Icon>
+                                                    <materialDesign:PackIcon
+                                                        Kind="ClipboardAccountOutline"
+                                                        Width="24"
+                                                        Height="24"
+                                                        Margin="-10"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem
+                                                Header="Example Field 2">
+                                                <MenuItem.Icon>
+                                                    <materialDesign:PackIcon
+                                                        Kind="ClipboardAccountOutline"
+                                                        Width="24"
+                                                        Height="24"
+                                                        Margin="-10"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </MenuItem>
+                                        <Separator />
+                                        <MenuItem
+                                            Header="Edit Entry..."
+                                            InputGestureText="Enter"
+                                            Command="{Binding Path=DataContext.EditEntryCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
+                                            <MenuItem.Icon>
+                                                <materialDesign:PackIcon
+                                                    Kind="EditOutline"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Margin="-10"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem
+                                            Header="Remove Entry"
+                                            InputGestureText="Del"
+                                            Command="{Binding Path=DataContext.RemoveEntryCommand, RelativeSource={RelativeSource AncestorType=views:MvxWpfView}}">
+                                            <MenuItem.Icon>
+                                                <materialDesign:PackIcon
+                                                    Kind="PencilMinusOutline"
+                                                    Width="24"
+                                                    Height="24"
+                                                    Margin="-10"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </materialDesign:Card.ContextMenu>
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition

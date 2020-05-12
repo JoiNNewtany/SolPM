@@ -21,6 +21,12 @@
         <KeyBinding
             Command="{Binding NavigateVaultView}"
             Gesture="ESC" />
+        
+        <!-- Open -->
+        <KeyBinding
+            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=views:MvxWpfView}, Path=Parameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Command="{Binding OpenVaultCommand}"
+            Gesture="Enter"/>
     </views:MvxWpfView.InputBindings>
 
     <views:MvxWpfView.Resources>
