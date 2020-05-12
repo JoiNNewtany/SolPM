@@ -10,6 +10,7 @@ using MaterialDesignThemes.Wpf;
 using MvvmCross.Binding.BindingContext;
 using SolPM.Core.Interactions;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace SolPM.WPF.Views
 {
@@ -139,6 +140,16 @@ namespace SolPM.WPF.Views
         {
             var window = new PwdGeneratorWindow();
             window.DataContext = new PwdGeneratorViewModel();
+            window.Show();
+        }
+
+        private void PopOut_Click(object sender, RoutedEventArgs e)
+        {
+            // Get bound data context
+            var dc = (Entry)(sender as Button).DataContext;
+
+            var window = new EntryViewerWindow();
+            window.DataContext = dc;
             window.Show();
         }
     }

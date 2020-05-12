@@ -15,8 +15,6 @@
 
     <views:MvxWpfView.Resources>
 
-        <!-- Converters -->
-
         <converters:ColorToBrushConverter
             x:Key="ColorToBrushConverter" />
 
@@ -736,6 +734,22 @@
                                         MaxWidth="140"
                                         Height="64"
                                         Stretch="Uniform" />
+                                    <Button
+                                        BorderBrush="{x:Null}"
+                                        Foreground="{DynamicResource MaterialDesignDarkForeground}"
+                                        Background="{DynamicResource MaterialDesignShadowBrush}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        ToolTip="Pop out"
+                                        Click="PopOut_Click">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon
+                                                Kind="OpenInNew"
+                                                Margin="-10"
+                                                Width="25"
+                                                Height="25" />
+                                        </Button.Content>
+                                    </Button>
                                     <Rectangle
                                         Grid.Row="1"
                                         Margin="0 0 0 -1"

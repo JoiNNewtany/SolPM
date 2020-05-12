@@ -381,6 +381,7 @@ namespace SolPM.Core.ViewModels
             RaisePropertyChanged(() => SelectedFolder);
             RaisePropertyChanged(() => FolderEntries);
             RaisePropertyChanged(() => VaultFolders);
+            DisplayMessage("Vault closed.");
         }
 
         private void ExitApplication()
