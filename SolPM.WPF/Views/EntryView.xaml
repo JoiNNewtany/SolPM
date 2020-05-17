@@ -3,8 +3,10 @@
     xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
     xmlns:models="clr-namespace:SolPM.Core.Models;assembly=SolPM.Core"
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:controls="clr-namespace:SolPM.WPF.Controls"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:converters="clr-namespace:SolPM.WPF.Converters"
+    xmlns:debug="clr-namespace:System.Diagnostics;assembly=WindowsBase"
     xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:behaviors="clr-namespace:SolPM.WPF.Behaviors"
     xmlns:dt="clr-namespace:SolPM.WPF"
@@ -210,8 +212,7 @@
                         <TextBox
                             Text="{Binding Value, Mode=TwoWay}"
                             Margin="0 0 10 0"
-                            materialDesign:HintAssist.Hint="Username"
-                            materialDesign:TextFieldAssist.HasClearButton="True" />
+                            materialDesign:HintAssist.Hint="Username" />
                     </Grid>
                 </GroupBox>
             </ControlTemplate>
@@ -324,13 +325,29 @@
                         Margin="10">
                         <PasswordBox
                             Margin="0 0 10 0"
+                            VerticalContentAlignment="Center"
                             materialDesign:HintAssist.Hint="Password"
                             materialDesign:TextFieldAssist.HasClearButton="False">
                             <interactions:Interaction.Behaviors>
                                 <behaviors:SecurePasswordBindingBehavior
-                                    SecurePassword="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    SecurePassword="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </interactions:Interaction.Behaviors>
                         </PasswordBox>
+                        <!--<controls:RevealablePasswordBox
+                            Margin="0 0 10 0"
+                            SecurePassword="{Binding TestPwd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, debug:PresentationTraceSources.TraceLevel=High}"
+                            materialDesign:HintAssist.Hint="Password">
+                            <controls:RevealablePasswordBox.Style>
+                                <Style
+                                    TargetType="controls:RevealablePasswordBox">
+                                    <Style.Resources>
+                                        <Style
+                                            TargetType="Button"
+                                            BasedOn="{StaticResource MaterialDesignFlatButton}" />
+                                    </Style.Resources>
+                                </Style>
+                            </controls:RevealablePasswordBox.Style>
+                        </controls:RevealablePasswordBox>-->
                     </Grid>
                 </GroupBox>
             </ControlTemplate>
