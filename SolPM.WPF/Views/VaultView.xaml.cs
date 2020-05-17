@@ -11,6 +11,7 @@ using MvvmCross.Binding.BindingContext;
 using SolPM.Core.Interactions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SolPM.WPF.Views
 {
@@ -84,7 +85,7 @@ namespace SolPM.WPF.Views
             VaultSnackbar.MessageQueue.Enqueue(messageInteraction.Message);
         }
 
-        private void EditFolder_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void EditFolder_Click(object sender, RoutedEventArgs e)
         {
             // Get current ViewModel
             var viewModel = (VaultViewModel)DataContext;
@@ -95,7 +96,7 @@ namespace SolPM.WPF.Views
             }
         }
 
-        private void AddFolder_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void AddFolder_Click(object sender, RoutedEventArgs e)
         {
             // Get current ViewModel
             var viewModel = (VaultViewModel)DataContext;
@@ -116,7 +117,7 @@ namespace SolPM.WPF.Views
             RootDialog.IsOpen = true;
         }
 
-        private void SaveVaultAs_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void SaveVaultAs_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new SaveFileDialog
             {
@@ -151,6 +152,39 @@ namespace SolPM.WPF.Views
             var window = new EntryViewerWindow();
             window.DataContext = dc;
             window.Show();
+        }
+
+        private void EditEntry_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Get current ViewModel
+            var viewModel = (VaultViewModel)DataContext;
+
+            if (viewModel.EditEntryCommand.CanExecute())
+            {
+                viewModel.EditEntryCommand.Execute();
+            }
+        }
+
+        private void DeleteEntry_Click(object sender, RoutedEventArgs e)
+        {
+            // Get current ViewModel
+            var viewModel = (VaultViewModel)DataContext;
+
+            if (viewModel.RemoveEntryCommand.CanExecute())
+            {
+                viewModel.RemoveEntryCommand.Execute();
+            }
+        }
+
+        private void EditEntry_Click(object sender, RoutedEventArgs e)
+        {
+            // Get current ViewModel
+            var viewModel = (VaultViewModel)DataContext;
+
+            if (viewModel.EditEntryCommand.CanExecute())
+            {
+                viewModel.EditEntryCommand.Execute();
+            }
         }
     }
 }
