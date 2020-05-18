@@ -500,7 +500,7 @@
                         </MenuItem>
                         <Separator />
                         <MenuItem
-                            IsEnabled="False"
+                            Command="{Binding NavigateOptionsView}"
                             Header="Options...">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon

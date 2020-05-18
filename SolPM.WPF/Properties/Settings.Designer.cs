@@ -57,5 +57,41 @@ namespace SolPM.WPF.Properties {
                 this["PwdGenParams"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsThemeDark {
+            get {
+                return ((bool)(this["IsThemeDark"]));
+            }
+            set {
+                this["IsThemeDark"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FF03A9F4")]
+        public global::System.Windows.Media.Color AppPrimaryColor {
+            get {
+                return ((global::System.Windows.Media.Color)(this["AppPrimaryColor"]));
+            }
+            set {
+                this["AppPrimaryColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FF00B0FF")]
+        public global::System.Windows.Media.Color AppSecondaryColor {
+            get {
+                return ((global::System.Windows.Media.Color)(this["AppSecondaryColor"]));
+            }
+            set {
+                this["AppSecondaryColor"] = value;
+            }
+        }
     }
 }

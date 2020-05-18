@@ -124,9 +124,13 @@
     <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\IntToStringConverter.cs" />
     <Compile Include="Converters\VaultParamsMultiConverter.cs" />
+    <Compile Include="Dialogs\ColorDialog.xaml.cs">
+      <DependentUpon>ColorDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\YesNoDialog.xaml.cs">
       <DependentUpon>YesNoDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PaletteHelper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Validation\EmptyRule.cs" />
     <Compile Include="Validation\LengthRule.cs" />
@@ -142,6 +146,9 @@
     <Compile Include="Views\OpenVaultView.xaml.cs">
       <DependentUpon>OpenVaultView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\OptionsView.xaml.cs">
+      <DependentUpon>OptionsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\VaultView.xaml.cs">
       <DependentUpon>VaultView.xaml</DependentUpon>
     </Compile>
@@ -151,6 +158,10 @@
     <Compile Include="Windows\PwdGeneratorWindow.xaml.cs">
       <DependentUpon>PwdGeneratorWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Dialogs\ColorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\YesNoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -180,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OpenVaultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

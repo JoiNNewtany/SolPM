@@ -11,5 +11,14 @@
     <Setting Name="PwdGenParams" Type="SolPM.Core.ViewModels.Parameters.PwdGenParams" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="IsThemeDark" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AppPrimaryColor" Type="System.Windows.Media.Color" Scope="User">
+      <Value Profile="(Default)">#FF03A9F4</Value>
+    </Setting>
+    <Setting Name="AppSecondaryColor" Type="System.Windows.Media.Color" Scope="User">
+      <Value Profile="(Default)">#FF00B0FF</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

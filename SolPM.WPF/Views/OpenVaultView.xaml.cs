@@ -7,7 +7,6 @@ using SolPM.Core.Interactions;
 using System.Security;
 using MvvmCross.Base;
 using MvvmCross.Binding.BindingContext;
-using System.Data.SqlTypes;
 
 namespace SolPM.WPF.Views
 {

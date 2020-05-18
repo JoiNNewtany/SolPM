@@ -29,6 +29,7 @@ namespace SolPM.Core.ViewModels
             NavigateDatabaseView = new MvxAsyncCommand(() => _navigationService.Navigate<DatabaseViewModel>());
             NavigateEntryView = new MvxAsyncCommand(() => _navigationService.Navigate<EntryViewModel>());
             NavigateOpenVaultView = new MvxAsyncCommand(() => _navigationService.Navigate<OpenVaultViewModel>());
+            NavigateOptionsView = new MvxAsyncCommand(() => _navigationService.Navigate<OptionsViewModel>());
             AddEntryCommand = new MvxAsyncCommand(AddEntry);
             EditEntryCommand = new MvxAsyncCommand(EditEntry);
             RemoveEntryCommand = new MvxCommand(RemoveEntry);
@@ -56,6 +57,7 @@ namespace SolPM.Core.ViewModels
         public IMvxAsyncCommand NavigateDatabaseView { get; private set; }
         public IMvxAsyncCommand NavigateEntryView { get; private set; }
         public IMvxAsyncCommand NavigateOpenVaultView { get; private set; }
+        public IMvxAsyncCommand NavigateOptionsView { get; private set; }
 
         public IMvxAsyncCommand AddEntryCommand { get; private set; }
         public IMvxAsyncCommand EditEntryCommand { get; private set; }

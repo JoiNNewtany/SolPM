@@ -1,4 +1,5 @@
-﻿using MvvmCross.Platforms.Wpf.Views;
+﻿using MaterialDesignThemes.Wpf;
+using MvvmCross.Platforms.Wpf.Views;
 using SolPM.WPF.Properties;
 
 namespace SolPM.WPF
@@ -22,8 +23,22 @@ namespace SolPM.WPF
             {
                 Settings.Default.WindowHeight = this.Height;
                 Settings.Default.WindowWidth = this.Width;
-                Settings.Default.Save();
             }
+
+            // Save application settings
+
+            Settings.Default.Save();
+        }
+
+        private void MainWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            // Load theme and colors
+
+            Helpers.PaletteHelper.ModifyTheme(theme => theme.SetBaseTheme(
+                Settings.Default.IsThemeDark ? Theme.Dark : Theme.Light));
+
+            Helpers.PaletteHelper.ModifyTheme(theme => theme.SetPrimaryColor(Settings.Default.AppPrimaryColor));
+            Helpers.PaletteHelper.ModifyTheme(theme => theme.SetSecondaryColor(Settings.Default.AppSecondaryColor));
         }
     }
 }

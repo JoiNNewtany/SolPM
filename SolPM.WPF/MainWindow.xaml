@@ -15,6 +15,7 @@
     TextElement.FontSize="14"
     FontFamily="{materialDesign:MaterialDesignFont}"
     Title="SolPM"
+    Loaded="MainWindow_Loaded"
     Closed="MainWindow_Closed"
     MinHeight="550"
     MinWidth="740"
