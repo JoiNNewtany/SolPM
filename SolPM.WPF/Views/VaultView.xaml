@@ -543,20 +543,6 @@
                                     HorizontalAlignment="Center" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <Separator />
-                        <MenuItem
-                            IsEnabled="False"
-                            Header="About SolPM">
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon
-                                    Kind="AboutCircleOutline"
-                                    Width="24"
-                                    Height="24"
-                                    Margin="-10"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center" />
-                            </MenuItem.Icon>
-                        </MenuItem>
                     </MenuItem>
                 </Menu>
 
