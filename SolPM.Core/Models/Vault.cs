@@ -114,6 +114,41 @@ namespace SolPM.Core.Models
             EncryptionInfo.ProtectedKey = CryptoUtilities.GetEncryptionProtectionKey(password, EncryptionInfo.Salt);
         }
 
+        public void ChangePassword(SecureString newPassword)
+        {
+            if (null == newPassword || newPassword.Length <= 0)
+            {
+                throw new ArgumentException("Password must be provided.");
+            }
+
+            if (null == EncryptionInfo.ProtectedKey)
+            {
+                throw new ArgumentNullException("ProtectedKey");
+            }
+
+            try
+            {
+                using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))
+                {
+                    // Re-encrypt encryption key with new password
+                    EncryptionInfo.EncryptionKey = cu.ProtectEncryptionKey(newPassword,
+                        cu.UnprotectEncryptionKey(EncryptionInfo.ProtectedKey,
+                        EncryptionInfo.EncryptionKey, EncryptionInfo.IV),
+                        EncryptionInfo.Salt, EncryptionInfo.IV);
+
+                    // Update protected key
+                    SetupProtectedKey(newPassword);
+
+                    // Update validation key
+                    EncryptionInfo.ValidationKey = CryptoUtilities.GetValidationKey(newPassword, EncryptionInfo.Salt);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public void EncryptToFile(string filepath, SecureString password)
         {
             #region Parameter Checks
@@ -330,6 +365,7 @@ namespace SolPM.Core.Models
                     EncryptionInfo = vault.EncryptionInfo;
                     Data = vault.Data;
                     Name = vault.Name;
+                    Description = vault.Description;
                 }
 
                 using (var cu = new CryptoUtilities(EncryptionInfo.SelectedAlgorithm))

@@ -1,10 +1,15 @@
 ﻿using MaterialDesignThemes.Wpf;
+using MvvmCross.Base;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
+using SolPM.Core.Interactions;
 using SolPM.Core.ViewModels;
+using SolPM.Core.ViewModels.Parameters;
 using SolPM.WPF.Dialogs;
 using SolPM.WPF.Properties;
 using System;
+using System.Security;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -20,17 +25,72 @@ namespace SolPM.WPF.Views
         public OptionsView()
         {
             InitializeComponent();
+
+            var set = this.CreateBindingSet<OptionsView, OptionsViewModel>();
+            set.Bind(this).For(view => view.Interaction).To(viewModel => viewModel.MessageInteraction).OneWay();
+            set.Apply();
         }
 
-        //private static void ModifyTheme(Action<ITheme> modificationAction)
-        //{
-        //    PaletteHelper paletteHelper = new PaletteHelper();
-        //    ITheme theme = paletteHelper.GetTheme();
+        public VaultParams Parameters { get; set; } = new VaultParams() 
+        {
+            Password = new SecureString(),
+            ValidationPassword = new SecureString(),
+        };
 
-        //    modificationAction?.Invoke(theme);
+        // Exposing parameters as properties to force re-evaluation of CanExecute
+        public SecureString Password
+        {
+            get
+            {
+                return Parameters.Password;
+            }
+            set
+            {
+                Parameters.Password = value;
 
-        //    paletteHelper.SetTheme(theme);
-        //}
+                var viewModel = (OptionsViewModel)DataContext;
+                viewModel.ChangePasswordCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public SecureString ValidationPassword
+        {
+            get
+            {
+                return Parameters.ValidationPassword;
+            }
+            set
+            {
+                Parameters.ValidationPassword = value;
+
+                var viewModel = (OptionsViewModel)DataContext;
+                viewModel.ChangePasswordCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private IMvxInteraction<MessageInteraction> _interaction = new MvxInteraction<MessageInteraction>();
+        public IMvxInteraction<MessageInteraction> Interaction
+        {
+            get => _interaction;
+            set
+            {
+                if (null != _interaction)
+                    _interaction.Requested -= OnInteractionRequested;
+
+                if (null != value)
+                {
+                    _interaction = value;
+                    _interaction.Requested += OnInteractionRequested;
+                }
+            }
+        }
+
+        private void OnInteractionRequested(object sender, MvxValueEventArgs<MessageInteraction> eventArgs)
+        {
+            var message = eventArgs.Value;
+            // show message
+            OptionsSnackbar.MessageQueue.Enqueue(message.Message);
+        }
 
         private void Theme_Checked(object sender, RoutedEventArgs e)
         {

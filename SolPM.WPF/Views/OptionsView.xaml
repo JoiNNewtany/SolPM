@@ -2,13 +2,17 @@
     x:Class="SolPM.WPF.Views.OptionsView"
     xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:properties="clr-namespace:SolPM.WPF.Properties"
     xmlns:converters="clr-namespace:SolPM.WPF.Converters"
+    xmlns:validation="clr-namespace:SolPM.WPF.Validation"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SolPM.WPF.Views"
+    xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behaviors="clr-namespace:SolPM.WPF.Behaviors"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
@@ -53,262 +57,352 @@
         </EventTrigger>
     </UserControl.Triggers>
 
-    <materialDesign:DialogHost
-        Identifier="EntryViewDialogRoot"
-        CloseOnClickAway="True">
-        <materialDesign:DialogHost.DialogContent>
-            <StackPanel
-                Grid.Column="1"
-                Margin="16">
-                <StackPanel
-                    Orientation="Horizontal">
-                    <DockPanel
-                        Grid.Column="0">
-                        <TextBox
-                            Text="{Binding Color, ElementName=ColorPicker, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource MaterialDesignFilledTextFieldTextBox}"
-                            materialDesign:HintAssist.Hint="Color HEX value"
-                            MinWidth="110"
-                            DockPanel.Dock="Top"
-                            Margin="2,0,10,2" />
-                        <Rectangle
-                            Fill="{Binding Color, ElementName=ColorPicker, Converter={StaticResource ColorToBrushConverter}}"
-                            Margin="2,0,10,2" />
-                    </DockPanel>
-                    <materialDesign:ColorPicker
-                        x:Name="ColorPicker"
-                        Width="400"
-                        Height="200" />
-                </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone
+            x:Name="ColorZone"
+            Mode="PrimaryDark"
+            Grid.Row="0"
+            Padding="16">
+            <Grid>
+                <Button
+                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                    Command="{Binding NavigateVaultView}"
+                    HorizontalAlignment="Left"
+                    ToolTip="Back">
+                    <materialDesign:PackIcon
+                        Width="32"
+                        Height="32"
+                        Kind="ArrowBack" />
+                </Button>
+                <TextBlock
+                    Text="Options"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    FontWeight="Light" />
+            </Grid>
+        </materialDesign:ColorZone>
+        <ScrollViewer
+            Grid.Row="1">
+            <Grid
+                Margin="50 20">
+                <StackPanel>
 
-                <StackPanel
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right">
-                    <Button
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        IsDefault="True"
-                        Margin="0 8 8 0"
-                        Command="materialDesign:DialogHost.CloseDialogCommand">
-                        <Button.CommandParameter>
-                            <system:Boolean>True</system:Boolean>
-                        </Button.CommandParameter>
-                        ACCEPT
-                    </Button>
-                </StackPanel>
-            </StackPanel>
-        </materialDesign:DialogHost.DialogContent>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="auto" />
-                <RowDefinition
-                    Height="*" />
-            </Grid.RowDefinitions>
-            <materialDesign:ColorZone
-                x:Name="ColorZone"
-                Mode="PrimaryDark"
-                Grid.Row="0"
-                Padding="16">
-                <Grid>
-                    <Button
-                        Style="{StaticResource MaterialDesignIconForegroundButton}"
-                        Command="{Binding NavigateVaultView}"
-                        HorizontalAlignment="Left"
-                        ToolTip="Back">
-                        <materialDesign:PackIcon
-                            Width="32"
-                            Height="32"
-                            Kind="ArrowBack" />
-                    </Button>
-                    <TextBlock
-                        Text="Options"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="24"
-                        FontWeight="Light" />
-                </Grid>
-            </materialDesign:ColorZone>
-            <ScrollViewer
-                Grid.Row="1">
-                <Grid
-                    Margin="50 20">
-                    <StackPanel>
-
-                        <materialDesign:Card
-                            Background="{DynamicResource MaterialDesignBackground}">
-                            <StackPanel>
-                                <Expander
-                                    IsExpanded="True"
-                                    HorizontalAlignment="Stretch">
-                                    <Expander.Header>
-                                        <StackPanel
-                                            Orientation="Horizontal">
-                                            <materialDesign:PackIcon
-                                                Width="24"
-                                                Height="24"
-                                                Kind="ColorLens" />
-                                            <TextBlock
-                                                Text="Interface Settings"
-                                                FontSize="16"
-                                                FontWeight="Normal"
-                                                Margin="15 0 0 0"
-                                                VerticalAlignment="Center" />
-                                        </StackPanel>
-                                    </Expander.Header>
+                    <materialDesign:Card
+                        Background="{DynamicResource MaterialDesignBackground}">
+                        <StackPanel>
+                            <Expander
+                                IsExpanded="True"
+                                HorizontalAlignment="Stretch">
+                                <Expander.Header>
                                     <StackPanel
-                                        Orientation="Vertical"
-                                        TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                                        Margin="24,8,24,16">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition
-                                                    Width="auto"
-                                                    MinWidth="120" />
-                                                <ColumnDefinition
-                                                    Width="auto"
-                                                    MinWidth="70" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition
-                                                    Height="auto" />
-                                                <RowDefinition
-                                                    Height="auto" />
-                                                <RowDefinition
-                                                    Height="auto" />
-                                            </Grid.RowDefinitions>
+                                        Orientation="Horizontal">
+                                        <materialDesign:PackIcon
+                                            Width="24"
+                                            Height="24"
+                                            Kind="ColorLens" />
+                                        <TextBlock
+                                            Text="Interface Settings"
+                                            FontSize="16"
+                                            FontWeight="Normal"
+                                            Margin="15 0 0 0"
+                                            VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Expander.Header>
+                                <StackPanel
+                                    Orientation="Vertical"
+                                    TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                                    Margin="24,8,24,16">
+                                    <TextBlock
+                                        TextWrapping="Wrap"
+                                        Text="This section allows you to change the look of the application by adjusting the theme as well as the primary and accent colors of the application."
+                                        Margin="0 10 0 20" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition
+                                                Width="auto"
+                                                MinWidth="80" />
+                                            <ColumnDefinition
+                                                Width="auto"
+                                                MinWidth="70" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition
+                                                Height="auto" />
+                                            <RowDefinition
+                                                Height="auto" />
+                                            <RowDefinition
+                                                Height="auto" />
+                                        </Grid.RowDefinitions>
 
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            Margin="0 10 0 10"
+                                            VerticalAlignment="Center"
+                                            Text="Theme:"
+                                            ToolTip="Switch display theme" />
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            Grid.Row="0"
+                                            Orientation="Horizontal">
                                             <TextBlock
-                                                Grid.Column="0"
-                                                Grid.Row="0"
-                                                Margin="0 10 0 10"
                                                 VerticalAlignment="Center"
-                                                Text="Theme:"
-                                                ToolTip="Switch display theme" />
-                                            <StackPanel
-                                                Grid.Column="1"
-                                                Grid.Row="0"
-                                                Orientation="Horizontal">
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    Text="Light" />
-                                                <ToggleButton
-                                                    Margin="10"
-                                                    HorizontalAlignment="Center"
-                                                    Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                                                    IsChecked="True"
-                                                    Click="Theme_Checked" />
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    Text="Dark" />
-                                            </StackPanel>
-
+                                                Text="Light" />
+                                            <ToggleButton
+                                                Margin="10"
+                                                HorizontalAlignment="Center"
+                                                Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IsThemeDark}"
+                                                Click="Theme_Checked" />
                                             <TextBlock
-                                                Grid.Column="0"
-                                                Grid.Row="1"
-                                                Margin="0 10 0 10"
                                                 VerticalAlignment="Center"
-                                                Text="Colors:" />
-                                            <DockPanel
-                                                Grid.Column="1"
-                                                Grid.Row="1">
-                                                <Button
-                                                    Panel.ZIndex="1"
-                                                    Margin="30 10 -18 5"
-                                                    HorizontalAlignment="Left"
-                                                    Width="42"
-                                                    Height="42"
-                                                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                                    ToolTip="Primary color"
-                                                    Click="PrimaryColor_Click" />
-                                                <Button
-                                                    Margin="0 10 30 5"
-                                                    HorizontalAlignment="Right"
-                                                    Width="38"
-                                                    Height="38"
-                                                    Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
-                                                    ToolTip="Accent color"
-                                                    Click="AccentColor_Click" />
-                                            </DockPanel>
-
-                                        </Grid>
-                                    </StackPanel>
-                                </Expander>
-                                <Border
-                                    Background="{DynamicResource MaterialDesignDivider}"
-                                    Height="1"
-                                    HorizontalAlignment="Stretch"
-                                    SnapsToDevicePixels="True" />
-                                <Expander
-                                    IsExpanded="True"
-                                    HorizontalAlignment="Stretch">
-                                    <Expander.Header>
-                                        <StackPanel
-                                            Orientation="Horizontal">
-                                            <materialDesign:PackIcon
-                                                Width="24"
-                                                Height="24"
-                                                Kind="Lock" />
-                                            <TextBlock
-                                                Text="Vault Settings"
-                                                FontSize="16"
-                                                FontWeight="Normal"
-                                                Margin="15 0 0 0"
-                                                VerticalAlignment="Center" />
+                                                Text="Dark" />
                                         </StackPanel>
-                                    </Expander.Header>
-                                    <StackPanel
-                                        Orientation="Vertical"
-                                        TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                                        Margin="24,8,24,16">
-                                        <TextBlock
-                                            Text="Your Content" />
-                                        <TextBlock
-                                            Opacity=".68"
-                                            Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                                            TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </Expander>
-                                <Border
-                                    Background="{DynamicResource MaterialDesignDivider}"
-                                    Height="1"
-                                    HorizontalAlignment="Stretch"
-                                    SnapsToDevicePixels="True" />
-                                <Expander
-                                    IsExpanded="True"
-                                    HorizontalAlignment="Stretch">
-                                    <Expander.Header>
-                                        <StackPanel
-                                            Orientation="Horizontal">
-                                            <materialDesign:PackIcon
-                                                Width="24"
-                                                Height="24"
-                                                Kind="Key" />
-                                            <TextBlock
-                                                Text="App Security Settings"
-                                                FontSize="16"
-                                                FontWeight="Normal"
-                                                Margin="15 0 0 0"
-                                                VerticalAlignment="Center" />
-                                        </StackPanel>
-                                    </Expander.Header>
-                                    <StackPanel
-                                        Orientation="Vertical"
-                                        TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                                        Margin="24,8,24,16">
-                                        <TextBlock
-                                            Text="Your Content" />
-                                        <TextBlock
-                                            Opacity=".68"
-                                            Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                                            TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </Expander>
-                            </StackPanel>
-                        </materialDesign:Card>
 
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
-        </Grid>
-    </materialDesign:DialogHost>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Grid.Row="1"
+                                            Margin="0 10 0 10"
+                                            VerticalAlignment="Center"
+                                            Text="Colors:"
+                                            ToolTip="Change primary and accent colors"/>
+                                        <DockPanel
+                                            Grid.Column="1"
+                                            Grid.Row="1">
+                                            <Button
+                                                Panel.ZIndex="1"
+                                                Margin="30 10 -18 5"
+                                                HorizontalAlignment="Left"
+                                                Width="42"
+                                                Height="42"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                                ToolTip="Primary color"
+                                                Click="PrimaryColor_Click" />
+                                            <Button
+                                                Margin="0 10 30 5"
+                                                HorizontalAlignment="Right"
+                                                Width="38"
+                                                Height="38"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                                                ToolTip="Accent color"
+                                                Click="AccentColor_Click" />
+                                        </DockPanel>
+
+                                    </Grid>
+                                </StackPanel>
+                            </Expander>
+                            <Border
+                                Background="{DynamicResource MaterialDesignDivider}"
+                                Height="1"
+                                HorizontalAlignment="Stretch"
+                                SnapsToDevicePixels="True" />
+                            <Expander
+                                IsExpanded="True"
+                                HorizontalAlignment="Stretch">
+                                <Expander.Header>
+                                    <StackPanel
+                                        Orientation="Horizontal">
+                                        <materialDesign:PackIcon
+                                            Width="24"
+                                            Height="24"
+                                            Kind="Lock" />
+                                        <TextBlock
+                                            Text="Vault Settings"
+                                            FontSize="16"
+                                            FontWeight="Normal"
+                                            Margin="15 0 0 0"
+                                            VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Expander.Header>
+                                <StackPanel
+                                    Orientation="Vertical"
+                                    TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                                    Margin="24,8,24,16">
+                                    <TextBlock
+                                        TextWrapping="Wrap"
+                                        Text="This section allows you to change general settings of your vault as well as it's master-password."
+                                        Margin="0 10 0 20" />
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition
+                                                Height="auto" />
+                                            <RowDefinition
+                                                Height="auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBox
+                                            x:Name="VaultNameTextBox"
+                                            IsEnabled="{Binding VaultOpen}"
+                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                            Grid.Row="0"
+                                            HorizontalAlignment="Left"
+                                            MaxLength="64"
+                                            Width="400"
+                                            Margin="0 0 0 20"
+                                            materialDesign:HintAssist.Hint="Vault Name">
+                                            <TextBox.Text>
+                                                <Binding
+                                                    Path="Vault.Name"
+                                                    Mode="TwoWay"
+                                                    UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validation:EmptyRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox
+                                            x:Name="VaultDescriptionTextBox"
+                                            IsEnabled="{Binding VaultOpen}"
+                                            Text="{Binding Vault.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Grid.Row="1"
+                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                            MaxHeight="90"
+                                            MaxLength="256"
+                                            Width="400"
+                                            TextWrapping="Wrap"
+                                            VerticalAlignment="Stretch"
+                                            HorizontalAlignment="Left"
+                                            AcceptsReturn="True"
+                                            VerticalScrollBarVisibility="Auto"
+                                            SpellCheck.IsEnabled="True"
+                                            materialDesign:HintAssist.Hint="Vault Description">
+                                        </TextBox>
+                                    </Grid>
+                                    
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition 
+                                                Width="400"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition
+                                                Height="auto" />
+                                            <RowDefinition
+                                                Height="auto" />
+                                            <RowDefinition
+                                                Height="auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <PasswordBox
+                                            x:Name="VaultPasswordBox"
+                                            IsEnabled="{Binding VaultOpen}"
+                                            Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Stretch"
+                                            MaxLength="256"
+                                            Margin="0 20 0 0"
+                                            Grid.Row="0"
+                                            materialDesign:TextFieldAssist.HasClearButton="True"
+                                            materialDesign:HintAssist.Hint="Enter Master Password">
+                                            <interactions:Interaction.Behaviors>
+                                                <behaviors:SecurePasswordBindingBehavior>
+                                                    <behaviors:SecurePasswordBindingBehavior.SecurePassword>
+                                                        <Binding
+                                                            RelativeSource="{RelativeSource AncestorType=views:MvxWpfView}"
+                                                            Path="Password"
+                                                            Mode="TwoWay"
+                                                            UpdateSourceTrigger="PropertyChanged">
+                                                            <Binding.ValidationRules>
+                                                                <validation:EmptyRule />
+                                                            </Binding.ValidationRules>
+                                                        </Binding>
+                                                    </behaviors:SecurePasswordBindingBehavior.SecurePassword>
+                                                </behaviors:SecurePasswordBindingBehavior>
+                                            </interactions:Interaction.Behaviors>
+                                        </PasswordBox>
+                                        <PasswordBox
+                                            x:Name="VaultPasswordVerificationBox"
+                                            IsEnabled="{Binding VaultOpen}"
+                                            Style="{StaticResource MaterialDesignOutlinedPasswordFieldPasswordBox}"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Stretch"
+                                            MaxLength="256"
+                                            Margin="0 20 0 0"
+                                            Grid.Row="1"
+                                            materialDesign:TextFieldAssist.HasClearButton="True"
+                                            materialDesign:HintAssist.Hint="Confirm Master Password">
+                                            <interactions:Interaction.Behaviors>
+                                                <behaviors:SecurePasswordBindingBehavior>
+                                                    <behaviors:SecurePasswordBindingBehavior.SecurePassword>
+                                                        <Binding
+                                                            RelativeSource="{RelativeSource AncestorType=views:MvxWpfView}"
+                                                            Path="ValidationPassword"
+                                                            Mode="TwoWay"
+                                                            UpdateSourceTrigger="PropertyChanged">
+                                                            <Binding.ValidationRules>
+                                                                <validation:EmptyRule />
+                                                            </Binding.ValidationRules>
+                                                        </Binding>
+                                                    </behaviors:SecurePasswordBindingBehavior.SecurePassword>
+                                                </behaviors:SecurePasswordBindingBehavior>
+                                            </interactions:Interaction.Behaviors>
+                                        </PasswordBox>
+                                        <Button
+                                            Grid.Row="3"
+                                            Content="CHANGE PASSWORD"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=views:MvxWpfView}, Path=Parameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Command="{Binding ChangePasswordCommand}"
+                                            Width="200"
+                                            HorizontalAlignment="Center"
+                                            Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                            Margin="0 20 0 0" />
+                                    </Grid>
+
+                                </StackPanel>
+                            </Expander>
+                            <Border
+                                Background="{DynamicResource MaterialDesignDivider}"
+                                Height="1"
+                                HorizontalAlignment="Stretch"
+                                SnapsToDevicePixels="True" />
+                            <Expander
+                                IsExpanded="False"
+                                IsEnabled="False"
+                                HorizontalAlignment="Stretch">
+                                <Expander.Header>
+                                    <StackPanel
+                                        Orientation="Horizontal">
+                                        <materialDesign:PackIcon
+                                            Width="24"
+                                            Height="24"
+                                            Kind="Key" />
+                                        <TextBlock
+                                            Text="App Security Settings"
+                                            FontSize="16"
+                                            FontWeight="Normal"
+                                            Margin="15 0 0 0"
+                                            VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Expander.Header>
+                                <StackPanel
+                                    Orientation="Vertical"
+                                    TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                                    Margin="24,8,24,16">
+                                    <TextBlock
+                                        Text="Your Content" />
+                                    <TextBlock
+                                        Opacity=".68"
+                                        Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Expander>
+                        </StackPanel>
+                    </materialDesign:Card>
+
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+        <materialDesign:Snackbar
+            MessageQueue="{materialDesign:MessageQueue}"
+            Grid.Row="1"
+            x:Name="OptionsSnackbar" />
+    </Grid>
 </views:MvxWpfView>
