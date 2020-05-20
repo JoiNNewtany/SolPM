@@ -112,10 +112,12 @@
                             <StackPanel
                                 Orientation="Horizontal">
                                 <materialDesign:PackIcon
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Width="24"
                                     Height="24"
                                     Kind="AccountBox" />
                                 <TextBox
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Text="{Binding Name, Mode=TwoWay}"
                                     MinWidth="150"
                                     MaxWidth="350"
@@ -226,10 +228,12 @@
                             <StackPanel
                                 Orientation="Horizontal">
                                 <materialDesign:PackIcon
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Width="24"
                                     Height="24"
                                     Kind="KeyVariant" />
                                 <TextBox
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Text="{Binding Name, Mode=TwoWay}"
                                     MinWidth="150"
                                     MaxWidth="350"
@@ -335,7 +339,7 @@
                         </PasswordBox>
                         <!--<controls:RevealablePasswordBox
                             Margin="0 0 10 0"
-                            SecurePassword="{Binding TestPwd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, debug:PresentationTraceSources.TraceLevel=High}"
+                            SecurePassword="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, debug:PresentationTraceSources.TraceLevel=High}"
                             materialDesign:HintAssist.Hint="Password">
                             <controls:RevealablePasswordBox.Style>
                                 <Style
@@ -361,10 +365,12 @@
                             <StackPanel
                                 Orientation="Horizontal">
                                 <materialDesign:PackIcon
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Width="24"
                                     Height="24"
                                     Kind="DriveDocument" />
                                 <TextBox
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Text="{Binding Name, Mode=TwoWay}"
                                     MinWidth="150"
                                     MaxWidth="350"
@@ -477,10 +483,12 @@
                             <StackPanel
                                 Orientation="Horizontal">
                                 <materialDesign:PackIcon
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Width="24"
                                     Height="24"
                                     Kind="Files" />
                                 <TextBox
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Text="{Binding Name, Mode=TwoWay}"
                                     MinWidth="150"
                                     MaxWidth="350"
@@ -911,10 +919,13 @@
                         Orientation="Horizontal">
                         <Button
                             ToolTip="Username"
+                            Background="{DynamicResource PrimaryHueMidBrush}"
+                            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                             CommandParameter="{StaticResource UsernameType}"
                             Command="{Binding AddFieldCommand}">
                             <Button.Content>
                                 <materialDesign:PackIcon
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Width="24"
                                     Height="24"
                                     Kind="AccountBox" />
@@ -922,10 +933,13 @@
                         </Button>
                         <Button
                             ToolTip="Password"
+                            Background="{DynamicResource PrimaryHueMidBrush}"
+                            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                             CommandParameter="{StaticResource PasswordType}"
                             Command="{Binding AddFieldCommand}">
                             <Button.Content>
                                 <materialDesign:PackIcon
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Width="24"
                                     Height="24"
                                     Kind="KeyVariant" />
@@ -933,10 +947,13 @@
                         </Button>
                         <Button
                             ToolTip="Note"
+                            Background="{DynamicResource PrimaryHueMidBrush}"
+                            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                             CommandParameter="{StaticResource NoteType}"
                             Command="{Binding AddFieldCommand}">
                             <Button.Content>
                                 <materialDesign:PackIcon
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Width="24"
                                     Height="24"
                                     Kind="DriveDocument" />
@@ -944,10 +961,13 @@
                         </Button>
                         <Button
                             ToolTip="File"
+                            Background="{DynamicResource PrimaryHueMidBrush}"
+                            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                             CommandParameter="{StaticResource FileType}"
                             Command="{Binding AddFieldCommand}">
                             <Button.Content>
                                 <materialDesign:PackIcon
+                                    Foreground="{StaticResource MaterialDesignDarkForeground}"
                                     Width="24"
                                     Height="24"
                                     Kind="Files" />
