@@ -490,7 +490,7 @@
                             Click="PwdGenerator_Click">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon
-                                    Kind="TextboxPassword"
+                                    Kind="FormTextboxPassword"
                                     Width="24"
                                     Height="24"
                                     Margin="-10"

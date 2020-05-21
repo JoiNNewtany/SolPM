@@ -2,6 +2,7 @@
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using SolPM.Core.Helpers;
+using SolPM.Core.Interactions;
 using SolPM.Core.Models;
 using System;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace SolPM.Core.ViewModels
     public class EntryViewModel : MvxViewModel<Entry, Entry>
     {
         private readonly IMvxNavigationService _navigationService;
+
+        private MvxInteraction<MessageInteraction> _messageInteraction = new MvxInteraction<MessageInteraction>();
+        public IMvxInteraction<MessageInteraction> MessageInteraction => _messageInteraction;
 
         public Entry Entry { get; set; }
 
@@ -92,8 +96,15 @@ namespace SolPM.Core.ViewModels
         {
             if (Entry != null)
             {
-                Entry.Icon = new BitmapImage(new Uri(fileName));
-                RaisePropertyChanged(() => Entry);
+                try
+                {
+                    Entry.Icon = new BitmapImage(new Uri(fileName));
+                    RaisePropertyChanged(() => Entry);
+                }
+                catch (Exception e)
+                {
+                    _messageInteraction.Raise(new MessageInteraction(e.Message));
+                }
             }
         }
 
@@ -101,8 +112,15 @@ namespace SolPM.Core.ViewModels
         {
             if (Entry != null)
             {
-                Entry.Image = new BitmapImage(new Uri(fileName));
-                RaisePropertyChanged(() => Entry);
+                try
+                {
+                    Entry.Image = new BitmapImage(new Uri(fileName));
+                    RaisePropertyChanged(() => Entry);
+                }
+                catch (Exception e)
+                {
+                    _messageInteraction.Raise(new MessageInteraction(e.Message));
+                }
             }
         }
 

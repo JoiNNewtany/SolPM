@@ -1,7 +1,10 @@
 ﻿using Microsoft.Win32;
+using MvvmCross.Base;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.ViewModels;
 using SolPM.Core.Cryptography;
+using SolPM.Core.Interactions;
 using SolPM.Core.Models;
 using SolPM.Core.ViewModels;
 using System.IO;
@@ -21,6 +24,34 @@ namespace SolPM.WPF.Views
         public EntryView()
         {
             InitializeComponent();
+
+            var set = this.CreateBindingSet<EntryView, EntryViewModel>();
+            set.Bind(this).For(view => view.Interaction).To(viewModel => viewModel.MessageInteraction).OneWay();
+            set.Apply();
+        }
+
+        private IMvxInteraction<MessageInteraction> _interaction = new MvxInteraction<MessageInteraction>();
+        public IMvxInteraction<MessageInteraction> Interaction
+        {
+            get => _interaction;
+            set
+            {
+                if (null != _interaction)
+                    _interaction.Requested -= OnInteractionRequested;
+
+                if (null != value)
+                {
+                    _interaction = value;
+                    _interaction.Requested += OnInteractionRequested;
+                }
+            }
+        }
+
+        private void OnInteractionRequested(object sender, MvxValueEventArgs<MessageInteraction> eventArgs)
+        {
+            var message = eventArgs.Value;
+            // show message
+            EntrySnackbar.MessageQueue.Enqueue(message.Message);
         }
 
         private void SelectIconBtn_Click(object sender, RoutedEventArgs e)
