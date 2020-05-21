@@ -141,6 +141,9 @@
     <Compile Include="Dialogs\ColorDialog.xaml.cs">
       <DependentUpon>ColorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AppInfoDialog.xaml.cs">
+      <DependentUpon>AppInfoDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\YesNoDialog.xaml.cs">
       <DependentUpon>YesNoDialog.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,10 @@
       <DependentUpon>PwdGeneratorWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\ColorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AppInfoDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

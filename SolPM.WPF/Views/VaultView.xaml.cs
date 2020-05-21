@@ -186,5 +186,10 @@ namespace SolPM.WPF.Views
                 viewModel.EditEntryCommand.Execute();
             }
         }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            DialogHost.Show(new AppInfoDialog());
+        }
     }
 }

@@ -139,7 +139,12 @@ namespace SolPM.WPF.Controls
 
         protected virtual void OnPasswordChanged(DependencyPropertyChangedEventArgs e)
         {
-            //..?
+            if (e.NewValue is SecureString secStr && 
+                null != secStr &&
+                null != PwdContainer)
+            {
+                PwdContainer.Text = new string('*', secStr.Length);
+            }
         }
 
         /// <summary>

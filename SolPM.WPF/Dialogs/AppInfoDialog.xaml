@@ -1,0 +1,58 @@
+﻿<Grid
+    x:Class="SolPM.WPF.Dialogs.AppInfoDialog"
+    xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SolPM.WPF.Dialogs">
+    <Grid.RowDefinitions>
+        <RowDefinition
+            Height="auto" />
+        <RowDefinition
+            Height="*" />
+    </Grid.RowDefinitions>
+    <materialDesign:ColorZone
+        Mode="PrimaryDark"
+        Grid.Row="0"
+        Padding="16">
+        <StackPanel>
+            <TextBlock
+                Text="Solar Password Manager"
+                FontSize="20" />
+            <TextBlock>
+                Version
+                <Run
+                    Text="{Binding Version, RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </TextBlock>
+        </StackPanel>
+    </materialDesign:ColorZone>
+    <TextBlock
+        Grid.Row="1"
+        Margin="20">
+        Copyright (c) 2020 Solar Flare.
+        <LineBreak />
+        <LineBreak />
+        This software is distributed under the terms of the MIT Licence.
+        <LineBreak />
+        <LineBreak />
+        <Hyperlink
+            NavigateUri="https://github.com/JoiNNewtany/SolPM"
+            RequestNavigate="Hyperlink_RequestNavigate">
+            SolPM on Github
+        </Hyperlink>
+        <LineBreak />
+        <Hyperlink
+            NavigateUri="https://github.com/JoiNNewtany/SolPM/wiki"
+            RequestNavigate="Hyperlink_RequestNavigate">
+            SolPM Wiki
+        </Hyperlink>
+        <LineBreak />
+        <Hyperlink
+            NavigateUri="https://github.com/JoiNNewtany/SolPM/blob/master/LICENSE"
+            RequestNavigate="Hyperlink_RequestNavigate">
+            Licence
+        </Hyperlink>
+    </TextBlock>
+</Grid>
