@@ -22,7 +22,7 @@
         <KeyBinding
             Command="{Binding NavigateVaultView}"
             Gesture="ESC" />
-        
+
         <!-- Create -->
         <KeyBinding
             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=views:MvxWpfView}, Path=Parameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -105,6 +105,7 @@
                     FontSize="24"
                     FontWeight="Light" />
                 <Button
+                    Name="CreateVaultButton"
                     Style="{StaticResource MaterialDesignIconForegroundButton}"
                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=views:MvxWpfView}, Path=Parameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Command="{Binding CreateVaultCommand}"
@@ -326,7 +327,7 @@
                                     VerticalAlignment="Center"
                                     MaxLength="256"
                                     Margin="0 20 0 0"
-                                    PasswordChanged="VaultPasswordBox_PasswordChanged"
+                                    PasswordChanged="PasswordsChanged"
                                     Grid.Row="2"
                                     Grid.ColumnSpan="2"
                                     materialDesign:TextFieldAssist.HasClearButton="True"
@@ -353,6 +354,7 @@
                                     VerticalAlignment="Center"
                                     MaxLength="256"
                                     Margin="0 20 0 0"
+                                    PasswordChanged="PasswordsChanged"
                                     Grid.Row="3"
                                     Grid.ColumnSpan="2"
                                     materialDesign:TextFieldAssist.HasClearButton="True"

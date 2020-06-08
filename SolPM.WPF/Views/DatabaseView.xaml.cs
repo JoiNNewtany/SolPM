@@ -6,6 +6,7 @@ using SolPM.Core.ViewModels;
 using SolPM.Core.ViewModels.Parameters;
 using System.Diagnostics;
 using System.Security;
+using System.Windows.Controls;
 
 namespace SolPM.WPF.Views
 {
@@ -138,11 +139,21 @@ namespace SolPM.WPF.Views
             AlgorithmComboBox.SelectedIndex = 0;
         }
 
-        private void VaultPasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        private void PasswordsChanged(object sender, System.Windows.RoutedEventArgs e)
         {
             // Workaround to set the VerificationPassword property
             // of the PasswordRule since it cannot be bound
             //PasswordValidation.ValidationPassword = ((PasswordBox)sender).SecurePassword;
+
+            // Simple fix I made I guess?
+            if (VaultPasswordBox.SecurePassword.Length <= 0 || VaultPasswordVerificationBox.SecurePassword.Length <= 0)
+            {
+                CreateVaultButton.IsEnabled = false;
+            }
+            else
+            {
+                CreateVaultButton.IsEnabled = true;
+            }
         }
     }
 }
